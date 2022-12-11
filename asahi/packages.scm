@@ -47,14 +47,14 @@ Air, and MacBook Pro.")))
     (arguments
      `(#:phases
        (modify-phases %standard-phases
-         (delete 'configure)
+         (replace 'configure
+           (lambda* (#:key outputs #:allow-other-keys)
+             (setenv "RELEASE" "1")))
          (replace 'install
            (lambda* (#:key outputs #:allow-other-keys)
              (let ((dir (string-append (assoc-ref outputs "out") "/usr/lib/")))
                (mkdir-p dir)
-               (invoke "echo" (string-append dir "m1n1.bin"))
-               (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin"))
-               (copy-file "build/m1n1.macho" (string-append dir "m1n1.macho"))))))))
+               (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin"))))))))
     (home-page "https://github.com/AsahiLinux/m1n1")
     (synopsis "Experimentation playground for Apple Silicon")
     (description "A bootloader and experimentation playground for Apple Silicon")

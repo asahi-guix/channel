@@ -1,14 +1,19 @@
 (define-module (asahi packages)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (gnu packages cross-base)
-  #:use-module (guix transformations)
   #:use-module (gnu packages bootloaders)
+  #:use-module (gnu packages compression)
+  #:use-module (gnu packages cross-base)
   #:use-module (gnu packages imagemagick)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages rust)
   #:use-module (guix build-system gnu)
+  #:use-module (guix download)
+  #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
-  #:use-module (nongnu packages linux))
+  #:use-module (guix transformations)
+  #:use-module (nongnu packages linux)
+  #:use-module (srfi srfi-1))
 
 (define-public asahi-linux
   (package
@@ -24,6 +29,10 @@
        (file-name (git-file-name name version))
        (sha256
         (base32 "05r2i3dnwa9v35x93p6r6ixnf456annfx498jgmviwl53jkxi1qc"))))
+    (native-inputs
+     `(("kconfig" ,(local-file "kernel.config"))
+       ("zstd" ,zstd)
+       ,@(alist-delete "kconfig" (package-native-inputs linux-arm64-generic))))
     (home-page "https://asahilinux.org")
     (synopsis "Linux on Apple Silicon")
     (description "Asahi Linux is a project and community with the goal of porting Linux

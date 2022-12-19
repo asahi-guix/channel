@@ -12,7 +12,7 @@
 
 (define-public asahi-linux
   (package
-    (inherit linux)
+    (inherit linux-arm64-generic)
     (name "asahi-linux")
     (version "0.5.2")
     (source

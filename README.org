@@ -1,0 +1,24 @@
+* Asahi Guix
+
+WIP: Not much is working. 💣
+
+** Installer
+
+Build the installation image.
+
+#+begin_src sh :results verbatim
+  guix time-machine -C asahi/channels.scm -- system image -L . --image-type=efi-raw asahi/installer.scm
+#+end_src
+
+Write the installer to the USB stick at =/dev/sda=.
+
+#+begin_src sh :results verbatim
+  sudo dd if=/gnu/store/8ikx00fz1pdcnb68w2gj2jq3868zx96h-disk-image of=/dev/sda bs=4M status=progress oflag=sync
+#+end_src
+
+Status: Boots Guile, but fails to find disks.
+
+** Packages
+
+- asahi-linux (compiles, but not yet configured)
+- asahi-m1n1 (compiles)

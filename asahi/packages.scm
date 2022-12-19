@@ -42,8 +42,8 @@ Air, and MacBook Pro.")))
 (define-public asahi-linux
   (make-asahi-linux "asahi-linux" (local-file "kernel.config")))
 
-(define-public asahi-edge-linux
-  (make-asahi-linux "asahi-edge-linux" (local-file "kernel.edge.config")))
+(define-public asahi-linux-edge
+  (make-asahi-linux "asahi-linux-edge" (local-file "kernel.edge.config")))
 
 (define-public asahi-m1n1
   (package

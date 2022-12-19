@@ -15,10 +15,10 @@
   #:use-module (nongnu packages linux)
   #:use-module (srfi srfi-1))
 
-(define-public asahi-linux
+(define (make-asahi-linux name config)
   (package
     (inherit linux-arm64-generic)
-    (name "asahi-linux")
+    (name name)
     (version "0.5.2")
     (source
      (origin
@@ -30,7 +30,7 @@
        (sha256
         (base32 "05r2i3dnwa9v35x93p6r6ixnf456annfx498jgmviwl53jkxi1qc"))))
     (native-inputs
-     `(("kconfig" ,(local-file "kernel.config"))
+     `(("kconfig" ,config)
        ("zstd" ,zstd)
        ,@(alist-delete "kconfig" (package-native-inputs linux-arm64-generic))))
     (home-page "https://asahilinux.org")
@@ -38,6 +38,12 @@
     (description "Asahi Linux is a project and community with the goal of porting Linux
 to Apple Silicon Macs, starting with the 2020 M1 Mac Mini, MacBook
 Air, and MacBook Pro.")))
+
+(define-public asahi-linux
+  (make-asahi-linux "asahi-linux" (local-file "kernel.config")))
+
+(define-public asahi-edge-linux
+  (make-asahi-linux "asahi-edge-linux" (local-file "kernel.edge.config")))
 
 (define-public asahi-m1n1
   (package

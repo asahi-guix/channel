@@ -6,6 +6,7 @@
   #:use-module (gnu packages imagemagick)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages rust)
+  #:use-module (guix build-system cmake)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system python)
   #:use-module (guix download)
@@ -95,3 +96,26 @@ Air, and MacBook Pro.")))
     (synopsis "Asahi Linux firmware extractor")
     (description "The Asahi Linux firmware extraction tool")
     (license license:expat)))
+
+(define-public lzfse
+  (package
+    (name "lzfse")
+    (version "1.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/lzfse/lzfse.git")
+             (commit (string-append "lzfse-" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1mfh6y6vpvxsdwmqmfbkqkwvxc0pz2dqqc72c6fk9sbsrxxaghd5"))))
+    (build-system cmake-build-system)
+    (home-page "https://github.com/AsahiLinux/asahi-installer")
+    (synopsis "LZFSE compression library and command line tool")
+    (description "This is a reference C implementation of the LZFSE compressor
+introduced in the Compression library with OS X 10.11 and iOS 9. LZFSE
+is a Lempel-Ziv style data compression algorithm using Finite State
+Entropy coding. It targets similar compression rates at higher
+compression and decompression speed compared to deflate using zlib")
+    (license license:bsd-3)))

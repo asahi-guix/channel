@@ -28,3 +28,4 @@ Status:
 - asahi-linux
 - asahi-linux-edge
 - asahi-m1n1
+- lzfse

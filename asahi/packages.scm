@@ -7,6 +7,7 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu packages rust)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system python)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -74,6 +75,25 @@ Air, and MacBook Pro.")))
     (home-page "https://github.com/AsahiLinux/m1n1")
     (synopsis "Experimentation playground for Apple Silicon")
     (description "A bootloader and experimentation playground for Apple Silicon")
+    (license license:expat)))
+
+(define-public asahi-fwextract
+  (package
+    (name "asahi-fwextract")
+    (version "0.5.3")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/AsahiLinux/asahi-installer.git")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1kj9ycy3f34fzm9bnirlcw9zm2sgipwrqzphdg5k099rbjbc7zmj"))))
+    (build-system python-build-system)
+    (home-page "https://github.com/AsahiLinux/asahi-installer")
+    (synopsis "Asahi Linux firmware extractor")
+    (description "The Asahi Linux firmware extraction tool")
     (license license:expat)))
 
 ;; (define-public u-boot-apple-m1

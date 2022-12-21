@@ -15,7 +15,6 @@ jobs:
       - name: Install Guix
         uses: PromyLOPh/guix-install-action@v1
         with:
-          pullAfterInstall: false
           channels: |
             (list (channel
                    (name 'asahi)

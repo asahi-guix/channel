@@ -54,4 +54,4 @@ jobs:
           | awk '{print $1}' \
           | grep -v asahi-linux \
           | grep -v asahi-m1n1 \
-          | xargs guix build -L . -v 1 --target=aarch64-linux-gnu
+          | xargs guix build -L . -v 5

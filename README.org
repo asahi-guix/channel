@@ -22,6 +22,7 @@ Status:
 
 ** Packages
 
+- asahi-fwextract
 - asahi-linux
 - asahi-linux-edge
 - asahi-m1n1

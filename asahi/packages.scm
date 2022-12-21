@@ -97,6 +97,33 @@ Air, and MacBook Pro.")))
     (description "The Asahi Linux firmware extraction tool")
     (license license:expat)))
 
+(define-public asahi-scripts
+  (package
+    (name "asahi-scripts")
+    (version "20221220")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/AsahiLinux/asahi-scripts.git")
+             (commit version)))
+       (sha256
+        (base32 "06a1ixcvnzn9hj1wzfmvvnr9ddgdqqap87b7cf3f92av1a6p6576"))))
+    (build-system gnu-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (replace 'configure
+           (lambda* (#:key outputs #:allow-other-keys)
+             (substitute* "Makefile"
+               (("PREFIX=/usr/local") "PREFIX="))
+             (setenv "DESTDIR" (assoc-ref outputs "out"))))
+         (delete 'check))))
+    (home-page "https://github.com/AsahiLinux/asahi-installer")
+    (synopsis "Asahi Linux scripts")
+    (description "Miscellaneous admin scripts for the Asahi Linux reference distro")
+    (license license:expat)))
+
 (define-public lzfse
   (package
     (name "lzfse")
@@ -111,7 +138,7 @@ Air, and MacBook Pro.")))
        (sha256
         (base32 "1mfh6y6vpvxsdwmqmfbkqkwvxc0pz2dqqc72c6fk9sbsrxxaghd5"))))
     (build-system cmake-build-system)
-    (home-page "https://github.com/AsahiLinux/asahi-installer")
+    (home-page "https://github.com/lzfse/lzfse")
     (synopsis "LZFSE compression library and command line tool")
     (description "This is a reference C implementation of the LZFSE compressor
 introduced in the Compression library with OS X 10.11 and iOS 9. LZFSE

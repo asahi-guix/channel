@@ -26,20 +26,19 @@
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets '("/dev/sda"))))
-    (initrd-modules '(;; "usb-storage"
-                      ;; "uas"
-                      ;; "usbhid"
-                      ;; "hid-apple"
-                      ;; "dm-crypt"
-                      ;; "serpent_generic"
-                      ;; "wp512"
-                      ;; "nls_iso8859-1"
-                      ;; "virtio_pci"
-                      ;; "virtio_balloon"
-                      ;; "virtio_blk"
-                      ;; "virtio_net"
-                      ;; "virtio-rng"
-                      ))
+    (initrd-modules '("usb-storage"
+                      "uas"
+                      "usbhid"
+                      "hid-apple"
+                      "dm-crypt"
+                      "serpent_generic"
+                      "wp512"
+                      "nls_iso8859-1"
+                      "virtio_pci"
+                      "virtio_balloon"
+                      "virtio_blk"
+                      "virtio_net"
+                      "virtio-rng"))
 
     ;; Add the 'net.ifnames' argument to prevent network interfaces
     ;; from having really long names.  This can cause an issue with

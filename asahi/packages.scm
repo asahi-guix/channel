@@ -23,14 +23,14 @@
   (package
     (inherit linux-arm64-generic)
     (name name)
-    (version "6.1-3")
+    (version "6.2-rc2-1")
     (source
      (origin
        (method url-fetch)
        (uri (string-append "https://github.com/AsahiLinux/linux/archive/"
                            "refs/tags/asahi-" version ".tar.gz"))
        (sha256
-        (base32 "0fnaqih8k7ri6fqaghhh7lyfylf8nj559xqa7qs6fla6isxa0cnf"))))
+        (base32 "1r8aj2a0ss25pjf49ddfs1hq5vld1zi5pd3f8y2p2dgi2ji4mqag"))))
     (native-inputs
      `(("kconfig" ,config)
        ("zstd" ,zstd)

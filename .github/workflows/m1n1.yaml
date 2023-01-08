@@ -2,7 +2,7 @@ on: [push]
 name: m1n1
 jobs:
   build:
-    name: Asahi Installer
+    name: Asahi m1n1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

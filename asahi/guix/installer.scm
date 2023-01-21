@@ -47,7 +47,7 @@
   (operating-system
     (inherit installation-os)
     (kernel asahi-linux)
-    (firmware (list linux-firmware))
+    (firmware (list asahi-firmware))
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets '("/dev/sda"))))

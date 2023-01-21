@@ -46,7 +46,7 @@
 (define installation-os-nonfree
   (operating-system
     (inherit installation-os)
-    (kernel asahi-linux)
+    (kernel asahi-linux-edge)
     (firmware (list asahi-firmware))
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)

@@ -54,8 +54,8 @@ jobs:
         run: guix build -L . -v 5 asahi-firmware
       - name: Build asahi-fwextract
         run: guix build -L . -v 5 asahi-fwextract
-      - name: Build asahi-scripts
-        run: guix build -L . -v 5 asahi-scripts
+      # - name: Build asahi-scripts
+      #   run: guix build -L . -v 5 asahi-scripts
       # - name: Build asahi-m1n1
       #   run: guix build -L . -v 5 asahi-m1n1
       - name: Build lzfse

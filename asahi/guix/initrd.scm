@@ -1,4 +1,4 @@
-(define-module (asahi guix linux)
+(define-module (asahi guix initrd)
   #:export (asahi-initrd-modules
             asahi-initrd-modules-edge))
 

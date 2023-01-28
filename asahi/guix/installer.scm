@@ -1,5 +1,5 @@
 (define-module (asahi guix installer)
-  #:use-module (asahi guix linux)
+  #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages)
   #:use-module (asahi guix services)
   #:use-module (gnu bootloader grub)

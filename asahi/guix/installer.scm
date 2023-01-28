@@ -17,7 +17,6 @@
   #:use-module (gnu system)
   #:use-module (guix git-download)
   #:use-module (guix)
-  #:use-module (nongnu packages linux)
   #:export (asahi-installation-os))
 
 (define asahi-installation-os

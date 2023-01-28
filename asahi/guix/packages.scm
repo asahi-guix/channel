@@ -93,14 +93,14 @@ Air, and MacBook Pro.")))
 (define-public asahi-m1n1
   (package
     (name "asahi-m1n1")
-    (version "1.2.3")
+    (version "1.2.4")
     (source
      (origin
        (method url-fetch)
        (uri (string-append "https://github.com/AsahiLinux/m1n1/archive/v"
                            version ".tar.gz"))
        (sha256
-        (base32 "12jjx7cmrpmxhb9zhfawnmqi74gka7wb67mfyi91zldmp7dzmjqr"))))
+        (base32 "1pymb7ip77z8md1pxqm3micq2yns1v6b97mayaa2q1s8sinv00jg"))))
     (build-system gnu-build-system)
     (arguments
      `(#:phases

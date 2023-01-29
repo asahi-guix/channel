@@ -89,3 +89,11 @@ The Asahi Guix channel provides the following packages.
 | lzfse               | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/lzfse][lzfse]]               |
 | mesa-asahi-edge     | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/mesa-asahi-edge][mesa-asahi-edge]]     |
 | u-boot-apple-m1     | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/uboot-asahi][uboot-asahi]]         |
+
+** Thanks
+
+Some code and inspirations were taken from:
+
+- [[https://asahilinux.org/][Asahi Linux]]
+- [[https://github.com/daviwil][David Wilson]]
+- [[https://guix.gnu.org/][GNU Guix]]

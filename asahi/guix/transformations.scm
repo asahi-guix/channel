@@ -1,4 +1,5 @@
 (define-module (asahi guix transformations)
+  #:use-module (asahi guix packages jemalloc)
   #:use-module (guix transformations)
   #:export (replace-jemalloc))
 

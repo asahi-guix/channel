@@ -8,8 +8,8 @@
 
 (define asahi-operating-system-edge
   (operating-system
-    (host-name "asahi-edge")
     (inherit asahi-operating-system)
+    (host-name "asahi-edge")
     (kernel (replace-jemalloc asahi-linux-edge))
     (initrd-modules asahi-initrd-modules-edge)))
 

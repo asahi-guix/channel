@@ -71,7 +71,8 @@
     (source (origin
               (method url-fetch)
               (uri (string-append
-                    "https://github.com/povik/alsa-ucm-conf-asahi/archive/v" version ".tar.gz"))
+                    "https://github.com/AsahiLinux/alsa-ucm-conf-asahi/archive/v"
+                    version ".tar.gz"))
               (sha256
                (base32
                 "0rw16mk0msj518aq8prjhm0m9fm3x26zrxz7wnc2nxnw52vzbdaa"))))

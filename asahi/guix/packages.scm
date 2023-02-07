@@ -363,6 +363,26 @@ compression and decompression speed compared to deflate using zlib")
        ("wayland-protocols" ,wayland-protocols-next)
        ,@(package-inputs mesa)))))
 
+(define-public mesa-asahi-edge-headers
+  (package/inherit mesa-asahi-edge
+    (name "mesa-asahi-edge-headers")
+    (propagated-inputs '())
+    (inputs '())
+    (native-inputs '())
+    (outputs '("out"))
+    (arguments
+     '(#:phases
+       (modify-phases %standard-phases
+         (delete 'configure)
+         (delete 'build)
+         (delete 'check)
+         (replace 'install
+           (lambda* (#:key outputs #:allow-other-keys)
+             (copy-recursively "include" (string-append
+                                          (assoc-ref outputs "out")
+                                          "/include"))
+             #t)))))))
+
 (define-public asahi-scripts
   (package
     (name "asahi-scripts")

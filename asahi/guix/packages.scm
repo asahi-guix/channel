@@ -38,7 +38,7 @@
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/chadmed/asahi-audio.git")
+                    (url "https://github.com/chadmed/asahi-audio")
                     (commit version)))
               (file-name (git-file-name name version))
               (sha256

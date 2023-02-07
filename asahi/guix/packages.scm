@@ -60,7 +60,7 @@
                  (("/usr/share/pipewire/devices/apple")
                   (string-append out "/usr/share/pipewire/devices/apple")))))))))
     (home-page "https://github.com/chadmed/asahi-audio")
-    (synopsis "Linux audio configuration for Apple Silicon Macs.")
+    (synopsis "Linux audio configuration for Apple Silicon Macs")
     (description "Linux userspace audio configuration for Apple Silicon Macs.")
     (license license:expat)))
 

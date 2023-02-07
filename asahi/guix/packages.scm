@@ -11,6 +11,7 @@
   #:use-module (gnu packages imagemagick)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages llvm)
+  #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages python)
   #:use-module (gnu packages rust)
   #:use-module (gnu packages rust-apps)
@@ -382,6 +383,14 @@ compression and decompression speed compared to deflate using zlib")
                                           (assoc-ref outputs "out")
                                           "/include"))
              #t)))))))
+
+(define-public asahi-mesa-utils
+  (package/inherit mesa-utils
+    (name "asahi-mesa-utils")
+    (inputs
+     (list mesa-asahi-edge freeglut glew))
+    (native-inputs
+     (list mesa-asahi-edge-headers pkg-config))))
 
 (define-public asahi-scripts
   (package

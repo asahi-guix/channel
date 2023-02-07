@@ -4,7 +4,9 @@
   #:use-module (asahi guix transformations)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
+  #:use-module (gnu packages certs)
   #:use-module (gnu packages ssh)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages)
   #:use-module (gnu services base)
   #:use-module (gnu services networking)
@@ -17,7 +19,7 @@
   #:use-module (gnu system shadow)
   #:use-module (gnu system)
   #:use-module (guix packages)
-  #:export (asahi-operating-system))
+  #:export (asahi-operating-system %users))
 
 (define %kernel-arguments
   (append '("net.ifnames=0") %default-kernel-arguments))
@@ -37,10 +39,9 @@
         %base-file-systems))
 
 (define %packages
-  (append (map specification->package
-               '("e2fsprogs"
-                 "nss-certs"))
-          %base-packages))
+  (cons* e2fsprogs
+         nss-certs
+         %base-packages))
 
 (define %services
   (cons* (service dhcp-client-service-type)
@@ -57,7 +58,7 @@
          (supplementary-groups '("wheel" "audio" "video")))
         %base-user-accounts))
 
-(define asahi-operating-system
+(define-public asahi-operating-system
   (operating-system
     (host-name "asahi-base")
     (locale "en_US.utf8")

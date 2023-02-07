@@ -274,7 +274,7 @@ compression and decompression speed compared to deflate using zlib")
      (origin
        (method git-fetch)
        (uri (git-reference
-             (url "https://github.com/AsahiLinux/asahi-installer.git")
+             (url "https://github.com/AsahiLinux/asahi-installer")
              (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256

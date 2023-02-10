@@ -4,7 +4,7 @@
   #:use-module (gnu packages gl)
   #:use-module (gnu packages jemalloc)
   #:use-module (guix packages)
-  #:export (replace-jemalloc))
+  #:export (replace-jemalloc replace-mesa))
 
 (define replace-jemalloc
   (package-input-rewriting `((,jemalloc . ,next:jemalloc))))

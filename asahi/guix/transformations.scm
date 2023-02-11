@@ -5,9 +5,16 @@
   #:use-module (gnu packages jemalloc)
   #:use-module (gnu packages xdisorg)
   #:use-module (guix packages)
-  #:export (replace-jemalloc
+  #:export (replace-asahi
+            replace-jemalloc
             replace-libdrm
             replace-mesa))
+
+(define replace-asahi
+  (package-input-rewriting
+   `((,jemalloc . ,next:jemalloc)
+     (,libdrm . ,libdrm-2-4-114)
+     (,mesa . ,mesa-asahi-edge))))
 
 (define replace-jemalloc
   (package-input-rewriting `((,jemalloc . ,next:jemalloc))))

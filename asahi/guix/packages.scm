@@ -22,6 +22,7 @@
   #:use-module (guix build-system cmake)
   #:use-module (guix build-system copy)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system meson)
   #:use-module (guix build-system python)
   #:use-module (guix download)
   #:use-module (guix gexp)
@@ -365,28 +366,28 @@ compression and decompression speed compared to deflate using zlib")
        ,@(package-inputs mesa)))))
 
 (define-public mesa-asahi-edge-headers
-  (package/inherit mesa-asahi-edge
+  (package/inherit mesa-headers
     (name "mesa-asahi-edge-headers")
-    (propagated-inputs '())
-    (inputs '())
-    (native-inputs '())
-    (outputs '("out"))
-    (arguments
-     '(#:phases
-       (modify-phases %standard-phases
-         (delete 'configure)
-         (delete 'build)
-         (delete 'check)
-         (replace 'install
-           (lambda* (#:key outputs #:allow-other-keys)
-             (copy-recursively "include" (string-append
-                                          (assoc-ref outputs "out")
-                                          "/include"))
-             #t)))))))
+    (version "20221229")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append "https://gitlab.freedesktop.org/asahi/mesa/-/archive/"
+                           "asahi-" version "/mesa-asahi-" version ".tar.gz"))
+       (sha256
+        (base32 "1gg0msrx2d2mgif4jqljns8nqf29nazqpxcxmjaa50yf50n6n05p"))))))
 
 (define-public asahi-mesa-utils
   (package/inherit mesa-utils
     (name "asahi-mesa-utils")
+    (version "8.5.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append "https://archive.mesa3d.org/demos/" version
+                           "/mesa-demos-" version ".tar.bz2"))
+       (sha256 (base32 "1hdaf7pnh5h4f16pzrxqw3g5s37r5dkimsy46pv316phh05dz8nf"))))
+    (build-system meson-build-system)
     (inputs
      (list mesa-asahi-edge freeglut glew))
     (native-inputs

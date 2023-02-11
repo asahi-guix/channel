@@ -328,13 +328,37 @@ compression and decompression speed compared to deflate using zlib")
     (arguments
      (substitute-keyword-arguments (package-arguments mesa)
        ((#:configure-flags flags)
-        `(list "-Dgallium-drivers=asahi,swrast"
-               "-Dvulkan-drivers=swrast"))))
+        `(list "-Db_ndebug=true"
+               "-Db_lto=false"
+               "-Dplatforms=x11,wayland"
+               "-Dgallium-drivers=swrast,virgl,kmsro,asahi"
+               "-Dvulkan-drivers=swrast"
+               "-Dvulkan-layers=device-select,overlay"
+               "-Ddri3=enabled"
+               "-Degl=enabled"
+               "-Dgallium-extra-hud=true"
+               "-Dgallium-opencl=disabled"
+               "-Dgallium-rusticl=false"
+               "-Dgallium-va=disabled"
+               "-Dgallium-vdpau=disabled"
+               "-Dgallium-xa=disabled"
+               "-Dgbm=enabled"
+               "-Dgles1=disabled"
+               "-Dgles2=enabled"
+               ;; "-Dglvnd=true"
+               "-Dglx=dri"
+               "-Dlibunwind=disabled"
+               "-Dllvm=enabled"
+               "-Dlmsensors=enabled"
+               "-Dosmesa=true"
+               "-Dshared-glapi=enabled"
+               "-Dmicrosoft-clc=disabled"
+               "-Dvalgrind=enabled"))))
     (inputs
      `(("libdrm" ,libdrm-2-4-114)
        ("libglvnd" ,libglvnd)
        ("llvm" ,llvm-15)
-       ;; ("lm-sensors" ,lm-sensors)
+       ("lm-sensors" ,lm-sensors "lib")
        ("openssl" ,libressl)
        ("valgrind" ,valgrind)
        ("wayland-protocols" ,wayland-protocols-next)

@@ -331,12 +331,10 @@ compression and decompression speed compared to deflate using zlib")
        ((#:configure-flags flags)
         `(list "-Db_ndebug=true"
                "-Db_lto=false"
-               "-Dplatforms=x11,wayland"
-               "-Dgallium-drivers=swrast,virgl,kmsro,asahi"
-               "-Dvulkan-drivers=swrast"
-               "-Dvulkan-layers=device-select,overlay"
+               "-Ddri-drivers-path=lib/xorg/modules/drivers"
                "-Ddri3=enabled"
                "-Degl=enabled"
+               "-Dgallium-drivers=swrast,virgl,kmsro,asahi"
                "-Dgallium-extra-hud=true"
                "-Dgallium-opencl=disabled"
                "-Dgallium-rusticl=false"
@@ -346,15 +344,17 @@ compression and decompression speed compared to deflate using zlib")
                "-Dgbm=enabled"
                "-Dgles1=disabled"
                "-Dgles2=enabled"
-               ;; "-Dglvnd=true"
                "-Dglx=dri"
                "-Dlibunwind=disabled"
                "-Dllvm=enabled"
                "-Dlmsensors=enabled"
-               "-Dosmesa=true"
-               "-Dshared-glapi=enabled"
                "-Dmicrosoft-clc=disabled"
-               "-Dvalgrind=enabled"))))
+               "-Dosmesa=true"
+               "-Dplatforms=x11,wayland"
+               "-Dshared-glapi=enabled"
+               "-Dvalgrind=enabled"
+               "-Dvulkan-drivers=swrast"
+               "-Dvulkan-layers=device-select,overlay"))))
     (inputs
      `(("libdrm" ,libdrm-2-4-114)
        ("libglvnd" ,libglvnd)

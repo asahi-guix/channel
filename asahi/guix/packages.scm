@@ -331,7 +331,6 @@ compression and decompression speed compared to deflate using zlib")
        ((#:configure-flags flags)
         `(list "-Db_ndebug=true"
                "-Db_lto=false"
-               "-Ddri-drivers-path=lib/xorg/modules/drivers"
                "-Ddri3=enabled"
                "-Degl=enabled"
                "-Dgallium-drivers=swrast,virgl,kmsro,asahi"

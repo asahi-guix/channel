@@ -353,7 +353,7 @@ compression and decompression speed compared to deflate using zlib")
                "-Dshared-glapi=enabled"
                "-Dvalgrind=enabled"
                "-Dvulkan-drivers=swrast"
-               "-Dvulkan-layers=device-select,overlay"))))
+               "-Dvulkan-layers="))))
     (inputs
      `(("libdrm" ,libdrm-2-4-114)
        ("libglvnd" ,libglvnd)

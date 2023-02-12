@@ -181,7 +181,7 @@ library, only use by rust-analyzer, make rust-analyzer out of the box."))))
      (origin
        (method url-fetch)
        (uri (string-append "https://github.com/AsahiLinux/linux/archive/"
-                           "refs/tags/asahi-" version ".tar.gz"))
+                           "asahi-" version ".tar.gz"))
        (sha256
         (base32 "0bk4grzcizk48hhalyyaa4alk5069z102vx5ddw12jfqzsrdfccn"))))
     (arguments

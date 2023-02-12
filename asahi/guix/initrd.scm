@@ -15,7 +15,8 @@
         "virtio_blk"
         "virtio_net"
         "virtio_pci"
-        "wp512"))
+        "wp512"
+        "xhci-plat-hcd"))
 
 (define asahi-initrd-modules
   (cons*

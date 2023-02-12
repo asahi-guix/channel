@@ -56,6 +56,7 @@
 
 (define asahi-initrd-modules-edge
   (cons*
+   "asahi"
    ;; For NVMe & SMC
    "apple-mailbox"
    ;; For NVMe

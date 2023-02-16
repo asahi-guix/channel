@@ -1,6 +1,7 @@
 (define-module (asahi guix udev)
   #:use-module (gnu services base)
-  #:export (%udev-backlight-brightness-rule
+  #:export (%asahi-udev-rules
+            %udev-backlight-brightness-rule
             %udev-kbd-backlight-brightness-rule))
 
 (define %udev-backlight-brightness-rule
@@ -22,3 +23,7 @@
     "\n"
     "ACTION==\"add\", SUBSYSTEM==\"leds\", "
     "RUN+=\"/run/current-system/profile/bin/chmod g+w /sys/class/leds/kbd_backlight/brightness\"")))
+
+(define %asahi-udev-rules
+  (list %udev-backlight-brightness-rule
+        %udev-kbd-backlight-brightness-rule))

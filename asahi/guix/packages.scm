@@ -1,6 +1,6 @@
 (define-module (asahi guix packages)
+  #:use-module ((asahi guix packages jemalloc) #:prefix jemalloc-next:)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (asahi guix packages jemalloc)
   #:use-module (gnu packages bootloaders)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages cpio)
@@ -9,6 +9,7 @@
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages imagemagick)
+  #:use-module (gnu packages jemalloc)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages pkg-config)
@@ -32,6 +33,9 @@
   #:use-module (guix utils)
   #:use-module (ice-9 match)
   #:use-module (srfi srfi-1))
+
+(define replace-jemalloc
+  (package-input-rewriting `((,jemalloc . ,jemalloc-next:jemalloc))))
 
 (define-public asahi-audio
   (package
@@ -200,8 +204,8 @@ library, only use by rust-analyzer, make rust-analyzer out of the box."))))
        ("kconfig" ,config)
        ("llvm" ,llvm)
        ("python" ,python)
-       ("rust" ,(@@ (gnu packages rust) rust-1.62))
-       ("rust-bindgen-cli" ,rust-bindgen-cli)
+       ("rust" ,(replace-jemalloc (@@ (gnu packages rust) rust-1.62)))
+       ("rust-bindgen-cli" ,(replace-jemalloc rust-bindgen-cli))
        ("rust-src" ,rust-src-1.62)
        ("zstd" ,zstd)
        ,@(alist-delete "kconfig" (package-native-inputs linux-libre-arm64-generic))))

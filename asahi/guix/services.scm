@@ -4,11 +4,15 @@
   #:use-module (gnu services base)
   #:use-module (guix gexp)
   #:export (%channels-service
-            %udev-rules-service))
+            %udev-backlight-service
+            %udev-kbd-backlight-service))
 
 (define %channels-service
   (simple-service 'asahi-channels-file etc-service-type
                   (list `("channels.scm" ,(local-file "channels.scm")))))
 
-(define %udev-rules-service
-  (udev-rules-service 'asahi-udev-rules %asahi-udev-rules))
+(define %udev-backlight-service
+  (udev-rules-service 'backlight %udev-backlight-rule))
+
+(define %udev-kbd-backlight-service
+  (udev-rules-service 'kbd-backlight %udev-kbd-backlight-rule))

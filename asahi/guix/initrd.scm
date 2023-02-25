@@ -10,11 +10,6 @@
         "uas"
         "usb-storage"
         "usbhid"
-        "virtio-rng"
-        "virtio_balloon"
-        "virtio_blk"
-        "virtio_net"
-        "virtio_pci"
         "wp512"
         "xhci-plat-hcd"))
 
@@ -56,7 +51,6 @@
 
 (define asahi-initrd-modules-edge
   (cons*
-   "asahi"
    ;; For NVMe & SMC
    "apple-mailbox"
    ;; For NVMe

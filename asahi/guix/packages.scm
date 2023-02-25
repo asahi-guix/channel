@@ -177,43 +177,48 @@ automatically generate Rust FFI bindings to C and C++ libraries.")
 library, only use by rust-analyzer, make rust-analyzer out of the box."))))
 
 (define (make-asahi-linux name config)
-  (package
-    (inherit linux-libre-arm64-generic)
-    (name name)
-    (version "6.2-rc3-6")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (string-append "https://github.com/AsahiLinux/linux/archive/"
-                           "asahi-" version ".tar.gz"))
-       (sha256
-        (base32 "0bk4grzcizk48hhalyyaa4alk5069z102vx5ddw12jfqzsrdfccn"))))
-    (arguments
-     (substitute-keyword-arguments (package-arguments linux-libre-arm64-generic)
-       ((#:phases phases '%standard-phases)
-        #~(modify-phases #$phases
-            (add-before 'configure 'configure-rust
-              (lambda* (#:key inputs #:allow-other-keys)
-                (setenv "LIBCLANG_PATH"
-                        (string-append (assoc-ref inputs "clang") "/lib"))
-                (setenv "RUST_LIB_SRC"
-                        (string-append (assoc-ref inputs "rust-src")
-                                       "/lib/rustlib/src/rust/library"))))))))
-    (native-inputs
-     `(("clang" ,clang)
-       ("kconfig" ,config)
-       ("llvm" ,llvm)
-       ("python" ,python)
-       ("rust" ,(replace-jemalloc (@@ (gnu packages rust) rust-1.62)))
-       ("rust-bindgen-cli" ,(replace-jemalloc rust-bindgen-cli))
-       ("rust-src" ,rust-src-1.62)
-       ("zstd" ,zstd)
-       ,@(alist-delete "kconfig" (package-native-inputs linux-libre-arm64-generic))))
-    (home-page "https://asahilinux.org")
-    (synopsis "Linux on Apple Silicon")
-    (description "Asahi Linux is a project and community with the goal of porting Linux
+  (let* ((version "6.2-rc3-6")
+         (base (customize-linux
+                #:linux linux-libre-arm64-generic
+                #:name name
+                #:source (origin
+                           (method url-fetch)
+                           (uri (string-append "https://github.com/AsahiLinux/linux/archive/"
+                                               "asahi-" version ".tar.gz"))
+                           (sha256
+                            (base32 "0bk4grzcizk48hhalyyaa4alk5069z102vx5ddw12jfqzsrdfccn"))))))
+    (package
+      (inherit base)
+      (version version)
+      (arguments
+       (substitute-keyword-arguments (package-arguments base)
+         ((#:phases phases '%standard-phases)
+          #~(modify-phases #$phases
+              (add-before 'configure 'configure-rust
+                (lambda* (#:key inputs #:allow-other-keys)
+                  (setenv "LIBCLANG_PATH"
+                          (string-append (assoc-ref inputs "clang") "/lib"))
+                  (setenv "RUST_LIB_SRC"
+                          (string-append (assoc-ref inputs "rust-src")
+                                         "/lib/rustlib/src/rust/library"))))
+              (replace 'configure
+                (lambda* (#:key inputs #:allow-other-keys)
+                  (copy-file #$config ".config")
+                  (chmod ".config" #o644)))))))
+      (native-inputs
+       `(("clang" ,clang)
+         ("llvm" ,llvm)
+         ("python" ,python)
+         ("rust" ,(replace-jemalloc (@@ (gnu packages rust) rust-1.62)))
+         ("rust-bindgen-cli" ,(replace-jemalloc rust-bindgen-cli))
+         ("rust-src" ,rust-src-1.62)
+         ("zstd" ,zstd)
+         ,@(package-native-inputs base)))
+      (home-page "https://asahilinux.org")
+      (synopsis "Linux on Apple Silicon")
+      (description "Asahi Linux is a project and community with the goal of porting Linux
 to Apple Silicon Macs, starting with the 2020 M1 Mac Mini, MacBook
-Air, and MacBook Pro.")))
+Air, and MacBook Pro."))))
 
 (define-public asahi-linux
   (make-asahi-linux "asahi-linux" (local-file "kernel.config")))

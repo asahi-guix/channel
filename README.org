@@ -39,7 +39,7 @@ Build the Guix installer disk image with the Asahi =edge= kernel.
 Write the installer disk image to the USB stick at =/dev/sda=.
 
 #+begin_src sh :results verbatim
-  sudo dd if=/gnu/store/mddmv1mrwln08q3nl5sg7czxd06jws0p-disk-image of=/dev/sda bs=4M status=progress oflag=sync
+  sudo dd if=/gnu/store/55x66d4j8c7gygffqx1hm4vam7ayq0jg-disk-image of=/dev/sda bs=4M status=progress oflag=sync
 #+end_src
 
 ** Firmware

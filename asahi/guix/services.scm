@@ -9,7 +9,7 @@
 
 (define %channels-service
   (simple-service 'asahi-channels-file etc-service-type
-                  (list `("channels.scm" ,(local-file "channels.scm")))))
+                  (list `("guix/channels.scm" ,(local-file "channels.scm")))))
 
 (define %udev-backlight-service
   (udev-rules-service 'backlight %udev-backlight-rule))

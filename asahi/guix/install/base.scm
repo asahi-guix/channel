@@ -2,7 +2,6 @@
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages)
   #:use-module (asahi guix services)
-  #:use-module (asahi guix transformations)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
   #:use-module (gnu packages bootloaders)
@@ -13,7 +12,7 @@
 (define asahi-installation-os
   (operating-system
     (inherit installation-os)
-    (kernel (replace-asahi asahi-linux))
+    (kernel asahi-linux)
     (firmware (list asahi-firmware))
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)

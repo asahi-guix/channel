@@ -7,7 +7,7 @@ Asahi Linux on GNU Guix
 
 ** Status
 
-Experimental
+💣 Experimental
 
 ** Installation
 
@@ -17,10 +17,10 @@ Manual installation of the Guix system from an Asahi Linux installation works.
 
 *** Guix Installer
 
-💣 The installation with the Guix system installer does not work at
-the moment. Grub boots into early Guile with keyboard available, but
-fails to find the system partitions. Seems to be an issue with USB,
-the =/dev/sd*= devices are missing.
+The Guix installation image can be build with Guix installed on a
+foreign system that has the firmware available at
+=/boot/efi/vendorfw/firmware.cpio=. The firmware is typically
+installed on the EFI system partion by the Asahi Linux installer.
 
 **** Installation via USB stick
 

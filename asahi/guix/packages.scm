@@ -306,10 +306,10 @@ compression and decompression speed compared to deflate using zlib")
                    (,(string-append (assoc-ref inputs "lzfse") "/lib"))))))))))
     (inputs (list lzfse))
     (home-page "https://github.com/AsahiLinux/asahi-installer")
-    (synopsis "Asahi Linux firmware tools")
-    (description "The Asahi Linux firmware tools transform the firmware archive provided
-by the Asahi Linux installer into a manifest and CPIO and TAR archives
-that are compatible with the Linux kernel.")
+    (synopsis "Asahi Linux firmware extractor")
+    (description "The Asahi Linux firmware extractor transform the firmware archive
+provided by the Asahi Linux installer into a manifest and CPIO and TAR
+archives that are compatible with the Linux kernel.")
     (license license:expat)))
 
 (define-public libdrm-2-4-114

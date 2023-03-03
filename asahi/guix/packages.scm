@@ -292,10 +292,24 @@ compression and decompression speed compared to deflate using zlib")
        (sha256
         (base32 "1kj9ycy3f34fzm9bnirlcw9zm2sgipwrqzphdg5k099rbjbc7zmj"))))
     (build-system python-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-after 'unpack 'remove-vendor
+           (lambda* (#:key outputs #:allow-other-keys)
+             (delete-file-recursively "vendor")))
+         (add-after 'install 'wrap-program
+           (lambda* (#:key inputs outputs #:allow-other-keys)
+             (let ((out (assoc-ref outputs "out")))
+               (wrap-program (string-append out "/bin/asahi-fwextract")
+                 `("LD_LIBRARY_PATH" ":" prefix
+                   (,(string-append (assoc-ref inputs "lzfse") "/lib"))))))))))
     (inputs (list lzfse))
     (home-page "https://github.com/AsahiLinux/asahi-installer")
-    (synopsis "Asahi Linux firmware extractor")
-    (description "The Asahi Linux firmware extraction tool")
+    (synopsis "Asahi Linux firmware tools")
+    (description "The Asahi Linux firmware tools transform the firmware archive provided
+by the Asahi Linux installer into a manifest and CPIO and TAR archives
+that are compatible with the Linux kernel.")
     (license license:expat)))
 
 (define-public libdrm-2-4-114

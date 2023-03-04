@@ -238,6 +238,7 @@ Air, and MacBook Pro."))))
        (sha256
         (base32 "1pymb7ip77z8md1pxqm3micq2yns1v6b97mayaa2q1s8sinv00jg"))))
     (build-system gnu-build-system)
+    (supported-systems (list "aarch64-linux"))
     (arguments
      `(#:phases
        (modify-phases %standard-phases

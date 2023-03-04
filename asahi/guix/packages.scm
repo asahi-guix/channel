@@ -472,6 +472,6 @@ archives that are compatible with the Linux kernel.")
          ((#:phases phases '%standard-phases)
           #~(modify-phases #$phases
               (delete 'disable-tools-libcrypto)))))
-      (inputs
+      (native-inputs
        `(("openssl" ,libressl)
-         ,@(package-inputs base))))))
+         ,@(package-native-inputs base))))))

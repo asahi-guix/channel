@@ -249,11 +249,11 @@ Air, and MacBook Pro."))))
            (lambda* (#:key outputs #:allow-other-keys)
              (let ((dir (string-append (assoc-ref outputs "out") "/usr/lib/asahi-boot/")))
                (mkdir-p dir)
-               (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin")))))
-         (delete 'check))))
+               (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin"))))))))
     (home-page "https://github.com/AsahiLinux/m1n1")
-    (synopsis "Experimentation playground for Apple Silicon")
-    (description "A bootloader and experimentation playground for Apple Silicon")
+    (synopsis "Boot loader and experimentation playground for Apple Silicon")
+    (description "m1n1 is the bootloader developed by the Asahi Linux project to bridge
+the Apple (XNU) boot ecosystem to the Linux boot ecosystem.")
     (license license:expat)))
 
 (define-public asahi-fwextract

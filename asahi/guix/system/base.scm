@@ -51,8 +51,8 @@
 
 (define %users
   (cons (user-account
-         (name "alice")
-         (comment "Bob's sister")
+         (name "guest")
+         (comment "Guest")
          (group "users")
          (supplementary-groups '("wheel" "audio" "video")))
         %base-user-accounts))

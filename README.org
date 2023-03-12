@@ -148,10 +148,11 @@ Finally, umount the EFI system partition and then the root partition.
 #+end_src
 
 Reboot into your new Guix system. If the /UEFI only environment/ is
-not your default boot container, you might need to boot into the MacOS
-recovery system and select it. To do so, start your device and hold
-down the power button until you see it is booting into the /startup
-options/.
+not your default boot container, you need to switch to the MacOS
+recovery system and boot it from there. You can do this, by starting
+your device and holding down the power button, until you see it is
+booting into the /MacOS startup options/. Once in the startup options,
+select the container you want to boot from.
 
 *** Guix Installer
 

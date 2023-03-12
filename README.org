@@ -136,9 +136,8 @@ Install the Guix system onto =/mnt=.
 #+end_src
 
 #+begin_quote
-💣 This used to work. It now fails with =grub-install: error: unknown
-filesystem=.  This might be caused by having too many or too large
-partitions.
+💣 This used to work. It now fails with =grub-install: error: unknown filesystem=.
+This might be caused by having too many or too large partitions.
 #+end_quote
 
 Finally, umount the EFI system partition and then the root partition.

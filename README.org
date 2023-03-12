@@ -46,7 +46,7 @@ Device              Start       End   Sectors   Size Type
 /dev/nvme0n1p2     128006  24542067  24414062  93.1G Apple APFS
 /dev/nvme0n1p3   24542068  25152371    610304   2.3G Apple APFS
 /dev/nvme0n1p4   25152372  25274483    122112   477M EFI System
-/dev/nvme0n1p5   25274484 195440499 170166016 649.1G Linux filesystem
+/dev/nvme0n1p5   25274484 195440499 170166016   100G Linux filesystem
 /dev/nvme0n1p6  195440500 196050803    610304   2.3G Apple APFS
 /dev/nvme0n1p7  196050804 196172915    122112   477M EFI System
 /dev/nvme0n1p11 487241816 488552524   1310709     5G unknown

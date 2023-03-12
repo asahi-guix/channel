@@ -78,7 +78,7 @@ partitions of the /UEFI only environment/.
 
 **** System configuration
 
-First, lookup the filesystem =UUID= of the EFI system partition
+First, lookup the filesystem UUID of the EFI system partition
 =/dev/nvme0n1p7= from the /UEFI only environment/.
 
 #+begin_src sh :exports both :results verbatim
@@ -90,9 +90,9 @@ First, lookup the filesystem =UUID= of the EFI system partition
 9FBE-130E
 #+end_example
 
-Here the filesystem UUID is =9FBE-130E=. Create a file called
-=asahi-guix.scm= and instantiate a Guix operating system record,
-configured with the EFI filesystem UUID.
+Create a file called =asahi-guix.scm= and instantiate a Guix operating
+system record, configured with the filesystem UUID of your EFI system
+partition. In this example, the filesystem UUID is =9FBE-130E=.
 
 #+begin_example scheme
 (use-modules (asahi guix system base))

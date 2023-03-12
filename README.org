@@ -82,17 +82,17 @@ First, lookup the filesystem =UUID= of the EFI system partition
 =/dev/nvme0n1p7= from the /UEFI only environment/.
 
 #+begin_src sh :exports both :results verbatim
-  sudo blkid | grep /dev/nvme0n1p7
+  sudo blkid | grep /dev/nvme0n1p7 | sed -n 's/.* UUID="\([^"]*\)".*/\1/p'
 #+end_src
 
 #+RESULTS:
 #+begin_example
-/dev/nvme0n1p7: LABEL_FATBOOT="EFI - UEFI" LABEL="EFI - UEFI" UUID="9FBE-130E" BLOCK_SIZE="4096" TYPE="vfat" PARTUUID="376f4ff5-3a94-4151-baef-59466fb35801"
+9FBE-130E
 #+end_example
 
-In this example the filesystem =UUID= is =9FBE-130E=. Next, create a
-file called =asahi-guix.scm= and instantiate a Guix operating system
-record, configured with the EFI filesystem UUID.
+Here the filesystem UUID is =9FBE-130E=. Create a file called
+=asahi-guix.scm= and instantiate a Guix operating system record,
+configured with the EFI filesystem UUID.
 
 #+begin_example scheme
 (use-modules (asahi guix system base))

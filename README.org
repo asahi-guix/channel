@@ -11,35 +11,175 @@ Asahi Linux on GNU Guix
 
 ** Installation
 
-*** Manual
+To install a Guix system on Apple Silicon we need /Asahi Linux
+Minimal/ or /Asahi Linux Desktop/ installed on your device, as well as
+an /UEFI only environment/. At the moment the Asahi Linux installation
+is needed to bootstrap the Guix system/installer with the required
+firmware. The Guix system itself will be installed into the /UEFI only
+environment/.
 
-Manual installation of the Guix system from an Asahi Linux installation works.
+*** System Preparation
+
+Please follow the Asahi Linux [[https://asahilinux.org/2022/03/asahi-linux-alpha-release/][installation guide]] and install either
+the /Asahi Linux Minimal/ or /Asahi Linux Desktop/ system on your
+device, as well as an /UEFI only environment/.
+
+Once Asahi Linux and the UEFI only environment are installed, your
+disk should look similar to this:
+
+#+begin_src sh :exports both :dir /sudo:: :results verbatim
+  sudo fdisk --list /dev/nvme0n1
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Disk /dev/nvme0n1: 1.82 TiB, 2001111162880 bytes, 488552530 sectors
+Disk model: APPLE SSD APXXXXX
+Units: sectors of 1 * 4096 = 4096 bytes
+Sector size (logical/physical): 4096 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+
+Device              Start       End   Sectors   Size Type
+/dev/nvme0n1p1          6    128005    128000   500M unknown
+/dev/nvme0n1p2     128006  24542067  24414062  93.1G Apple APFS
+/dev/nvme0n1p3   24542068  25152371    610304   2.3G Apple APFS
+/dev/nvme0n1p4   25152372  25274483    122112   477M EFI System
+/dev/nvme0n1p5   25274484 195440499 170166016 649.1G Linux filesystem
+/dev/nvme0n1p6  195440500 196050803    610304   2.3G Apple APFS
+/dev/nvme0n1p7  196050804 196172915    122112   477M EFI System
+/dev/nvme0n1p11 487241816 488552524   1310709     5G unknown
+
+Partition table entries are not in disk order.
+#+end_example
+
+The =/dev/nvme0n1p3= partition is the [[https://en.wikipedia.org/wiki/Apple_File_System][APFS]] container of the /Asahi
+Linux installation/, =/dev/nvme0n1p4= its EFI system partition, and
+=/dev/nvme0n1p5= the root partition.
+
+Next comes =/dev/nvme0n1p6=, which is the APFS container of the /UEFI
+only environment/, along with its EFI system partition
+=/dev/nvme0n1p7=. The root partition of the Guix system itself will be
+created during the manual installation or via the installer.
+
+Finally there is the =/dev/nvme0n1p11= partition, which contains the
+Apple recovery system, which should *not* be touched or moved around.
+
+Boot into Asahi Linux, [[https://guix.gnu.org/manual/en/html_node/Installation.html][install]] the Guix package manager and follow
+either the manual installation (recommended) or the Guix Installer
+section of this guide.
+
+*** Manual Installation
+
+The manual installation uses the =guix system init= command to install
+a Guix system from the Asahi Linux installation onto the mounted
+partitions of the /UEFI only environment/.
+
+**** System configuration
+
+First, lookup the filesystem =UUID= of the EFI system partition
+=/dev/nvme0n1p7= from the /UEFI only environment/.
+
+#+begin_src sh :exports both :results verbatim
+  sudo blkid | grep /dev/nvme0n1p7
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/dev/nvme0n1p7: LABEL_FATBOOT="EFI - UEFI" LABEL="EFI - UEFI" UUID="9FBE-130E" BLOCK_SIZE="4096" TYPE="vfat" PARTUUID="376f4ff5-3a94-4151-baef-59466fb35801"
+#+end_example
+
+In this example the filesystem =UUID= is =9FBE-130E=. Next, create a
+file called =asahi-guix.scm= and instantiate a Guix operating system
+record, configured with the EFI filesystem UUID.
+
+#+begin_example scheme
+(use-modules (asahi guix system base))
+(make-operating-system #:efi-uuid "9FBE-130E")
+#+end_example
+
+Build the Guix operating system.
+
+#+begin_src sh
+  guix system build --load=path=. asahi-guix.scm
+#+end_src
+
+If the operating system builds successfully, we can proceed by
+installing the operating system onto the hard drive.
+
+**** System installation
+
+Create a new Linux root partition for the Guix system with =cfdisk=,
+format it with the EXT4 filesystem and label it as
+=asahi-guix-root=. From now on we assume this new root partition is
+created as =/dev/nvme0n1p8=.
+
+#+begin_src sh :results none
+  sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p8
+#+end_src
+
+Mount the new root partition =/dev/nvme0n1p8= under =/mnt=, and the
+EFI system partition =/dev/nvme0n1p7= under =/mnt/boot/efi=.
+
+#+begin_src sh :results none
+  sudo mount /dev/nvme0n1p8 /mnt
+  sudo mkdir --parents /mnt/boot/efi
+  sudo mount /dev/nvme0n1p7 /mnt/boot/efi
+#+end_src
+
+Install the Guix system onto =/mnt=.
+
+#+begin_src sh :results none
+  sudo guix time-machine --channels=asahi/guix/channels.scm -- \
+       system init --load-path=. --system=aarch64-linux asahi-guix.scm /mnt
+#+end_src
+
+💣 This used to work. It now fails with =grub-install: error: unknown
+filesystem=. This might be cause by having too many or too large
+partitions.
+
+Finally, umount the EFI system partition and then the root partition.
+
+#+begin_src sh :results none
+  sudo umount /mnt/boot/efi
+  sudo umount /mnt
+#+end_src
+
+Reboot into your new Guix system. If the /UEFI only environment/ is
+not your default boot container, you might need to boot into the MacOS
+recovery system and select it. To do so, start your device and hold
+down the power button until you see it is booting into the /startup
+options/.
 
 *** Guix Installer
 
 The Guix installation image can be build with Guix installed on a
 foreign system that has the firmware available at
 =/boot/efi/vendorfw/firmware.cpio=. The firmware is typically
-installed on the EFI system partion by the Asahi Linux installer.
+installed on the EFI system partition by the Asahi Linux installer.
 
 **** Installation via USB stick
 
 Build the Guix installer disk image with the Asahi =stable= kernel.
 
 #+begin_src sh :results verbatim
-  guix time-machine -C asahi/guix/channels.scm -- system image -L . --image-type=efi-raw asahi/guix/install/base.scm
+  guix time-machine --channels=asahi/guix/channels.scm -- \
+       system image --load=path=. --image-type=efi-raw asahi/guix/install/base.scm
 #+end_src
 
 Build the Guix installer disk image with the Asahi =edge= kernel.
 
 #+begin_src sh :results verbatim
-  guix time-machine -C asahi/guix/channels.scm -- system image -L . --image-type=efi-raw asahi/guix/install/edge.scm
+  guix time-machine --channels=asahi/guix/channels.scm -- \
+       system image --load=path=. --image-type=efi-raw asahi/guix/install/edge.scm
 #+end_src
 
 Write the installer disk image to the USB stick at =/dev/sda=.
 
 #+begin_src sh :results verbatim
-  sudo dd if=/gnu/store/55x66d4j8c7gygffqx1hm4vam7ayq0jg-disk-image of=/dev/sda bs=4M status=progress oflag=sync
+  sudo dd if=/gnu/store/55x66d4j8c7gygffqx1hm4vam7ayq0jg-disk-image \
+       of=/dev/sda bs=4M status=progress oflag=sync
 #+end_src
 
 ** Firmware

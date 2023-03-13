@@ -194,26 +194,22 @@ library, only use by rust-analyzer, make rust-analyzer out of the box."))))
        (substitute-keyword-arguments (package-arguments base)
          ((#:phases phases '%standard-phases)
           #~(modify-phases #$phases
-              (add-before 'configure 'configure-rust
-                (lambda* (#:key inputs #:allow-other-keys)
-                  (setenv "LIBCLANG_PATH"
-                          (string-append (assoc-ref inputs "clang") "/lib"))
-                  (setenv "RUST_LIB_SRC"
-                          (string-append (assoc-ref inputs "rust-src")
-                                         "/lib/rustlib/src/rust/library"))))
+              (add-before 'configure 'configure-libclang
+                (lambda* (#:key native-inputs #:allow-other-keys)
+                  (let ((clang (assoc-ref native-inputs "clang")))
+                    (when clang
+                      (setenv "LIBCLANG_PATH" (string-append clang "/lib"))))))
+              (add-before 'configure 'configure-rust-src
+                (lambda* (#:key native-inputs #:allow-other-keys)
+                  (let ((rust-src (assoc-ref native-inputs "rust-src")))
+                    (when rust-src
+                      (setenv "RUST_LIB_SRC"
+                              (string-append rust-src
+                                             "/lib/rustlib/src/rust/library"))))))
               (replace 'configure
                 (lambda* (#:key inputs #:allow-other-keys)
                   (copy-file #$config ".config")
                   (chmod ".config" #o644)))))))
-      (native-inputs
-       `(("clang" ,clang)
-         ("llvm" ,llvm)
-         ("python" ,python)
-         ("rust" ,(replace-jemalloc (@@ (gnu packages rust) rust-1.62)))
-         ("rust-bindgen-cli" ,(replace-jemalloc rust-bindgen-cli))
-         ("rust-src" ,rust-src-1.62)
-         ("zstd" ,zstd)
-         ,@(package-native-inputs base)))
       (home-page "https://asahilinux.org")
       (synopsis "Linux on Apple Silicon")
       (description "Asahi Linux is a project and community with the goal of porting Linux
@@ -224,7 +220,17 @@ Air, and MacBook Pro."))))
   (make-asahi-linux "asahi-linux" (local-file "kernel.config")))
 
 (define-public asahi-linux-edge
-  (make-asahi-linux "asahi-linux-edge" (local-file "kernel.edge.config")))
+  (let ((base (make-asahi-linux "asahi-linux-edge" (local-file "kernel.edge.config"))))
+    (package/inherit base
+      (native-inputs
+       `(("clang" ,clang)
+         ("llvm" ,llvm)
+         ("python" ,python)
+         ("rust" ,(replace-jemalloc (@@ (gnu packages rust) rust-1.62)))
+         ("rust-bindgen-cli" ,(replace-jemalloc rust-bindgen-cli))
+         ("rust-src" ,rust-src-1.62)
+         ("zstd" ,zstd)
+         ,@(package-native-inputs base))))))
 
 (define-public asahi-m1n1
   (package

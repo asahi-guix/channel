@@ -14,7 +14,7 @@
   (package-input-rewriting
    `((,jemalloc . ,next:jemalloc)
      (,libdrm . ,libdrm-2-4-114)
-     (,mesa . ,mesa-asahi-edge))))
+     (,mesa . ,asahi-mesa))))
 
 (define replace-jemalloc
   (package-input-rewriting `((,jemalloc . ,next:jemalloc))))
@@ -23,4 +23,4 @@
   (package-input-rewriting `((,libdrm . ,libdrm-2-4-114))))
 
 (define replace-mesa
-  (package-input-rewriting `((,mesa . ,mesa-asahi-edge))))
+  (package-input-rewriting `((,mesa . ,asahi-mesa))))

@@ -327,67 +327,62 @@ archives that are compatible with the Linux kernel.")
      `(("wayland-protocols" ,wayland-protocols-next)
        ,@(package-inputs libdrm)))))
 
-(define-public mesa-asahi-edge
-  (package
-    (inherit mesa)
-    (name "mesa-asahi-edge")
-    (version "20221229")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (string-append "https://gitlab.freedesktop.org/asahi/mesa/-/archive/"
-                           "asahi-" version "/mesa-asahi-" version ".tar.gz"))
-       (sha256
-        (base32 "1gg0msrx2d2mgif4jqljns8nqf29nazqpxcxmjaa50yf50n6n05p"))))
-    (arguments
-     (substitute-keyword-arguments (package-arguments mesa)
-       ((#:configure-flags flags)
-        `(list "-Db_ndebug=true"
-               "-Db_lto=false"
-               "-Ddri3=enabled"
-               "-Degl=enabled"
-               "-Dgallium-drivers=swrast,virgl,kmsro,asahi"
-               "-Dgallium-extra-hud=true"
-               "-Dgallium-opencl=disabled"
-               "-Dgallium-rusticl=false"
-               "-Dgallium-va=disabled"
-               "-Dgallium-vdpau=disabled"
-               "-Dgallium-xa=disabled"
-               "-Dgbm=enabled"
-               "-Dgles1=disabled"
-               "-Dgles2=enabled"
-               "-Dglx=dri"
-               "-Dlibunwind=disabled"
-               "-Dllvm=enabled"
-               "-Dlmsensors=enabled"
-               "-Dmicrosoft-clc=disabled"
-               "-Dosmesa=true"
-               "-Dplatforms=x11,wayland"
-               "-Dshared-glapi=enabled"
-               "-Dvalgrind=enabled"
-               "-Dvulkan-drivers=swrast"
-               "-Dvulkan-layers="))))
-    (inputs
-     `(("libdrm" ,libdrm-2-4-114)
-       ("libglvnd" ,libglvnd)
-       ("llvm" ,llvm-15)
-       ("lm-sensors" ,lm-sensors "lib")
-       ("openssl" ,libressl)
-       ("valgrind" ,valgrind)
-       ("wayland-protocols" ,wayland-protocols-next)
-       ,@(package-inputs mesa)))))
+(define-public asahi-mesa
+  (let ((commit "0a12b60a6b4363315ca3789e7e289240704a26da"))
+    (package/inherit mesa
+      (name "asahi-mesa")
+      (version (git-version "20221229" "0" commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://gitlab.freedesktop.org/asahi/mesa")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "0yjn55qy4890gi1s3dhzdhqqxrms4fzcibqr84a3vcc53ggiywmb"))))
+      (arguments
+       (substitute-keyword-arguments (package-arguments mesa)
+         ((#:configure-flags flags)
+          `(list "-Db_ndebug=true"
+                 "-Db_lto=false"
+                 "-Ddri3=enabled"
+                 "-Degl=enabled"
+                 "-Dgallium-drivers=swrast,virgl,kmsro,asahi"
+                 "-Dgallium-extra-hud=true"
+                 "-Dgallium-opencl=disabled"
+                 "-Dgallium-rusticl=false"
+                 "-Dgallium-va=disabled"
+                 "-Dgallium-vdpau=disabled"
+                 "-Dgallium-xa=disabled"
+                 "-Dgbm=enabled"
+                 "-Dgles1=disabled"
+                 "-Dgles2=enabled"
+                 "-Dglx=dri"
+                 "-Dlibunwind=disabled"
+                 "-Dllvm=enabled"
+                 "-Dlmsensors=enabled"
+                 "-Dmicrosoft-clc=disabled"
+                 "-Dosmesa=true"
+                 "-Dplatforms=x11,wayland"
+                 "-Dshared-glapi=enabled"
+                 "-Dvalgrind=enabled"
+                 "-Dvulkan-drivers=swrast"
+                 "-Dvulkan-layers="))))
+      (inputs
+       (modify-inputs (package-inputs mesa)
+         (prepend `(,lm-sensors "lib") libglvnd libressl valgrind)
+         (replace "llvm" llvm-15)
+         (replace "wayland-protocols" wayland-protocols-next)))
+      (propagated-inputs
+       (modify-inputs (package-propagated-inputs mesa)
+         (replace "libdrm" libdrm-2-4-114))))))
 
-(define-public mesa-asahi-edge-headers
+(define-public asahi-mesa-headers
   (package/inherit mesa-headers
-    (name "mesa-asahi-edge-headers")
-    (version "20221229")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (string-append "https://gitlab.freedesktop.org/asahi/mesa/-/archive/"
-                           "asahi-" version "/mesa-asahi-" version ".tar.gz"))
-       (sha256
-        (base32 "1gg0msrx2d2mgif4jqljns8nqf29nazqpxcxmjaa50yf50n6n05p"))))))
+    (name "asahi-mesa-headers")
+    (version (package-version asahi-mesa))
+    (source (package-source asahi-mesa))))
 
 (define-public asahi-mesa-utils
   (package/inherit mesa-utils
@@ -401,9 +396,8 @@ archives that are compatible with the Linux kernel.")
        (sha256 (base32 "1hdaf7pnh5h4f16pzrxqw3g5s37r5dkimsy46pv316phh05dz8nf"))))
     (build-system meson-build-system)
     (inputs
-     (list mesa-asahi-edge freeglut glew))
-    (native-inputs
-     (list mesa-asahi-edge-headers pkg-config))))
+     (modify-inputs (package-inputs mesa-utils)
+       (replace "mesa" asahi-mesa)))))
 
 (define-public asahi-scripts
   (package

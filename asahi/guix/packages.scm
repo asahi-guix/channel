@@ -467,23 +467,24 @@ archives that are compatible with the Linux kernel.")
     (license license:expat)))
 
 (define-public u-boot-apple-m1
-  (let ((base (make-u-boot-package "apple_m1" "aarch64-linux-gnu")))
-    (package
-      (inherit base)
-      (version "2022.10-1")
+  (let ((base (make-u-boot-package "apple_m1" "aarch64-linux-gnu"))
+        (commit "54409548c3aa8cf4820f1bda69a26bb603a0a5a4"))
+    (package/inherit base
+      (version (git-version "2022.10-1" "0" commit))
       (source
        (origin
-         (method url-fetch)
-         (uri (string-append
-               "https://github.com/AsahiLinux/u-boot/archive/asahi-v"
-               version ".tar.gz"))
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/AsahiLinux/u-boot")
+               (commit commit)))
+         (file-name (git-file-name (package-name base) version))
          (sha256
-          (base32 "02x90h89p1kv3d29mdhq22a88m68w4m1cwb45gj0rr85i2z8mqjq"))))
+          (base32 "1m1w6ajzsfpb59abncz3sa9b1waqjsnh2vm7js2n22xiw4km7nzx"))))
       (arguments
        (substitute-keyword-arguments (package-arguments base)
          ((#:phases phases '%standard-phases)
           #~(modify-phases #$phases
               (delete 'disable-tools-libcrypto)))))
       (native-inputs
-       `(("openssl" ,libressl)
-         ,@(package-native-inputs base))))))
+       (modify-inputs (package-native-inputs base)
+         (prepend libressl))))))

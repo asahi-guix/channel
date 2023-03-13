@@ -1,6 +1,7 @@
 (define-module (asahi guix packages)
   #:use-module ((asahi guix packages jemalloc) #:prefix jemalloc-next:)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (gnu packages bash)
   #:use-module (gnu packages bootloaders)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages cpio)
@@ -294,7 +295,7 @@ the Apple (XNU) boot ecosystem to the Linux boot ecosystem.")
                (wrap-program (string-append out "/bin/asahi-fwextract")
                  `("LD_LIBRARY_PATH" ":" prefix
                    (,(string-append (assoc-ref inputs "lzfse") "/lib"))))))))))
-    (inputs (list lzfse))
+    (inputs (list bash-minimal lzfse))
     (home-page "https://github.com/AsahiLinux/asahi-installer")
     (synopsis "Asahi Linux firmware extractor")
     (description "The Asahi Linux firmware extractor transform the firmware archive

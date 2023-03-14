@@ -490,6 +490,3 @@ archives that are compatible with the Linux kernel.")
       (native-inputs
        (modify-inputs (package-native-inputs base)
          (prepend libressl))))))
-
-;; Deprecated
-(define-public mesa-asahi-edge asahi-mesa)

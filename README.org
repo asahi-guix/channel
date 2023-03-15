@@ -102,7 +102,7 @@ partition. In this example, the filesystem UUID is =9FBE-130E=.
 Build the Guix operating system.
 
 #+begin_src sh
-  guix system build --load=path=. asahi-guix.scm
+  guix system build --load-path=. asahi-guix.scm
 #+end_src
 
 If the operating system builds successfully, we can proceed by
@@ -167,14 +167,14 @@ Build the Guix installer disk image with the Asahi =stable= kernel.
 
 #+begin_src sh :results verbatim
   guix time-machine --channels=asahi/guix/channels.scm -- \
-       system image --load=path=. --image-type=efi-raw asahi/guix/install/base.scm
+       system image --load-path=. --image-type=efi-raw asahi/guix/install/base.scm
 #+end_src
 
 Build the Guix installer disk image with the Asahi =edge= kernel.
 
 #+begin_src sh :results verbatim
   guix time-machine --channels=asahi/guix/channels.scm -- \
-       system image --load=path=. --image-type=efi-raw asahi/guix/install/edge.scm
+       system image --load-path=. --image-type=efi-raw asahi/guix/install/edge.scm
 #+end_src
 
 Write the installer disk image to the USB stick at =/dev/sda=.

@@ -130,6 +130,9 @@ the local machine as source.  The Apple Silicon firmware is
 propriatary and can not be packaged.")
     (license license:expat)))
 
+(define rust-jemalloc-fix
+  (replace-jemalloc (@@ (gnu packages rust) rust-1.62)))
+
 (define-public rust-bindgen-cli
   (package
     (name "rust-bindgen-cli")
@@ -158,6 +161,9 @@ propriatary and can not be packaged.")
     (description "This package is the CLI to rust-bindgen and can be used to
 automatically generate Rust FFI bindings to C and C++ libraries.")
     (license license:bsd-3)))
+
+(define rust-bindgen-cli-jemalloc-fix
+  (replace-jemalloc rust-bindgen-cli))
 
 (define-public rust-src-1.62
   (hidden-package
@@ -196,13 +202,13 @@ library, only use by rust-analyzer, make rust-analyzer out of the box."))))
          ((#:phases phases '%standard-phases)
           #~(modify-phases #$phases
               (add-before 'configure 'configure-libclang
-                (lambda* (#:key native-inputs #:allow-other-keys)
-                  (let ((clang (assoc-ref native-inputs "clang")))
+                (lambda* (#:key inputs #:allow-other-keys)
+                  (let ((clang (assoc-ref inputs "clang")))
                     (when clang
                       (setenv "LIBCLANG_PATH" (string-append clang "/lib"))))))
               (add-before 'configure 'configure-rust-src
-                (lambda* (#:key native-inputs #:allow-other-keys)
-                  (let ((rust-src (assoc-ref native-inputs "rust-src")))
+                (lambda* (#:key inputs #:allow-other-keys)
+                  (let ((rust-src (assoc-ref inputs "rust-src")))
                     (when rust-src
                       (setenv "RUST_LIB_SRC"
                               (string-append rust-src
@@ -224,14 +230,14 @@ Air, and MacBook Pro."))))
   (let ((base (make-asahi-linux "asahi-linux-edge" (local-file "kernel.edge.config"))))
     (package/inherit base
       (native-inputs
-       `(("clang" ,clang)
-         ("llvm" ,llvm)
-         ("python" ,python)
-         ("rust" ,(replace-jemalloc (@@ (gnu packages rust) rust-1.62)))
-         ("rust-bindgen-cli" ,(replace-jemalloc rust-bindgen-cli))
-         ("rust-src" ,rust-src-1.62)
-         ("zstd" ,zstd)
-         ,@(package-native-inputs base))))))
+       (modify-inputs (package-native-inputs base)
+         (prepend clang
+                  llvm
+                  python
+                  rust-jemalloc-fix
+                  rust-bindgen-cli-jemalloc-fix
+                  rust-src-1.62
+                  zstd))))))
 
 (define-public asahi-m1n1
   (let ((commit "46f2811351806aafb3d56e02c107f95ac2ea85e3"))

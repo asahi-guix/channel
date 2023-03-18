@@ -197,9 +197,9 @@ Asahi Linux installer, the Apple silicon firmware will be saved in the
 
 The [[https://github.com/AsahiLinux/asahi-scripts/blob/main/asahi-fwextract][asahi-fwextract]] script reads the firmware from the
 =asahi/all_firmware.tar.gz= archive and writes it to the =vendorfw=
-directory of the EFI system partition as a CPIO and TAR archive. The
-EFI system partition should be mounted on =/boot/efi= to make these
-firmware files available.
+directory of the EFI system partition as a ~CPIO~ and ~TAR~
+archive. The EFI system partition should be mounted on =/boot/efi= to
+make these firmware files available.
 
 On an Asahi Linux system this should already be the case, on an Asahi
 Guix system the EFI system partition can be mounted by adding the

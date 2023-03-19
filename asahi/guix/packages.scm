@@ -26,6 +26,7 @@
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system meson)
   #:use-module (guix build-system pyproject)
+  #:use-module (guix build-system trivial)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -106,22 +107,30 @@ hardware.")
               (local-file "/boot/efi/vendorfw/firmware.cpio"))
              ((file-exists? "/run/.system-efi/vendorfw/firmware.cpio")
               (local-file "/run/.system-efi/vendorfw/firmware.cpio"))
-             (else (display "WARNING: Apple Silicon firmware was not found !!!\n\n")
-                   (display "Please set either the ASAHI_GUIX_FIRMWARE_SOURCE environment variable
+             (else #f)))
+    (build-system trivial-build-system)
+    (arguments
+     (list
+      #:modules '((guix build utils))
+      #:builder
+      #~(begin
+          (use-modules (guix build utils))
+          (let ((out (assoc-ref %outputs "out"))
+                (cpio (search-input-file %build-inputs "/bin/cpio"))
+                (source (assoc-ref %build-inputs "source")))
+            (if (and source (file-exists? source))
+                (let ((target (string-append out "/lib/firmware")))
+                  (invoke cpio "-idv" "-F" source)
+                  (mkdir-p target)
+                  (copy-recursively "vendorfw" target))
+                (begin
+                  (display "WARNING: Apple Silicon firmware was not found !!!\n\n")
+                  (display "Please set either the ASAHI_GUIX_FIRMWARE_SOURCE environment variable
 to a file named firmware.cpio, or make it in one of the following
 locations available:\n\n")
-                   (display "- /boot/efi/vendorfw/firmware.cpio\n")
-                   (display "- /run/.system-efi/vendorfw/firmware.cpio\n\n")
-                   (local-file "firmware.cpio"))))
-    (build-system copy-build-system)
-    (arguments
-     `(#:install-plan
-       '(("vendorfw" "lib/firmware"))
-       #:phases
-       (modify-phases %standard-phases
-         (add-after 'unpack 'unpack-firmware
-           (lambda _
-             (invoke "cpio" "-idv" "-F" "firmware.cpio"))))))
+                  (display "- /boot/efi/vendorfw/firmware.cpio\n")
+                  (display "- /run/.system-efi/vendorfw/firmware.cpio\n\n")
+                  (mkdir-p out)))))))
     (native-inputs (list cpio))
     (home-page "https://github.com/r0man/asahi-guix")
     (synopsis "Asahi Guix firmware for Apple Silicon")

@@ -1,5 +1,12 @@
 * Asahi Guix
 
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.googleapis.com">
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300&display=swap" rel="stylesheet">
+#+HTML_HEAD: <style> body { color: #4a4a4a; font-family: 'Google Sans', sans-serif; } </style>
+#+AUTHOR: Asahi Guix
+#+OPTIONS: toc:nil
+
 [[https://github.com/r0man/asahi-guix/actions/workflows/aarch64-linux-gnu.yml][https://github.com/r0man/asahi-guix/actions/workflows/aarch64-linux-gnu.yml/badge.svg]]
 [[https://github.com/r0man/asahi-guix/actions/workflows/x86_64-linux-gnu.yml][https://github.com/r0man/asahi-guix/actions/workflows/x86_64-linux-gnu.yml/badge.svg]]
 

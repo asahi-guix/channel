@@ -32,6 +32,9 @@
     (sha256
      (base32 hash))))
 
+(define asahi-linux-source-6.2.11
+  (make-asahi-linux-source "6.2-11" "16ddgn4f4wdqj2q2qp4wx7gxzlcwq9p5lsbq0jvffagybf53qyz6"))
+
 (define asahi-linux-source-6.2.12
   (make-asahi-linux-source "6.2-12" "0ips1gx627v4wkskam1xzkdlnv3f0f0vi4z50cznrnh29sbj8y2s"))
 
@@ -41,8 +44,8 @@
                            (extra-options %default-extra-linux-options)
                            (extra-version "asahi")
                            (linux linux-libre-arm64-generic)
-                           (source asahi-linux-source-6.2.12)
-                           (version "6.2.12"))
+                           (source asahi-linux-source-6.2.11)
+                           (version "6.2.11"))
   (let ((base (customize-linux
                #:configs (config->string (or extra-options '()))
                #:defconfig defconfig

@@ -1,3 +1,4 @@
+
 * Notes
 ** Packages
 Build Linux kernel with huge pages fixed.
@@ -26,6 +27,51 @@ Build the Asahi Guix operarating system image using the edge kernel.
   guix system image -L . --image-type=efi-raw asahi/guix/system/edge.scm
 #+end_src
 
+** Installer
+
+#+begin_src sh
+  qemu-system-aarch64 \
+      -bios ~/.guix-profile/share/firmware/ovmf_aarch64.bin \
+      -device virtio-blk,drive=myhd \
+      -drive if=none,file=/gnu/store/likzk72q4znlb2fnal0hfp2kbiclc0w3-image.qcow2,id=myhd \
+      -machine virt \
+      -nic user,model=virtio-net-pci \
+      -snapshot
+#+end_src
+
+#+begin_src sh
+  qemu-system-aarch64 \
+      -serial stdio \
+      -M virt,highmem=off \
+      -accel hvf \
+      -cpu cortex-a72 \
+      -smp 4 \
+      -m 4096 \
+      -bios ~/.guix-profile/share/firmware/ovmf_aarch64.bin \
+      -device virtio-gpu-pci \
+      -display default,show-cursor=on \
+      -device qemu-xhci \
+      -device usb-kbd \
+      -device usb-tablet \
+      -device intel-hda \
+      -device hda-duplex \
+      -drive file=/gnu/store/likzk72q4znlb2fnal0hfp2kbiclc0w3-image.qcow2,if=none
+#+end_src
+
+#+begin_src sh
+  qemu-system-aarch64 \
+    -m 2048 \
+    -cpu cortex-a57 -M virt,highmem=off  \
+    -drive file=/gnu/store/likzk72q4znlb2fnal0hfp2kbiclc0w3-image.qcow2,if=pflash,format=raw,readonly=on \
+    -serial telnet::4444,server,nowait \
+    -device virtio-blk-device,drive=hd0,serial="dummyserial" \
+    -device virtio-net-device,netdev=net0 \
+    -netdev user,id=net0 \
+    -vga none -device ramfb \
+    -device usb-ehci -device usb-kbd -device usb-mouse -usb \
+    -monitor stdio
+#+end_src
+
 ** Test System
 
 #+begin_src sh
@@ -34,5 +80,13 @@ Build the Asahi Guix operarating system image using the edge kernel.
   sudo mount /dev/nvme0n1p12 /mnt
   sudo mkdir --parents /mnt/boot/efi
   sudo mount /dev/nvme0n1p10 /mnt/boot/efi
+  sudo guix system init --load-path=. --system=aarch64-linux examples/asahi-guix.tmpl /mnt
   sudo guix system init --load-path=. --system=aarch64-linux examples/asahi-guix-edge.tmpl /mnt
+#+end_src
+
+Install test system with time machine.
+
+#+begin_src sh
+  sudo guix time-machine --channels=asahi/guix/channels.scm -- \
+       system init --load-path=. --system=aarch64-linux examples/asahi-guix.tmpl /mnt
 #+end_src

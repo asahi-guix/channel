@@ -1,11 +1,17 @@
 (define-module (asahi guix initrd)
+  #:use-module (asahi guix build firmware)
+  #:use-module (asahi guix packages guile-xyz)
+  #:use-module (gnu packages disk)
+  #:use-module (gnu packages linux)
+  #:use-module (gnu system linux-initrd)
+  #:use-module (guix gexp)
+  #:use-module (guix modules)
   #:export (asahi-initrd-modules
             asahi-initrd-modules-edge))
 
 (define initrd-modules
   (list "dm-crypt"
         "hid-apple"
-        ;; "hid-generic"
         "nls_iso8859-1"
         "serpent_generic"
         "uas"

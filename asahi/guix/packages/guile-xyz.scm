@@ -28,9 +28,7 @@
                  (base32
                   "16r64f7nj72x1zry0xrvpdsqcr0yb3pjyrfkh8ix9k481mabzrcj"))))
       (build-system guile-build-system)
-      (native-inputs
-       (list autoconf automake guile-hall pkg-config texinfo))
-      (inputs (list guile-3.0-latest))
+      (inputs (list (lookup-package-input guix "guile")))
       (propagated-inputs (list guix))
       (synopsis "Asahi Guix")
       (description "Asahi Linux on GNU Guix")

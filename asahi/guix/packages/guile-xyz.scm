@@ -3,6 +3,7 @@
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages guile-xyz)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages texinfo)
@@ -13,7 +14,7 @@
   #:use-module (guix packages))
 
 (define-public guile-asahi-guix
-  (let ((commit "58e28601b6f0880085ea43ca985c1c8eaf416271")
+  (let ((commit "b18980114d7c798d54284339dcb4cf7ec9f4a25e")
         (revision "1"))
     (package
       (name "guile-asahi-guix")
@@ -26,10 +27,29 @@
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1lpb8vhgf90xj32jlazmsf44wz3mfvc1dgf1vi4r7xaw1k8d90hn"))))
-      (build-system guile-build-system)
-      (inputs (list (lookup-package-input guix "guile")))
-      (propagated-inputs (list guix))
+                  "1smnm2f373f2c39b5827nwx9s9wg5nq9bq32yyf0hpq95cah1q61"))))
+      (build-system gnu-build-system)
+      (arguments
+       (list
+        #:phases
+        #~(modify-phases %standard-phases
+            (add-after 'unpack 'prepare
+              (lambda* (#:key inputs #:allow-other-keys)
+                (setenv "PATH" (string-append
+                                (getenv "PATH") ":"
+                                (string-append
+                                 (assoc-ref inputs "util-linux")
+                                 "/sbin")))
+                (invoke "hall" "build" "--execute"))))))
+      (native-inputs
+       (list autoconf
+             automake
+             guile-hall
+             pkg-config
+             texinfo
+             util-linux))
+      (inputs (list guile-3.0-latest util-linux))
+      (propagated-inputs (list util-linux guix))
       (synopsis "Asahi Guix")
       (description "Asahi Linux on GNU Guix")
       (home-page "https://github.com/r0man/asahi-guix")

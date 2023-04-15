@@ -68,7 +68,8 @@
          (status (close-pipe port)))
     (close-port (cdr error-pipe))
     (unless (zero? status)
-      (throw 'execute-command-error (read-string (car error-pipe))))
+      (throw 'execute-command-error
+             (list status output (read-string (car error-pipe)))))
     output))
 
 (define (split-by-predicate lst predicate)

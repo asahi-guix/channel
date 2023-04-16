@@ -32,6 +32,10 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -o "$@" "$<"
 
+NOCOMP_SOURCES = asahi/guix/packages/defconfig.main \
+		 asahi/guix/packages/defconfig.edge \
+		 asahi/guix/substitutes.asahi-guix.org.pub
+
 SOURCES = asahi/guix/bootloader/m1n1.scm \
           asahi/guix/packages/linux.scm \
           asahi/guix/packages/crates-io.scm \

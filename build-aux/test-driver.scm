@@ -1,4 +1,10 @@
 ;;;; test-driver.scm - Guile test driver for Automake testsuite harness
+(define-module (build-aux test-driver)
+  #:use-module (ice-9 getopt-long)
+  #:use-module (ice-9 pretty-print)
+  #:use-module (srfi srfi-26)
+  #:use-module (srfi srfi-64)
+  #:export (main))
 
 (define script-version "2019-01-15.13") ;UTC
 
@@ -28,11 +34,6 @@
 ;;; guile-hall infrastructure.
 ;;;
 ;;;; Code:
-
-(use-modules (ice-9 getopt-long)
-             (ice-9 pretty-print)
-             (srfi srfi-26)
-             (srfi srfi-64))
 
 (define (show-help)
   (display "Usage:

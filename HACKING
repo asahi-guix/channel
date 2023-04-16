@@ -9,9 +9,9 @@ By far the easiest way to hack on ashai-guix is to develop using Guix:
 #+BEGIN_SRC bash
   # Obtain the source code
   cd /path/to/source-code
-  guix environment -l guix.scm
+  guix shell -m manifest.scm
   # In the new shell, run:
-  hall dist --execute && autoreconf -vif && ./configure && make check
+  autoreconf -vif && ./configure && make check
 #+END_SRC
 
 You can now hack this project's files to your heart's content, whilst

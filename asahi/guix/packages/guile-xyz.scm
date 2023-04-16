@@ -14,7 +14,7 @@
   #:use-module (guix packages))
 
 (define-public guile-asahi-guix
-  (let ((commit "b18980114d7c798d54284339dcb4cf7ec9f4a25e")
+  (let ((commit "ea36c15d594321767b491f980adbf9f1ec6c4360")
         (revision "1"))
     (package
       (name "guile-asahi-guix")
@@ -27,20 +27,8 @@
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "1smnm2f373f2c39b5827nwx9s9wg5nq9bq32yyf0hpq95cah1q61"))))
+                  "1l8bhgzpm643g7l0yh6ixypqzx3mdnvlr9ihizfj1njrslb1q0hd"))))
       (build-system gnu-build-system)
-      (arguments
-       (list
-        #:phases
-        #~(modify-phases %standard-phases
-            (add-after 'unpack 'prepare
-              (lambda* (#:key inputs #:allow-other-keys)
-                (setenv "PATH" (string-append
-                                (getenv "PATH") ":"
-                                (string-append
-                                 (assoc-ref inputs "util-linux")
-                                 "/sbin")))
-                (invoke "hall" "build" "--execute"))))))
       (native-inputs
        (list autoconf
              automake

@@ -87,7 +87,6 @@ EXTRA_DIST += NOTES.org \
               README \
               COPYING \
               HACKING \
-              hall.scm \
               .guix-authorizations \
               .guix-channel \
               .gitignore \

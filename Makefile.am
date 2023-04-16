@@ -91,7 +91,7 @@ EXTRA_DIST += NOTES.org \
               .guix-authorizations \
               .guix-channel \
               .gitignore \
-              guix.scm \
+              manifest.scm \
               share/systems/asahi-guix.tmpl \
               share/systems/asahi-guix-edge.tmpl \
               .github/workflows/aarch64-linux-gnu.yml \

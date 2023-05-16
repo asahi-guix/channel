@@ -1,6 +1,5 @@
 (define-module (asahi guix packages gl)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (asahi guix packages xdisorg)
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages linux)
@@ -9,6 +8,7 @@
   #:use-module (gnu packages valgrind)
   #:use-module (guix build-system meson)
   #:use-module (guix download)
+  #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
   #:use-module (guix utils))
@@ -54,15 +54,14 @@
                  "-Dshared-glapi=enabled"
                  "-Dvalgrind=enabled"
                  "-Dvulkan-drivers=swrast"
-                 "-Dvulkan-layers="))))
+                 "-Dvulkan-layers="))
+         ((#:phases phases '%standard-phases)
+          #~(modify-phases #$phases
+              (delete 'set-layer-path-in-manifests)))))
       (inputs
        (modify-inputs (package-inputs mesa)
          (prepend `(,lm-sensors "lib") libglvnd libressl valgrind)
-         (replace "llvm" llvm-15)
-         (replace "wayland-protocols" wayland-protocols-next)))
-      (propagated-inputs
-       (modify-inputs (package-propagated-inputs mesa)
-         (replace "libdrm" libdrm-2-4-114))))))
+         (replace "llvm" llvm-15))))))
 
 (define-public asahi-mesa-headers
   (package/inherit mesa-headers

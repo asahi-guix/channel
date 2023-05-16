@@ -1,4 +1,4 @@
-bin_SCRIPTS = 
+bin_SCRIPTS =
 
 # Handle substitution of fully-expanded Autoconf variables.
 do_subst = $(SED)					\
@@ -41,10 +41,7 @@ SOURCES = asahi/guix/bootloader/m1n1.scm \
           asahi/guix/packages/crates-io.scm \
           asahi/guix/packages/gl.scm \
           asahi/guix/packages/guile-xyz.scm \
-          asahi/guix/packages/defconfig.main \
-          asahi/guix/packages/defconfig.edge \
           asahi/guix/packages/audio.scm \
-          asahi/guix/packages/xdisorg.scm \
           asahi/guix/packages/firmware.scm \
           asahi/guix/packages/rust.scm \
           asahi/guix/packages/bootloader.scm \
@@ -61,7 +58,6 @@ SOURCES = asahi/guix/bootloader/m1n1.scm \
           asahi/guix/services/udev.scm \
           asahi/guix/services/console-font.scm \
           asahi/guix/channels.scm \
-          asahi/guix/substitutes.asahi-guix.org.pub \
           asahi/guix/initrd.scm \
           asahi/guix/udev.scm \
           asahi/guix/transformations.scm \

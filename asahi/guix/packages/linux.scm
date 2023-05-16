@@ -113,7 +113,7 @@ Air, and MacBook Pro."))))
          (prepend clang
                   llvm
                   python
-                  rust-1.66
+                  rust
                   rust-bindgen-cli
-                  rust-src-1.66
+                  rust-src
                   zstd))))))

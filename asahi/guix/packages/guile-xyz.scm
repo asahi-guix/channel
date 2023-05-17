@@ -14,7 +14,7 @@
   #:use-module (guix packages))
 
 (define-public guile-asahi-guix
-  (let ((commit "eaa6a6c67fa59e7e2d56392e12b651d8c5a004c0")
+  (let ((commit "fa5b75e294737b76eab454a0ce0b1bc9508c58ab")
         (revision "1"))
     (package
       (name "guile-asahi-guix")
@@ -27,7 +27,7 @@
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0n4skhx98kng9xg75fkl3rjvln0xm84mvp60q1l70417lpr1wllr"))))
+                  "17k00am3bc33ssawvcgr85r8d1y9yl60k3qb93jkml0fs849kqsw"))))
       (build-system gnu-build-system)
       (native-inputs
        (list autoconf

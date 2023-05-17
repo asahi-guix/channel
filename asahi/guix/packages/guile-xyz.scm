@@ -33,11 +33,11 @@
        (list autoconf
              automake
              guile-hall
+             guix
              pkg-config
              texinfo
              util-linux))
       (inputs (list guile-3.0-latest util-linux))
-      (propagated-inputs (list util-linux guix))
       (synopsis "Asahi Guix")
       (description "Asahi Linux on GNU Guix")
       (home-page "https://github.com/r0man/asahi-guix")

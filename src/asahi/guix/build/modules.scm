@@ -10,10 +10,13 @@
     (('guix _ ...) #t)
     (_ #f)))
 
-;; Since we don't use deduplication support in 'populate-store', don't
-;; import (guix store deduplication) and its dependencies, which
-;; includes Guile-Gcrypt.
 (define (import-asahi-module? module)
   "Return true if MODULE is not (guix store deduplication)"
   (and (asahi-module-name? module)
-       (not (equal? module '(guix store deduplication)))))
+       ;; Since we don't use deduplication support in 'populate-store', don't
+       ;; import (guix store deduplication) and its dependencies, which
+       ;; includes Guile-Gcrypt.
+       (not (equal? module '(guix store deduplication)))
+       ;; Dragging in (guix config) fails :/
+       ;; ERROR: In procedure symlink: In procedure symlink: File exists
+       (not (equal? module '(guix config)))))

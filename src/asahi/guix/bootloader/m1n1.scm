@@ -7,17 +7,20 @@
   #:use-module (gnu bootloader)
   #:use-module (gnu packages guile)
   #:use-module (guix gexp)
-  #:use-module (guix utils)
+  #:use-module (ice-9 pretty-print)
   #:use-module (guix modules))
 
-(define install-m1n1-u-boot-grub
+(define m1n1-u-boot-grub-installer
   (with-extensions (list guile-zlib)
-    #~(lambda (bootloader efi-dir mount-point)
-        (use-modules (asahi guix build bootloader m1n1))
-        (install-m1n1-u-boot-grub bootloader efi-dir mount-point))))
+    (with-imported-modules (source-module-closure
+                            '((asahi guix build bootloader m1n1))
+                            #:select? import-asahi-module?)
+      #~(lambda (bootloader efi-dir mount-point)
+          (use-modules (asahi guix build bootloader m1n1))
+          (install-m1n1-u-boot-grub bootloader efi-dir mount-point)))))
 
 (define-public m1n1-u-boot-grub-bootloader
   (efi-bootloader-chain
    grub-efi-removable-bootloader
-   #:installer install-m1n1-u-boot-grub
+   #:installer m1n1-u-boot-grub-installer
    #:packages (list asahi-linux asahi-m1n1 u-boot-apple-m1)))

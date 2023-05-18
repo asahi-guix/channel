@@ -1,9 +1,8 @@
 (define-module (asahi guix build bootloader m1n1)
-  #:export (install-m1n1-u-boot-grub)
   #:use-module (guix build utils)
-  #:use-module (guix gexp)
   #:use-module (guix utils)
-  #:use-module (ice-9 binary-ports))
+  #:use-module (ice-9 binary-ports)
+  #:export (install-m1n1-u-boot-grub))
 
 (define (copy-bytes from to)
   (let ((result (get-u8 from)))
@@ -63,7 +62,7 @@
                     "--bootloader-id=Guix"
                     "--efi-directory" target-esp))))
 
-(define (install-m1n1-u-boot-grub bootloader efi-dir mount-point)
+(define (install-m1n1-u-boot bootloader efi-dir mount-point)
   ;; NOTE: mount-point is /mnt in guix system init /etc/config.scm /mnt/point
   ;; NOTE: efi-dir comes from target list of booloader configuration
   ;; There is nothing useful to do when called in the context of a disk
@@ -82,6 +81,8 @@
                              #:stat stat #:directories? #t))
            (m1n1 (string-append bootloader "/libexec/m1n1.bin"))
            (u-boot (string-append bootloader "/libexec/u-boot-nodtb.bin")))
-      (update-m1n1 m1n1 target-bin #:dtbs dtbs #:u-boot u-boot)))
-  ;; Install Grub
+      (update-m1n1 m1n1 target-bin #:dtbs dtbs #:u-boot u-boot))))
+
+(define (install-m1n1-u-boot-grub bootloader efi-dir mount-point)
+  (install-m1n1-u-boot bootloader efi-dir mount-point)
   (install-grub-efi-removable bootloader efi-dir mount-point))

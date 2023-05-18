@@ -84,6 +84,6 @@ Build the Asahi Guix operarating system image using the edge kernel.
 #+end_src
 
 #+begin_src sh
-  sudo guix time-machine --channels=asahi/guix/channels.scm -- \
+  sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
        system init --load-path=. --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
 #+end_src

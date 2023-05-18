@@ -30,45 +30,44 @@ EXTRA_DIST = $(SOURCES) $(NOCOMP_SOURCES)
 GUILE_WARNINGS = -Wunbound-variable -Warity-mismatch -Wformat
 SUFFIXES = .scm .go
 .scm.go:
-	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -o "$@" "$<"
+	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
-NOCOMP_SOURCES = asahi/guix/packages/defconfig.main \
-		 asahi/guix/packages/defconfig.edge \
-		 asahi/guix/substitutes.asahi-guix.org.pub
+NOCOMP_SOURCES = src/asahi/guix/packages/defconfig.main \
+		 src/asahi/guix/packages/defconfig.edge \
+		 src/asahi/guix/substitutes.asahi-guix.org.pub
 
-SOURCES = asahi/guix/bootloader/m1n1.scm \
-          asahi/guix/packages/linux.scm \
-          asahi/guix/packages/crates-io.scm \
-          asahi/guix/packages/gl.scm \
-          asahi/guix/packages/guile-xyz.scm \
-          asahi/guix/packages/audio.scm \
-          asahi/guix/packages/firmware.scm \
-          asahi/guix/packages/rust.scm \
-          asahi/guix/packages/bootloader.scm \
-          asahi/guix/packages/jemalloc.scm \
-          asahi/guix/packages/misc.scm \
-          asahi/guix/build/bootloader/m1n1.scm \
-          asahi/guix/build/block-devices.scm \
-          asahi/guix/build/firmware.scm \
-          asahi/guix/system/desktop.scm \
-          asahi/guix/system/base.scm \
-          asahi/guix/system/install.scm \
-          asahi/guix/services/channels.scm \
-          asahi/guix/services/firmware.scm \
-          asahi/guix/services/udev.scm \
-          asahi/guix/services/console-font.scm \
-          asahi/guix/channels.scm \
-          asahi/guix/initrd.scm \
-          asahi/guix/udev.scm \
-          asahi/guix/transformations.scm \
-          asahi/guix/substitutes.scm
+SOURCES = src/asahi/guix/bootloader/m1n1.scm \
+          src/asahi/guix/packages/linux.scm \
+          src/asahi/guix/packages/crates-io.scm \
+          src/asahi/guix/packages/gl.scm \
+          src/asahi/guix/packages/audio.scm \
+          src/asahi/guix/packages/firmware.scm \
+          src/asahi/guix/packages/rust.scm \
+          src/asahi/guix/packages/bootloader.scm \
+          src/asahi/guix/packages/jemalloc.scm \
+          src/asahi/guix/packages/misc.scm \
+          src/asahi/guix/build/bootloader/m1n1.scm \
+          src/asahi/guix/build/block-devices.scm \
+          src/asahi/guix/build/firmware.scm \
+          src/asahi/guix/system/desktop.scm \
+          src/asahi/guix/system/base.scm \
+          src/asahi/guix/system/install.scm \
+          src/asahi/guix/services/channels.scm \
+          src/asahi/guix/services/firmware.scm \
+          src/asahi/guix/services/udev.scm \
+          src/asahi/guix/services/console-font.scm \
+          src/asahi/guix/channels.scm \
+          src/asahi/guix/initrd.scm \
+          src/asahi/guix/udev.scm \
+          src/asahi/guix/transformations.scm \
+          src/asahi/guix/substitutes.scm
 
 TESTS = tests/asahi/guix/build/block-devices.scm
 
 TEST_EXTENSIONS = .scm
 SCM_LOG_DRIVER =                                \
   $(top_builddir)/pre-inst-env                  \
-  $(GUILE) --no-auto-compile -e main            \
+  $(GUILE) --no-auto-compile -e main -L src     \
       $(top_srcdir)/build-aux/test-driver.scm
 
 # Tell 'build-aux/test-driver.scm' to display only source file names,

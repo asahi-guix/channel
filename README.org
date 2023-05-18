@@ -139,7 +139,7 @@ EFI system partition =/dev/nvme0n1p7= under =/mnt/boot/efi=.
 Install the Guix system onto =/mnt=.
 
 #+begin_src sh :results none
-  sudo guix time-machine --channels=asahi/guix/channels.scm -- \
+  sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
        system init --load-path=. --system=aarch64-linux asahi-guix.scm /mnt
 #+end_src
 
@@ -174,8 +174,8 @@ installed on the EFI system partition by the Asahi Linux installer.
 Build the Guix installer disk image with the Asahi Linux kernel.
 
 #+begin_src sh :results verbatim
-  guix time-machine --channels=asahi/guix/channels.scm -- \
-       system image --load-path=. --image-type=efi-raw --image-size=7.2GiB asahi/guix/system/install.scm
+  guix time-machine --channels=src/asahi/guix/channels.scm -- \
+       system image --load-path=. --image-type=efi-raw --image-size=7.2GiB src/asahi/guix/system/install.scm
 #+end_src
 
 Write the installer disk image to the USB stick at =/dev/sda=.

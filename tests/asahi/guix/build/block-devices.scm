@@ -7,7 +7,6 @@
 
 (test-begin suite)
 
-(test-skip 1)
 (test-assert "list block devices"
   (let ((devices (block-devices)))
     (or (null-list? devices)

@@ -17,13 +17,13 @@ Build =mesa-utils= with =asahi-mesa=.
 Build the Asahi Guix operarating system image.
 
 #+begin_src sh :results verbatim
-  guix system build --load-path=. --system=aarch64-linux share/systems/asahi-guix.tmpl
+  guix system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
 #+end_src
 
 Build the Asahi Guix operarating system image using the edge kernel.
 
 #+begin_src sh :results verbatim
-  guix system build --load-path=. --system=aarch64-linux share/systems/asahi-guix-edge.tmpl
+  guix system build --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl
 #+end_src
 
 ** Installer
@@ -79,11 +79,13 @@ Build the Asahi Guix operarating system image using the edge kernel.
   sudo mount /dev/nvme0n1p12 /mnt
   sudo mkdir --parents /mnt/boot/efi
   sudo mount /dev/nvme0n1p10 /mnt/boot/efi
-  sudo guix system init --load-path=. --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
-  sudo guix system init --load-path=. --system=aarch64-linux share/systems/asahi-guix-edge.tmpl /mnt
+  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
+  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl /mnt
 #+end_src
 
 #+begin_src sh
   sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
-       system init --load-path=. --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
+       system init --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
+  guix time-machine --channels=src/asahi/guix/channels.scm -- \
+       system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
 #+end_src

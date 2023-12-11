@@ -1,15 +1,13 @@
 * Asahi Guix
 
 #+AUTHOR: Asahi Guix
-#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=Google+Sans" rel="stylesheet">
 #+HTML_HEAD: <link rel="preconnect" href="https://fonts.googleapis.com">
 #+HTML_HEAD: <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans">
 #+HTML_HEAD: <style> body { color: #4a4a4a; font-family: 'Google Sans', sans-serif;  text-align: justify; } </style>
 #+OPTIONS: num:0
 #+OPTIONS: toc:nil
-
-[[https://github.com/r0man/asahi-guix/actions/workflows/aarch64-linux-gnu.yml][https://github.com/r0man/asahi-guix/actions/workflows/aarch64-linux-gnu.yml/badge.svg]]
-[[https://github.com/r0man/asahi-guix/actions/workflows/x86_64-linux-gnu.yml][https://github.com/r0man/asahi-guix/actions/workflows/x86_64-linux-gnu.yml/badge.svg]]
+#+PROPERTY: header-args :eval never-export
 
 Asahi Linux on GNU Guix
 
@@ -233,6 +231,102 @@ The Asahi Guix channel provides the following packages.
 | asahi-mesa-utils    | n/a                  |
 | asahi-scripts       | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/asahi-scripts][asahi-scripts]]        |
 | u-boot-apple-m1     | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/uboot-asahi][uboot-asahi]]          |
+
+** Server
+*** Installation via Hetzner rescue system
+
+Clone the Asahi Guix channel.
+
+#+begin_src sh :dir /ssh:root@www.asahi-guix.org:~ :exports code :results verbatim
+  git clone --branch server https://github.com/asahi-guix/channel.git
+  cd channel && bash scripts/hetzner/install-server
+#+end_src
+
+*** Swap File
+
+Create the swap file.
+
+#+begin_src sh :dir /ssh:root@www.asahi-guix.org:~ :exports code :results verbatim
+  fallocate -l 32G /swapfile
+#+end_src
+
+#+RESULTS:
+
+Change file permissions on the swap file.
+
+#+begin_src sh :dir /ssh:root@www.asahi-guix.org:~ :exports code :results verbatim
+  chmod 600 /swapfile
+#+end_src
+
+#+RESULTS:
+
+Format the swap file.
+
+#+begin_src sh :dir /ssh:root@www.asahi-guix.org:~ :exports code :results verbatim
+  mkswap /swapfile
+#+end_src
+
+#+RESULTS:
+: Setting up swapspace version 1, size = 32 GiB (34359734272 bytes)
+: no label, UUID=3906429c-edc8-4793-b50c-6b38ab8feab1
+
+Enable the swap file.
+
+#+begin_src sh :dir /ssh:root@www.asahi-guix.org:~ :exports code :results verbatim
+  swapon /swapfile
+#+end_src
+
+#+RESULTS:
+
+*** Offloading
+
+Authorize the server to be controlled from the local machine.
+
+#+begin_src sh :exports both :results verbatim
+  cat /etc/guix/signing-key.pub | ssh root@www.asahi-guix.org guix archive --authorize
+#+end_src
+
+Restart the Guix daemon on the server.
+
+#+begin_src sh :dir /ssh:root@www.asahi-guix.org:~
+  systemctl restart guix-daemon
+#+end_src
+
+#+RESULTS:
+
+Authorize the local Guix daemon to offload to the server.
+
+#+begin_src sh :dir /ssh:root@localhost:~
+  ssh root@www.asahi-guix.org cat /etc/guix/signing-key.pub | guix archive --authorize
+#+end_src
+
+Make sure =/etc/guix/machines.scm= on the local machine contains the server.
+
+#+begin_src scheme
+  (list (build-machine
+         (name "www.asahi-guix.org")
+         (systems (list "aarch64-linux"))
+         (user "root")
+         (host-key "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH5brUrwEPR0MGjymBu2EfkEKULlVyUr80l2rwcXNXZD root@asahi-guix")
+         (private-key "/root/.ssh/id_ed25519")))
+#+end_src
+
+Verify builds can be offloaded to the server.
+
+#+begin_src sh :dir /ssh:root@localhost:~ :exports both :results verbatim
+  guix offload test
+#+end_src
+
+#+RESULTS:
+: retrieving 1 store item from 'www.asahi-guix.org'...
+
+*** Deployment
+
+Deploy the machine in =src/asahi/guix/machine/server.scm= to the server.
+
+#+begin_src sh
+  guix deploy src/asahi/guix/machine/server.scm --load-path=src --verbosity=5
+#+end_src
 
 ** Thanks
 

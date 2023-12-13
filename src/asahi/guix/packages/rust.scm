@@ -1,24 +1,25 @@
 (define-module (asahi guix packages rust)
-  #:use-module ((gnu packages rust) #:prefix gnu:)
+  #:use-module (guix build-system copy)
   #:use-module (guix gexp)
   #:use-module (guix packages)
-  #:use-module (guix utils)
-  #:export (replace-rust))
+  #:use-module (guix utils))
 
 (define-public rust
-  (package/inherit gnu:rust
-    (name "rust")
-    (arguments
-     (substitute-keyword-arguments (package-arguments gnu:rust)
-       ((#:phases phases '%standard-phases)
-        #~(modify-phases #$phases
-            (add-after 'configure 'configure-large-pages
-              (lambda _
-                (setenv "JEMALLOC_SYS_WITH_LG_PAGE" "16")))))))))
+  (@@ (gnu packages rust) rust))
 
 (define-public rust-src
-  (@@ (gnu packages rust) rust-src))
-
-(define replace-rust
-  (package-input-rewriting
-   `((,gnu:rust . ,rust))))
+  (package
+    (inherit rust)
+    (name "rust-src")
+    (build-system copy-build-system)
+    (native-inputs '())
+    (inputs '())
+    (native-search-paths '())
+    (outputs '("out"))
+    (arguments
+     `(#:install-plan
+       '(("library" "lib/rustlib/src/rust/library")
+         ("src" "lib/rustlib/src/rust/src"))))
+    (synopsis "Source code for the Rust standard library")
+    (description "This package provide source code for the Rust standard
+library, only use by rust-analyzer, make rust-analyzer out of the box.")))

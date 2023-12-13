@@ -52,10 +52,10 @@ propriatary and can not be packaged.")
     (license license:expat)))
 
 (define-public asahi-fwextract
-  (let ((commit "0ac64c9ce1c460f4576162a82d239d7e8688a79e"))
+  (let ((commit "380d86edeb7fc297f5c691b8654850851f2ca868"))
     (package
       (name "asahi-fwextract")
-      (version (git-version "0.5.3" "0" commit))
+      (version (git-version "0.6.9" "0" commit))
       (source
        (origin
          (method git-fetch)
@@ -64,7 +64,7 @@ propriatary and can not be packaged.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1kj9ycy3f34fzm9bnirlcw9zm2sgipwrqzphdg5k099rbjbc7zmj"))
+          (base32 "0nl96vigknn9dzgp9s93xk2xk4f36ak5mwpzg8gqhkv083h64hrj"))
          (modules '((guix build utils)))
          (snippet
           '(begin

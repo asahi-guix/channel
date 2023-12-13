@@ -42,7 +42,7 @@
                  "-Dgallium-vdpau=disabled"
                  "-Dgallium-xa=disabled"
                  "-Dgbm=enabled"
-                 "-Dgles1=disabled"
+                 "-Dgles1=enabled"
                  "-Dgles2=enabled"
                  "-Dglx=dri"
                  "-Dlibunwind=disabled"

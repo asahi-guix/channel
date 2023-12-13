@@ -4,6 +4,5 @@
   #:use-module (guix packages))
 
 (define-public asahi-icecat
-  (replace-rust
-   (package/inherit gnu:icecat
-     (name "asahi-icecat"))))
+  (package/inherit gnu:icecat
+    (name "asahi-icecat")))

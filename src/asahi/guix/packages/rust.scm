@@ -21,5 +21,5 @@
        '(("library" "lib/rustlib/src/rust/library")
          ("src" "lib/rustlib/src/rust/src"))))
     (synopsis "Source code for the Rust standard library")
-    (description "This package provide source code for the Rust standard
-library, only use by rust-analyzer, make rust-analyzer out of the box.")))
+    (description "This package provide source code for the Rust standard library, only
+use by rust-analyzer, make rust-analyzer out of the box.")))

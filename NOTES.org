@@ -68,6 +68,8 @@ Build the Asahi Guix operarating system image using the edge kernel.
   sudo mount /dev/nvme0n1p10 /mnt/boot/efi
   sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
   sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl /mnt
+  sudo umount /mnt/boot/efi
+  sudo umount /mnt
 #+end_src
 
 #+begin_src sh

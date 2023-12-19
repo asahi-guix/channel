@@ -159,7 +159,7 @@
                               (url "https://github.com/asahi-guix/channel.git")
                               (introduction
                                (make-channel-introduction
-                                "1c4a02ac7f9009db7d28b081a55ceb88016edda9"
+                                "7677591b60ae62f76d8fcee392f0b249414442f6"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                              %default-channels))
@@ -174,7 +174,7 @@
                               (url "https://github.com/asahi-guix/channel.git")
                               (introduction
                                (make-channel-introduction
-                                "1c4a02ac7f9009db7d28b081a55ceb88016edda9"
+                                "7677591b60ae62f76d8fcee392f0b249414442f6"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                              %default-channels))

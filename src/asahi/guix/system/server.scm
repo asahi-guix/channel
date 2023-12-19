@@ -141,11 +141,11 @@
                       (channels
                        (list (channel
                               (name 'guix)
-                              (branch "jemalloc-sys-with-lg-page")
+                              (branch "main")
                               (url "https://github.com/asahi-guix/guix.git")
                               (introduction
                                (make-channel-introduction
-                                "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
+                                "293271217f08e2319885da9e3c41b8f6cc9943bf"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))

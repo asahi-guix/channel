@@ -5,7 +5,7 @@
 (define channels
   (list (channel
          (name 'asahi)
-         (url "https://github.com/r0man/asahi-guix.git")
+         (url "https://github.com/asahi-guix/channel.git")
          (branch "main")
          (introduction
           (make-channel-introduction

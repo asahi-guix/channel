@@ -8,7 +8,7 @@ By far the easiest way to hack on ashai-guix is to develop using Guix:
 
 #+BEGIN_SRC bash
   # Obtain the source code
-  git clone https://github.com/r0man/asahi-guix.git
+  git clone https://github.com/asahi-guix/channel.git
   cd asahi-guix
   guix shell -Df guix.scm
   # In the new shell, run:

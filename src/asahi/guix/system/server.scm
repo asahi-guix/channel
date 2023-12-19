@@ -141,7 +141,7 @@
                       (channels
                        (list (channel
                               (name 'guix)
-                              (branch "jemalloc-sys-with-lg-page")
+                              (branch "main")
                               (url "https://github.com/asahi-guix/guix.git")
                               (introduction
                                (make-channel-introduction

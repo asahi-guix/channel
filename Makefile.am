@@ -61,7 +61,6 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	  src/asahi/guix/substitutes.scm \
 	  src/asahi/guix/system/base.scm \
 	  src/asahi/guix/system/desktop.scm \
-	  src/asahi/guix/system/image.scm \
 	  src/asahi/guix/system/install.scm \
 	  src/asahi/guix/system/server.scm \
 	  src/asahi/guix/transformations.scm \

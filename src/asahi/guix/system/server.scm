@@ -136,24 +136,27 @@
   (service cuirass-service-type
            (cuirass-configuration
             (specifications
-             #~(list (specification
-                      (name "asahi-guix")
-                      (build '(packages  "jemalloc" "rust"))
-                      (channels
-                       (list guix-channel))
-                      (systems '("aarch64-linux")))
-                     (specification
-                      (name "asahi-guix-channel")
-                      (build '(channels asahi-guix))
-                      (channels
-                       (list asahi-guix-channel guix-channel))
-                      (systems '("aarch64-linux")))
-                     (specification
-                      (name "asahi-guix-channel-next")
-                      (build '(channels asahi-guix))
-                      (channels
-                       (list asahi-guix-next-channel guix-channel))
-                      (systems '("aarch64-linux")))))
+             (with-imported-modules (source-module-closure
+                                     '((asahi guix channels)))
+               #~(begin (use-modules (asahi guix channels))
+                        (list (specification
+                               (name "asahi-guix")
+                               (build '(packages  "jemalloc" "rust"))
+                               (channels
+                                (list guix-channel))
+                               (systems '("aarch64-linux")))
+                              (specification
+                               (name "asahi-guix-channel")
+                               (build '(channels asahi-guix))
+                               (channels
+                                (list asahi-guix-channel guix-channel))
+                               (systems '("aarch64-linux")))
+                              (specification
+                               (name "asahi-guix-channel-next")
+                               (build '(channels asahi-guix-next))
+                               (channels
+                                (list asahi-guix-next-channel guix-channel))
+                               (systems '("aarch64-linux")))))))
             (use-substitutes? #t)
             (remote-server (cuirass-remote-server-configuration)))))
 
@@ -232,7 +235,10 @@
 (define %unattended-upgrade-service
   (service unattended-upgrade-service-type
            (unattended-upgrade-configuration
-            (channels #~(cons asahi-guix-channel %default-channels))
+            (channels (with-imported-modules (source-module-closure
+                                              '((asahi guix channels)))
+                        #~(begin (use-modules (asahi guix channels))
+                                 (cons asahi-guix-channel %default-channels))))
             (schedule "0 4 * * *")
             (services-to-restart
              '(avahi-daemon

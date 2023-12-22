@@ -9,10 +9,10 @@
   (channel
    (name 'asahi-guix)
    (branch "main")
-   (url "https://github.com/asahi-guix/guix.git")
+   (url "https://github.com/asahi-guix/channel.git")
    (introduction
     (make-channel-introduction
-     "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
+     "7677591b60ae62f76d8fcee392f0b249414442f6"
      (openpgp-fingerprint
       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199")))))
 
@@ -20,10 +20,10 @@
   (channel
    (name 'asahi-guix-next)
    (branch "next")
-   (url "https://github.com/asahi-guix/guix.git")
+   (url "https://github.com/asahi-guix/channel.git")
    (introduction
     (make-channel-introduction
-     "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
+     "7677591b60ae62f76d8fcee392f0b249414442f6"
      (openpgp-fingerprint
       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199")))))
 

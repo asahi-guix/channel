@@ -5,7 +5,7 @@
   #:use-module (guix utils))
 
 (define-public rust
-  (@@ (gnu packages rust) rust))
+  (@@ (gnu packages rust) rust-1.70))
 
 (define-public rust-src
   (package

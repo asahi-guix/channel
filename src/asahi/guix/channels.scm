@@ -15,13 +15,12 @@
 
         (channel
          (name 'guix)
-         (url "https://git.savannah.gnu.org/git/guix.git")
-         (branch "master")
-         (commit "5b700945fb0b33eec410de8979cae2fbf0d4f118")
+         (branch "main")
+         (url "https://github.com/asahi-guix/guix.git")
          (introduction
           (make-channel-introduction
-           "9edb3f66fd807b096b48283debdcddccfea34bad"
+           "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
            (openpgp-fingerprint
-            "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
+            "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
 
 channels

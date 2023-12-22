@@ -1,4 +1,5 @@
 (define-module (asahi guix system server)
+  #:use-module (asahi guix channels)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
   #:use-module (gnu packages certs)
@@ -139,61 +140,19 @@
                       (name "asahi-guix")
                       (build '(packages  "jemalloc" "rust"))
                       (channels
-                       (list (channel
-                              (name 'guix)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/guix.git")
-                              (introduction
-                               (make-channel-introduction
-                                "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                       (list guix-channel))
                       (systems '("aarch64-linux")))
                      (specification
                       (name "asahi-guix-channel")
                       (build '(channels asahi-guix))
                       (channels
-                       (list (channel
-                              (name 'guix)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/guix.git")
-                              (introduction
-                               (make-channel-introduction
-                                "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
-                             (channel
-                              (name 'asahi-guix)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/channel.git")
-                              (introduction
-                               (make-channel-introduction
-                                "7677591b60ae62f76d8fcee392f0b249414442f6"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                       (list asahi-guix-channel guix-channel))
                       (systems '("aarch64-linux")))
                      (specification
                       (name "asahi-guix-channel-next")
                       (build '(channels asahi-guix))
                       (channels
-                       (list (channel
-                              (name 'guix)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/guix.git")
-                              (introduction
-                               (make-channel-introduction
-                                "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
-                             (channel
-                              (name 'asahi-guix)
-                              (branch "next")
-                              (url "https://github.com/asahi-guix/channel.git")
-                              (introduction
-                               (make-channel-introduction
-                                "7677591b60ae62f76d8fcee392f0b249414442f6"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                       (list asahi-guix-next-channel guix-channel))
                       (systems '("aarch64-linux")))))
             (use-substitutes? #t)
             (remote-server (cuirass-remote-server-configuration)))))
@@ -273,6 +232,7 @@
 (define %unattended-upgrade-service
   (service unattended-upgrade-service-type
            (unattended-upgrade-configuration
+            (channels #~(cons asahi-guix-channel %default-channels))
             (schedule "0 4 * * *")
             (services-to-restart
              '(avahi-daemon

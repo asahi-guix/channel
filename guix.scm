@@ -42,7 +42,7 @@
     (inputs (list guile-3.0 util-linux))
     (synopsis "Asahi Guix")
     (description "Asahi Linux on GNU Guix")
-    (home-page "https://github.com/r0man/asahi-guix")
+    (home-page "https://github.com/asahi-guix/channel")
     (license license:gpl3+)))
 
 guile-asahi-guix

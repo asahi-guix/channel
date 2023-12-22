@@ -44,7 +44,7 @@ locations available:\n\n")
                   (display "- /run/.system-efi/vendorfw/firmware.cpio\n\n")
                   (mkdir-p out)))))))
     (native-inputs (list cpio))
-    (home-page "https://github.com/r0man/asahi-guix")
+    (home-page "https://github.com/asahi-guix/channel")
     (synopsis "Asahi Guix firmware for Apple Silicon")
     (description "The Asahi Guix firmware package uses the Apple Silicon firmware from
 the local machine as source.  The Apple Silicon firmware is

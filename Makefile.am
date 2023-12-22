@@ -37,29 +37,35 @@ NOCOMP_SOURCES = src/asahi/guix/packages/defconfig.main \
 		 src/asahi/guix/substitutes.asahi-guix.org.pub
 
 SOURCES = src/asahi/guix/bootloader/m1n1.scm \
-          src/asahi/guix/packages/linux.scm \
-          src/asahi/guix/packages/crates-io.scm \
-          src/asahi/guix/packages/gl.scm \
-          src/asahi/guix/packages/audio.scm \
-          src/asahi/guix/packages/firmware.scm \
-          src/asahi/guix/packages/rust.scm \
-          src/asahi/guix/packages/bootloader.scm \
-          src/asahi/guix/packages/misc.scm \
-          src/asahi/guix/build/bootloader/m1n1.scm \
-          src/asahi/guix/build/block-devices.scm \
-          src/asahi/guix/build/firmware.scm \
-          src/asahi/guix/system/desktop.scm \
-          src/asahi/guix/system/base.scm \
-          src/asahi/guix/system/install.scm \
-          src/asahi/guix/services/channels.scm \
-          src/asahi/guix/services/firmware.scm \
-          src/asahi/guix/services/udev.scm \
-          src/asahi/guix/services/console-font.scm \
-          src/asahi/guix/channels.scm \
-          src/asahi/guix/initrd.scm \
-          src/asahi/guix/udev.scm \
-          src/asahi/guix/transformations.scm \
-          src/asahi/guix/substitutes.scm
+	  src/asahi/guix/build/block-devices.scm \
+	  src/asahi/guix/build/bootloader/m1n1.scm \
+	  src/asahi/guix/build/firmware.scm \
+	  src/asahi/guix/build/modules.scm \
+	  src/asahi/guix/channels.scm \
+	  src/asahi/guix/initrd.scm \
+	  src/asahi/guix/machine/server.scm \
+	  src/asahi/guix/packages/audio.scm \
+	  src/asahi/guix/packages/bootloader.scm \
+	  src/asahi/guix/packages/crates-io.scm \
+	  src/asahi/guix/packages/firmware.scm \
+	  src/asahi/guix/packages/gl.scm \
+	  src/asahi/guix/packages/gnuzilla.scm \
+	  src/asahi/guix/packages/linux.scm \
+	  src/asahi/guix/packages/misc.scm \
+	  src/asahi/guix/packages/rust.scm \
+	  src/asahi/guix/services/channels.scm \
+	  src/asahi/guix/services/console-font.scm \
+	  src/asahi/guix/services/firmware.scm \
+	  src/asahi/guix/services/speakersafetyd.scm \
+	  src/asahi/guix/services/udev.scm \
+	  src/asahi/guix/substitutes.scm \
+	  src/asahi/guix/system/base.scm \
+	  src/asahi/guix/system/desktop.scm \
+	  src/asahi/guix/system/image.scm \
+	  src/asahi/guix/system/install.scm \
+	  src/asahi/guix/system/server.scm \
+	  src/asahi/guix/transformations.scm \
+	  src/asahi/guix/udev.scm
 
 TESTS = tests/asahi/guix/build/block-devices.scm
 

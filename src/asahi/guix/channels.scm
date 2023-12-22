@@ -34,7 +34,7 @@
    (url "https://github.com/asahi-guix/guix.git")
    (introduction
     (make-channel-introduction
-     "239d8d4f7f636e1d0c1e3928a57a3a123d672da5"
+     "f43bed7df1a6391a9260cd0f2b7c56c3a60b7d42"
      (openpgp-fingerprint
       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199")))))
 

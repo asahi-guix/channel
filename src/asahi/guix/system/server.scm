@@ -136,8 +136,8 @@
            (cuirass-configuration
             (specifications
              #~(list (specification
-                      (name "asahi-guix")
-                      (build '(packages  "jemalloc" "rust"))
+                      (name "guix")
+                      (build '(packages "jemalloc" "rust"))
                       (channels
                        (list (channel
                               (name 'guix)
@@ -150,7 +150,7 @@
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))
                      (specification
-                      (name "asahi-guix-channel")
+                      (name "asahi")
                       (build '(channels asahi-guix))
                       (channels
                        (list (channel
@@ -163,7 +163,7 @@
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                              (channel
-                              (name 'asahi-guix)
+                              (name 'asahi)
                               (branch "main")
                               (url "https://github.com/asahi-guix/channel.git")
                               (introduction
@@ -173,7 +173,7 @@
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))
                      (specification
-                      (name "asahi-guix-channel-next")
+                      (name "asahi-next")
                       (build '(channels asahi-guix-next))
                       (channels
                        (list (channel
@@ -186,7 +186,7 @@
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                              (channel
-                              (name 'asahi-guix-next)
+                              (name 'asahi-next)
                               (branch "next")
                               (url "https://github.com/asahi-guix/channel.git")
                               (introduction
@@ -283,7 +283,7 @@
                                  (openpgp-fingerprint
                                   "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                               (channel
-                               (name 'asahi-guix)
+                               (name 'asahi)
                                (branch "main")
                                (url "https://github.com/asahi-guix/channel.git")
                                (introduction

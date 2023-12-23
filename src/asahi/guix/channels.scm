@@ -5,9 +5,9 @@
             channels
             guix-channel))
 
-(define asahi-guix-channel
+(define asahi-channel
   (channel
-   (name 'asahi-guix)
+   (name 'asahi)
    (branch "main")
    (url "https://github.com/asahi-guix/channel.git")
    (introduction
@@ -16,9 +16,9 @@
      (openpgp-fingerprint
       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199")))))
 
-(define asahi-guix-next-channel
+(define asahi-next-channel
   (channel
-   (name 'asahi-guix-next)
+   (name 'asahi-next)
    (branch "next")
    (url "https://github.com/asahi-guix/channel.git")
    (introduction
@@ -39,6 +39,6 @@
       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199")))))
 
 (define channels
-  (list asahi-guix-channel guix-channel))
+  (list asahi-channel guix-channel))
 
 channels

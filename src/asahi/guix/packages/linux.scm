@@ -25,9 +25,9 @@
     (sha256
      (base32 hash))))
 
-(define asahi-linux-source-6.5-15
+(define asahi-linux-source-6.6-14
   (make-asahi-linux-source
-   "asahi-6.5-15" "089w8xfbryxcsqhwgjc2f3mxr79wg0r80qxng9bnxqzhvbya9fs6"))
+   "asahi-6.6-14" "0bi6s2nhdibf1igkwn7ynzfjgzrw0jphpmkfmdgwavf8fpcmf9zv"))
 
 (define* (make-asahi-linux name
                            #:key
@@ -35,8 +35,8 @@
                            (extra-options '())
                            (extra-version #f)
                            (linux linux-libre-arm64-generic)
-                           (source asahi-linux-source-6.5-15)
-                           (version "6.5.0"))
+                           (source asahi-linux-source-6.6-14)
+                           (version "6.6.0"))
   (let ((base (customize-linux
                #:configs (config->string (or extra-options '()))
                #:defconfig defconfig

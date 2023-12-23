@@ -171,29 +171,6 @@
                                 "7677591b60ae62f76d8fcee392f0b249414442f6"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
-                      (systems '("aarch64-linux")))
-                     (specification
-                      (name "asahi-next")
-                      (build '(channels asahi-guix-next))
-                      (channels
-                       (list (channel
-                              (name 'guix)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/guix.git")
-                              (introduction
-                               (make-channel-introduction
-                                "f43bed7df1a6391a9260cd0f2b7c56c3a60b7d42"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
-                             (channel
-                              (name 'asahi-next)
-                              (branch "next")
-                              (url "https://github.com/asahi-guix/channel.git")
-                              (introduction
-                               (make-channel-introduction
-                                "7677591b60ae62f76d8fcee392f0b249414442f6"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))))
             (use-substitutes? #t)
             (remote-server (cuirass-remote-server-configuration)))))

@@ -12,7 +12,7 @@
 (define-public asahi-scripts
   (package
     (name "asahi-scripts")
-    (version "20221220")
+    (version "20231219.1")
     (source
      (origin
        (method git-fetch)
@@ -20,7 +20,7 @@
              (url "https://github.com/AsahiLinux/asahi-scripts.git")
              (commit version)))
        (sha256
-        (base32 "06a1ixcvnzn9hj1wzfmvvnr9ddgdqqap87b7cf3f92av1a6p6576"))))
+        (base32 "1i7a007m744b358fhx925vywrn3alr7105lal9ggm73pacy5g6aj"))))
     (build-system gnu-build-system)
     (arguments
      `(#:phases
@@ -30,7 +30,7 @@
              (let ((out (assoc-ref outputs "out")))
                (substitute* "Makefile"
                  (("PREFIX=/usr/local") "PREFIX="))
-               (substitute* "asahi-fwextract"
+               (substitute* "asahi-fwupdate"
                  (("/usr/share/asahi-scripts/functions.sh")
                   (string-append out "/share/asahi-scripts/functions.sh"))
                  (("python3")
@@ -54,7 +54,7 @@
          (add-after 'install 'wrap
            (lambda* (#:key inputs outputs #:allow-other-keys)
              (let ((out (assoc-ref outputs "out")))
-               (wrap-program (string-append out "/bin/asahi-fwextract")
+               (wrap-program (string-append out "/bin/asahi-fwupdate")
                  `("GUIX_PYTHONPATH" ":" prefix
                    (,(getenv "GUIX_PYTHONPATH")))
                  `("LD_LIBRARY_PATH" ":" prefix

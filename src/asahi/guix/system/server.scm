@@ -179,7 +179,7 @@
   (service cuirass-remote-worker-service-type
            (cuirass-remote-worker-configuration
             (systems '("aarch64-linux" "x86_64-linux"))
-            (workers 2))))
+            (workers 1))))
 
 (define (certbot-ssl-certificate domain)
   (format #f "/etc/letsencrypt/live/~a/fullchain.pem" domain))

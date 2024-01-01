@@ -178,7 +178,7 @@
 (define %cuirass-remote-worker-service
   (service cuirass-remote-worker-service-type
            (cuirass-remote-worker-configuration
-            (systems '("aarch64-linux" "x86_64-linux"))
+            (systems '("aarch64-linux"))
             (workers 1))))
 
 (define (certbot-ssl-certificate domain)

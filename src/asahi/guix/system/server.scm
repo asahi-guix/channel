@@ -137,7 +137,7 @@
             (specifications
              #~(list (specification
                       (name "guix")
-                      (build '(packages "jemalloc" "rust"))
+                      (build '(packages "jemalloc" "icecat" "rust"))
                       (channels
                        (list (channel
                               (name 'guix)

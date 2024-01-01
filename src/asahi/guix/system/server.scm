@@ -151,7 +151,7 @@
                       (systems '("aarch64-linux")))
                      (specification
                       (name "asahi")
-                      (build '(channels asahi-guix))
+                      (build '(channels asahi))
                       (channels
                        (list (channel
                               (name 'guix)

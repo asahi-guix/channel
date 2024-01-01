@@ -66,7 +66,8 @@
                  "htop"
                  "net-tools"
                  "network-manager"
-                 "nss-certs"))
+                 "nss-certs"
+                 "screen"))
           %base-packages))
 
 (define %users

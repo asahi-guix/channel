@@ -15,19 +15,22 @@
 (define config->string
   (@@ (gnu packages linux) config->string))
 
-(define (make-asahi-linux-source commit hash)
+(define* (make-asahi-linux-source commit hash #:key (patches '()))
   (origin
     (method git-fetch)
     (uri (git-reference
           (url "https://github.com/AsahiLinux/linux.git")
           (commit commit)))
     (file-name (git-file-name "linux-source" commit))
+    (patches patches)
     (sha256
      (base32 hash))))
 
 (define asahi-linux-source-6.6-14
   (make-asahi-linux-source
-   "asahi-6.6-14" "0bi6s2nhdibf1igkwn7ynzfjgzrw0jphpmkfmdgwavf8fpcmf9zv"))
+   "asahi-6.6-14" "0bi6s2nhdibf1igkwn7ynzfjgzrw0jphpmkfmdgwavf8fpcmf9zv"
+   #:patches (list (local-file "patches/speakers-1.patch")
+                   (local-file "patches/speakers-2.patch"))))
 
 (define* (make-asahi-linux name
                            #:key

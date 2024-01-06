@@ -21,7 +21,7 @@
     (uri (git-reference
           (url "https://github.com/AsahiLinux/linux.git")
           (commit commit)))
-    (file-name (git-file-name "linux-source" commit))
+    (file-name (git-file-name "asahi-linux-source" commit))
     (patches patches)
     (sha256
      (base32 hash))))

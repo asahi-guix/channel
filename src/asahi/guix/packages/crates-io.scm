@@ -10,6 +10,26 @@
   #:use-module (guix git-download)
   #:use-module (guix packages))
 
+(define-public rust-asahi-nvram-0.2
+  (package
+    (name "rust-asahi-nvram")
+    (version "0.2.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "asahi-nvram" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "04qp73w97792flzkv9b3qb549iwa9mam837b0l8zh04lcnbcgci6"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-clap" ,rust-clap-3))))
+    (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
+    (synopsis "A tool to read and write nvram variables on ARM Macs")
+    (description
+     "This package provides a tool to read and write nvram variables on ARM Macs")
+    (license license:expat)))
+
 (define-public rust-prettyplease-0.2
   (package
     (name "rust-prettyplease")

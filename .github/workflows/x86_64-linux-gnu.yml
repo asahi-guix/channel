@@ -29,25 +29,10 @@ jobs:
                       "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
       - name: Ensure no locale warning
         run: test -z "$(guix --version 2>&1 >/dev/null)"
-      - name: Build alsa-ucm-conf-asahi
-        run: guix build -L src -v 5 alsa-ucm-conf-asahi
-      - name: Build asahi-audio
-        run: guix build -L src -v 5 asahi-audio
-      - name: Build asahi-firmware
-        run: guix build -L src -v 5 asahi-firmware
-      - name: Build asahi-fwextract
-        run: guix build -L src -v 5 asahi-fwextract
-      # - name: Build asahi-scripts
-      #   run: guix build -L src -v 5 asahi-scripts
-      # - name: Build asahi-m1n1
-      #   run: guix build -L src -v 5 asahi-m1n1
-      - name: Build u-boot-apple-m1
-        run: guix build -L src -v 5 u-boot-apple-m1
-      - name: Build mesa-asahi-edge
-        run: guix build -L src -v 5 mesa-asahi-edge
-      - name: Build asahi-linux
-        run: guix build -L src -v 5 asahi-linux
-      - name: Build asahi-linux-edge
-        run: guix build -L src -v 5 asahi-linux-edge
-      # - name: Build installer
-      #   run: guix system image -L src --image-type=efi-raw -v 5 asahi/guix/installer.scm
+      - name: Build packages
+        run: |
+          guix package -L src -A \
+          | grep asahi/guix/packages \
+          | awk '{print $1}' \
+          | grep -v linux \
+          | xargs guix build -L . -v 1

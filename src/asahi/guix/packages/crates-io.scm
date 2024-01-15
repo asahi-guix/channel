@@ -10,6 +10,29 @@
   #:use-module (guix git-download)
   #:use-module (guix packages))
 
+(define-public rust-apple-nvram-0.2
+  (package
+    (name "rust-apple-nvram")
+    (version "0.2.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "apple-nvram" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0v6cv4v0m1z46vaj53vb3z9mnkcjc364ql09zyiyzlcqblvhyljx"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-adler32" ,rust-adler32-1)
+                       ("rust-crc32fast" ,rust-crc32fast-1)
+                       ("rust-nix" ,rust-nix-0.26))))
+    (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
+    (synopsis "A library to parse and write apple-formatted nvram entries")
+    (description
+     "This package provides a library to parse and write apple-formatted nvram entries")
+    (license license:expat)))
+
 (define-public rust-asahi-nvram-0.2
   (package
     (name "rust-asahi-nvram")
@@ -23,7 +46,8 @@
         (base32 "04qp73w97792flzkv9b3qb549iwa9mam837b0l8zh04lcnbcgci6"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-clap" ,rust-clap-3))))
+     `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.2)
+                       ("rust-clap" ,rust-clap-3))))
     (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
     (synopsis "A tool to read and write nvram variables on ARM Macs")
     (description

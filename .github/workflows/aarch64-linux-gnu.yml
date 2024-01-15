@@ -34,4 +34,4 @@ jobs:
           | grep asahi/guix/packages \
           | awk '{print $1}' \
           | grep -v linux \
-          | xargs guix build -L src -v 1
+          | xargs guix build -L src -v 1 --target=aarch64-linux-gnu

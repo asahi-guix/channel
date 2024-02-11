@@ -119,6 +119,7 @@ COMMIT
 -A INPUT -p tcp --dport 5522 ! -s 127.0.0.1 -j REJECT
 -A INPUT -p tcp --dport 5555:5558 ! -s 127.0.0.1 -j REJECT
 -A INPUT -p tcp --dport 8080:8082 ! -s 127.0.0.1 -j REJECT
+-A INPUT -j REJECT --reject-with icmp6-port-unreachable
 COMMIT
 ")))))
 

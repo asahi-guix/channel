@@ -100,8 +100,10 @@
 :OUTPUT ACCEPT
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 -A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
+-A FORWARD -p tcp --dport 443 -j ACCEPT
+-A PREROUTING -t nat -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1
+-A POSTROUTING -t nat -p tcp -d 127.0.0.1 -j MASQUERADE
 -A INPUT -j REJECT --reject-with icmp-port-unreachable
 COMMIT
 "))
@@ -111,8 +113,10 @@ COMMIT
 :OUTPUT ACCEPT
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 -A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
+-A FORWARD -p tcp --dport 443 -j ACCEPT
+-A PREROUTING -t nat -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1
+-A POSTROUTING -t nat -p tcp -d 127.0.0.1 -j MASQUERADE
 -A INPUT -j REJECT --reject-with icmp6-port-unreachable
 COMMIT
 ")))))

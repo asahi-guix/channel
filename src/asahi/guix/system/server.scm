@@ -1,4 +1,5 @@
 (define-module (asahi guix system server)
+  #:use-module (asahi guix packages ci)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
   #:use-module (gnu packages certs)
@@ -135,6 +136,7 @@
 (define %cuirass-service
   (service cuirass-service-type
            (cuirass-configuration
+            (cuirass cuirass-disable-jit)
             (specifications
              #~(list (specification
                       (name "guix")

@@ -100,10 +100,11 @@
 :OUTPUT ACCEPT
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 -A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
--A FORWARD -p tcp --dport 443 -j ACCEPT
--A PREROUTING -t nat -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1
--A POSTROUTING -t nat -p tcp -d 127.0.0.1 -j MASQUERADE
+-A INPUT -p tcp --dport 5522 ! -s 127.0.0.1 -j REJECT
+-A INPUT -p tcp --dport 5555:5558 ! -s 127.0.0.1 -j REJECT
+-A INPUT -p tcp --dport 8080:8082 ! -s 127.0.0.1 -j REJECT
 -A INPUT -j REJECT --reject-with icmp-port-unreachable
 COMMIT
 "))
@@ -113,11 +114,11 @@ COMMIT
 :OUTPUT ACCEPT
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 -A INPUT -p tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
--A FORWARD -p tcp --dport 443 -j ACCEPT
--A PREROUTING -t nat -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1
--A POSTROUTING -t nat -p tcp -d 127.0.0.1 -j MASQUERADE
--A INPUT -j REJECT --reject-with icmp6-port-unreachable
+-A INPUT -p tcp --dport 5522 ! -s 127.0.0.1 -j REJECT
+-A INPUT -p tcp --dport 5555:5558 ! -s 127.0.0.1 -j REJECT
+-A INPUT -p tcp --dport 8080:8082 ! -s 127.0.0.1 -j REJECT
 COMMIT
 ")))))
 
@@ -161,6 +162,8 @@ COMMIT
   (service cuirass-service-type
            (cuirass-configuration
             (cuirass cuirass-disable-jit)
+            (host "localhost")
+            (port 8081)
             (specifications
              #~(list (specification
                       (name "guix")
@@ -200,7 +203,11 @@ COMMIT
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))))
             (use-substitutes? #t)
-            (remote-server (cuirass-remote-server-configuration)))))
+            (remote-server
+             (cuirass-remote-server-configuration
+              (backend-port 5555)
+              (log-port 5556)
+              (publish-port 5557))))))
 
 (define %cuirass-remote-worker-service
   (service cuirass-remote-worker-service-type

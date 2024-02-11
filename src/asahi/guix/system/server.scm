@@ -117,12 +117,6 @@ COMMIT
 COMMIT
 ")))))
 
-(define %libvirt-service
-  (service libvirt-service-type
-           (libvirt-configuration
-            (unix-sock-group "libvirt")
-            (tls-port "16555"))))
-
 (define %ntp-service
   (service ntp-service-type))
 
@@ -314,7 +308,6 @@ COMMIT
                fail2ban
                guix-daemon
                guix-publish
-               libvirtd
                mcron
                nginx
                nscd
@@ -359,7 +352,6 @@ COMMIT
          %guix-publish-service
          ;; %http-service-bootstrap
          %http-service
-         %libvirt-service
          %ntp-service
          %openssh-service
          %postgresql-service

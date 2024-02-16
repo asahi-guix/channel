@@ -168,13 +168,13 @@ COMMIT
                       (channels
                        (list (channel
                               (name 'guix)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/guix.git")
+                              (url "https://git.savannah.gnu.org/git/guix.git")
+                              (branch "core-updates")
                               (introduction
                                (make-channel-introduction
-                                "047f4ab1dbd2dbd63f2f1adc4edf9b73ea71a7dc"
+                                "9edb3f66fd807b096b48283debdcddccfea34bad"
                                 (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                                 "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
                       (systems '("aarch64-linux")))
                      (specification
                       (name "asahi")
@@ -182,13 +182,13 @@ COMMIT
                       (channels
                        (list (channel
                               (name 'guix)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/guix.git")
+                              (url "https://git.savannah.gnu.org/git/guix.git")
+                              (branch "core-updates")
                               (introduction
                                (make-channel-introduction
-                                "047f4ab1dbd2dbd63f2f1adc4edf9b73ea71a7dc"
+                                "9edb3f66fd807b096b48283debdcddccfea34bad"
                                 (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
+                                 "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))
                              (channel
                               (name 'asahi)
                               (branch "main")

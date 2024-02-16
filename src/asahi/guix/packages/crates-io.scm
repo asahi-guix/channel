@@ -876,14 +876,14 @@ this to write Rust programs which can be customized by end users easily.")
 (define-public rust-speakersafetyd-0.1
   (package
     (name "rust-speakersafetyd")
-    (version "0.1.7")
+    (version "0.1.9")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "speakersafetyd" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "114134b2hf6bqp2zncnkikhrhg118mk028f5p5axcdgclzpiq24p"))))
+        (base32 "0dsy2gbrqiv6ky9mz09z95i111yqi16dn13vi9m8hc7gwv3bk0pj"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-alsa" ,rust-alsa-0.8)

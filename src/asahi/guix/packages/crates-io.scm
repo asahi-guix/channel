@@ -57,14 +57,14 @@
 (define-public rust-prettyplease-0.2
   (package
     (name "rust-prettyplease")
-    (version "0.2.15")
+    (version "0.2.16")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "prettyplease" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "17az47j29q76gnyqvd5giryjz2fp7zw7vzcka1rb8ndbfgbmn05f"))))
+        (base32 "1dfbq98rkq86l9g8w1l81bdvrz4spcfl48929n0pyz79clhzc754"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -122,14 +122,14 @@
 (define-public rust-bindgen-0.69
   (package
     (name "rust-bindgen")
-    (version "0.69.1")
+    (version "0.69.4")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "bindgen" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1hkrccfri0223b2r5cvacy83ld6s76n2m68518bsfilrhk1ypz4z"))))
+        (base32 "18194611hn3k1dkxlha7a52sr8vmfhl9blc54xhj08cahd8wh3d0"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -159,14 +159,14 @@
 (define-public rust-bindgen-cli-0.69
   (package
     (name "rust-bindgen-cli")
-    (version "0.69.1")
+    (version "0.69.4")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "bindgen-cli" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "00dm53rclzqr326fx1jk0q1smf83spzgp5wq55w9xa8hj7h5wml8"))))
+        (base32 "00dfny07m4xfnqbfn7yr7cqwilj6935lbyg5d39yxjfj8jglfcax"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-bindgen" ,rust-bindgen-0.69)
@@ -516,7 +516,7 @@ plugins")
 (define-public rust-bankstown
   (package
     (name "rust-bankstown")
-    (version "1.0.0")
+    (version "1.1.0")
     (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -524,7 +524,7 @@ plugins")
                     (commit version)))
               (file-name (git-file-name name version))
               (sha256
-               (base32 "084p4rf06m4ywiai1lj079p9fa3dkx555vmp5q9dzrmf6fxbsffr"))))
+               (base32 "1a4lickqwkd8kdnsfxwz8rnv3kfp7xjlj3qd1f63vgd6iw8mff11"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-biquad" ,rust-biquad-0.4)
@@ -586,14 +586,14 @@ format")
 (define-public rust-libc-0.2
   (package
     (name "rust-libc")
-    (version "0.2.151")
+    (version "0.2.153")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "libc" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1x28f0zgp4zcwr891p8n9ag9w371sbib30vp4y6hi2052frplb9h"))))
+        (base32 "1gg7m1ils5dms5miq9fyllrcp0jxnbpgkx71chd2i0lafa8qy6cw"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -607,14 +607,14 @@ format")
 (define-public rust-zerocopy-derive-0.7
   (package
     (name "rust-zerocopy-derive")
-    (version "0.7.30")
+    (version "0.7.32")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "zerocopy-derive" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1fpnplh9k89mj372wnv5s5c5jh0qn9f42wqvznz8za1mhbv2p4dy"))))
+        (base32 "19nj11md42aijyqnfx8pa647fjzhz537xyc624rajwwfrn6b3qcw"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -629,14 +629,14 @@ format")
 (define-public rust-zerocopy-0.7
   (package
     (name "rust-zerocopy")
-    (version "0.7.30")
+    (version "0.7.32")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "zerocopy" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1ixmmjkhlzc2hb3szvwcfl8ipsz4nfv0ihsyccqiz3siam2clv9h"))))
+        (base32 "1ghnfxw69kx5d1aqfd5fsfrra9dgpz17yqx84nd4ryjk3sbd7m3l"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -650,14 +650,14 @@ format")
 (define-public rust-ahash-0.8
   (package
     (name "rust-ahash")
-    (version "0.8.6")
+    (version "0.8.8")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "ahash" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0yn9i8nc6mmv28ig9w3dga571q09vg9f1f650mi5z8phx42r6hli"))))
+        (base32 "1zxa0dx8i2kkgd9sk1i8276dg5s8ga6n0yw8gb3n3w9x5l855ka2"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -709,14 +709,14 @@ performance")
 (define-public rust-indexmap-2
   (package
     (name "rust-indexmap")
-    (version "2.1.0")
+    (version "2.2.3")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "indexmap" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "07rxrqmryr1xfnmhrjlz8ic6jw28v6h5cig3ws2c9d0wifhy2c6m"))))
+        (base32 "0xy1wcad2da199f6y0mwmx9scw7glgs1n2g4m8nfln7hcf8g6g13"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -736,14 +736,14 @@ performance")
 (define-public rust-configparser-3
   (package
     (name "rust-configparser")
-    (version "3.0.3")
+    (version "3.0.4")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "configparser" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0dwjni8z9v26ysn7yqw3ickvqbrwjd0cv1ag20manlia990nxrg0"))))
+        (base32 "1202hawv78c3w2j8s44jjcflnpvkwgv3l1irafl7f0smivdd7ijf"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -761,14 +761,14 @@ this to write Rust programs which can be customized by end users easily.")
 (define-public rust-clap-verbosity-flag-2
   (package
     (name "rust-clap-verbosity-flag")
-    (version "2.1.0")
+    (version "2.2.0")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "clap-verbosity-flag" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "06f0myl6chqvyf9dpv3ydblqp8sjrkwwm0nai8vzn33rbl0vpzg5"))))
+        (base32 "0y54kb14nr2vddl5j5h1s4217hbnxfxh7ln8j7lw5r2qvp0216xv"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -823,14 +823,14 @@ this to write Rust programs which can be customized by end users easily.")
 (define-public rust-chrono-0.4
   (package
     (name "rust-chrono")
-    (version "0.4.31")
+    (version "0.4.34")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "chrono" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0f6vg67pipm8cziad2yms6a639pssnvysk1m05dd9crymmdnhb3z"))))
+        (base32 "12zk0ja924f55va2fs0qj34xaygq46fy92blmc7qkmcj9dj1bh2v"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t

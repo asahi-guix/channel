@@ -9,40 +9,39 @@
   #:use-module (guix utils))
 
 (define-public asahi-m1n1
-  (let ((commit "6de69564bd7fb4c3a367b145e5516a21fde89201"))
-    (package
-      (name "asahi-m1n1")
-      (version (git-version "1.4.2" "0" commit))
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/AsahiLinux/m1n1")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 "15lddmlx8r7dbpwsdda3za46jmc666lhh430x6ghzzsqbf05b1f9"))))
-      (build-system gnu-build-system)
-      (supported-systems (list "aarch64-linux"))
-      (arguments
-       (list
-        #:phases
-        #~(modify-phases %standard-phases
-            (replace 'configure
-              (lambda _
-                (setenv "RELEASE" "1")))
-            (replace 'install
-              (lambda* (#:key outputs #:allow-other-keys)
-                (let ((dir (string-append (assoc-ref outputs "out") "/libexec/")))
-                  (mkdir-p dir)
-                  (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin")))))
-            ;; There are no tests
-            (delete 'check))))
-      (home-page "https://github.com/AsahiLinux/m1n1")
-      (synopsis "Boot loader and experimentation playground for Apple Silicon")
-      (description "m1n1 is the bootloader developed by the Asahi Linux project to bridge
+  (package
+    (name "asahi-m1n1")
+    (version "1.4.11")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/AsahiLinux/m1n1")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1j62aj5gzmldgkyikcvdg5rxym8mpswgbf00bk1h8mdccc6qiwnz"))))
+    (build-system gnu-build-system)
+    (supported-systems (list "aarch64-linux"))
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (replace 'configure
+            (lambda _
+              (setenv "RELEASE" "1")))
+          (replace 'install
+            (lambda* (#:key outputs #:allow-other-keys)
+              (let ((dir (string-append (assoc-ref outputs "out") "/libexec/")))
+                (mkdir-p dir)
+                (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin")))))
+          ;; There are no tests
+          (delete 'check))))
+    (home-page "https://github.com/AsahiLinux/m1n1")
+    (synopsis "Boot loader and experimentation playground for Apple Silicon")
+    (description "m1n1 is the bootloader developed by the Asahi Linux project to bridge
 the Apple (XNU) boot ecosystem to the Linux boot ecosystem.")
-      (license license:expat))))
+    (license license:expat)))
 
 (define-public u-boot-apple-m1
   (let ((base (make-u-boot-package "apple_m1" "aarch64-linux-gnu"))

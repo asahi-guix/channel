@@ -17,7 +17,7 @@
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1hrhf3sry2jb5maj1s9mm0bn7c5pfnmlv93aq2dybcsksp591fir"))))
+                "072gw5mbi8wgjh8f8gddqcf8pn3fsspsl4zd639ggb0lkb7hv9bm"))))
     (build-system copy-build-system)
     (arguments
      '(#:install-plan

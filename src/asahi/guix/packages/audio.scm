@@ -8,15 +8,16 @@
 (define-public alsa-ucm-conf-asahi
   (package
     (name "alsa-ucm-conf-asahi")
-    (version "4")
+    (version "5")
     (source (origin
-              (method url-fetch)
-              (uri (string-append
-                    "https://github.com/AsahiLinux/alsa-ucm-conf-asahi/archive/v"
-                    version ".tar.gz"))
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/AsahiLinux/alsa-ucm-conf-asahi")
+                    (commit (string-append "v" version))))
+              (file-name (git-file-name name version))
               (sha256
                (base32
-                "1hrhf3sry2jb5maj1s9mm0bn7c4pfnmlv93aq2dybcsksp591fir"))))
+                "1hrhf3sry2jb5maj1s9mm0bn7c5pfnmlv93aq2dybcsksp591fir"))))
     (build-system copy-build-system)
     (arguments
      '(#:install-plan

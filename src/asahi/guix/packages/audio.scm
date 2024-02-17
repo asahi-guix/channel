@@ -33,15 +33,15 @@ hardware.")
 (define-public asahi-audio
   (package
     (name "asahi-audio")
-    (version "5f9067d0fba89acb6c6d68819edad30fe28b1dfe")
+    (version "1.6")
     (source (origin
               (method git-fetch)
               (uri (git-reference
                     (url "https://github.com/chadmed/asahi-audio")
-                    (commit version)))
+                    (commit (string-append "v" version))))
               (file-name (git-file-name name version))
               (sha256
-               (base32 "0048qx4afvm1qfayzzfia7iqbj17pkz5xspya74xlc5ji3k3vfij"))))
+               (base32 "0j226g8mfk1r3ishid2b6jwqrfrsxq8yvc6rcia62lrnpq7x051p"))))
     (build-system copy-build-system)
     (arguments
      `(#:install-plan

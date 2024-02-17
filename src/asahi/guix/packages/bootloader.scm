@@ -46,9 +46,9 @@ the Apple (XNU) boot ecosystem to the Linux boot ecosystem.")
 
 (define-public u-boot-apple-m1
   (let ((base (make-u-boot-package "apple_m1" "aarch64-linux-gnu"))
-        (commit "0203fd3d70b229ea2e50abe40b85ae8adc5c49f3"))
+        (commit "71f6d0feb47836614752a0e30a1b7339b9e15656"))
     (package/inherit base
-      (version (git-version "2023.07.02-3" "0" commit))
+      (version (git-version "2023.07.02-4" "0" commit))
       (source
        (origin
          (method git-fetch)
@@ -57,7 +57,7 @@ the Apple (XNU) boot ecosystem to the Linux boot ecosystem.")
                (commit commit)))
          (file-name (git-file-name (package-name base) version))
          (sha256
-          (base32 "1li01b54m1ki8p8fhgski7g4ancsgjfbnwr5hsisxv5a1imqvf3b"))))
+          (base32 "0dv242kxz3zw9ly3rwdj87bfh4byqqrmgy9a5605vhb04c9s92ik"))))
       (arguments
        (substitute-keyword-arguments (package-arguments base)
          ((#:phases phases '%standard-phases)

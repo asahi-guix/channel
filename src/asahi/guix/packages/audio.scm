@@ -1,7 +1,7 @@
 (define-module (asahi guix packages audio)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix build-system copy)
-  #:use-module (guix download)
+  #:use-module (guix build-system gnu)
   #:use-module (guix git-download)
   #:use-module (guix packages))
 
@@ -42,22 +42,14 @@ hardware.")
               (file-name (git-file-name name version))
               (sha256
                (base32 "0j226g8mfk1r3ishid2b6jwqrfrsxq8yvc6rcia62lrnpq7x051p"))))
-    (build-system copy-build-system)
+    (build-system gnu-build-system)
     (arguments
-     `(#:install-plan
-       '(("conf" "etc/pipewire/pipewire.conf.d")
-         ("firs" "usr/share/pipewire/devices/apple"))
+     `(#:make-flags
+       (list (string-append "PREFIX=" (assoc-ref %outputs "out")))
        #:phases
        (modify-phases %standard-phases
-         (add-after 'unpack 'patch-source
-           (lambda* (#:key outputs #:allow-other-keys)
-             (let ((out (assoc-ref outputs "out")))
-               (substitute* "conf/j314.conf"
-                 (("/usr/share/pipewire/devices/apple")
-                  (string-append out "/usr/share/pipewire/devices/apple")))
-               (substitute* "conf/j316.conf"
-                 (("/usr/share/pipewire/devices/apple")
-                  (string-append out "/usr/share/pipewire/devices/apple")))))))))
+         (delete 'configure)
+         (delete 'check))))
     (home-page "https://github.com/chadmed/asahi-audio")
     (synopsis "Linux audio configuration for Apple Silicon Macs")
     (description "Linux userspace audio configuration for Apple Silicon Macs.")

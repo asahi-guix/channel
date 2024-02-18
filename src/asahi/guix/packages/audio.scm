@@ -48,6 +48,15 @@ hardware.")
        (list (string-append "PREFIX=" (assoc-ref %outputs "out")))
        #:phases
        (modify-phases %standard-phases
+         (add-after 'unpack 'patch-source
+           (lambda* (#:key inputs outputs #:allow-other-keys)
+             (let ((out (assoc-ref outputs "out")))
+               (substitute* "conf/85-asahi-policy.lua"
+                 (("/usr/share/asahi-audio")
+                  (string-append out "/share/asahi-audio")))
+               (substitute* (find-files "firs" "\\.json$")
+                 (("/usr/share/asahi-audio")
+                  (string-append out "/share/asahi-audio"))))))
          (delete 'configure)
          (delete 'check))))
     (home-page "https://github.com/chadmed/asahi-audio")

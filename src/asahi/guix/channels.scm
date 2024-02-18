@@ -30,13 +30,13 @@
 (define guix-channel
   (channel
    (name 'guix)
-   (url "https://git.savannah.gnu.org/git/guix.git")
-   (branch "core-updates")
+   (url "https://github.com/asahi-guix/guix.git")
+   (branch "main")
    (introduction
     (make-channel-introduction
-     "9edb3f66fd807b096b48283debdcddccfea34bad"
+     "b8b7760de185968c54240b31c0ff186652acf7a0"
      (openpgp-fingerprint
-      "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
+      "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199")))))
 
 (define channels
   (list asahi-channel guix-channel))

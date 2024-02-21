@@ -913,5 +913,7 @@ this to write Rust programs which can be customized by end users easily.")
      (list pkg-config))
     (home-page "https://github.com/AsahiLinux/speakersafetyd/")
     (synopsis "Speaker protection daemon for embedded Linux systems")
-    (description "Speaker protection daemon for embedded Linux systems")
+    (description "speakersafetyd is a userspace daemon written in Rust that implements
+an analogue of the Texas Instruments Smart Amp speaker protection
+model.")
     (license license:expat)))

@@ -5,6 +5,7 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages python)
+  #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
@@ -12,22 +13,35 @@
   #:use-module (guix utils)
   #:use-module (srfi srfi-1))
 
+(define %speakers-patch-1
+  (origin
+    (method url-fetch)
+    (uri "https://github.com/AsahiLinux/linux/commit/385ea7b5023486aba7919cec8b6b3f6a843a1013.patch")
+    (sha256 "1hq5dbp2xy7mc7m1i7bh8q02rxisibpnwxyjyzd6sqw712yqdqgk")))
+
+(define %speakers-patch-2
+  (origin
+    (method url-fetch)
+    (uri "https://github.com/AsahiLinux/linux/commit/6a24102c06c95951ab992e2d41336cc6d4bfdf23.patch")
+    (sha256 "165gc37jcv5pm34jiaf7kk409q3fbnc4s6v6s7fvpv17li05aq2p")))
+
 (define config->string
   (@@ (gnu packages linux) config->string))
 
-(define (make-asahi-linux-source commit hash)
+(define (make-asahi-linux-source commit hash patches)
   (origin
     (method git-fetch)
     (uri (git-reference
           (url "https://github.com/AsahiLinux/linux.git")
           (commit commit)))
     (file-name (git-file-name "linux-source" commit))
-    (sha256
-     (base32 hash))))
+    (patches patches)
+    (sha256 (base32 hash))))
 
 (define asahi-linux-source-6.6-14
   (make-asahi-linux-source
-   "asahi-6.6-14" "0bi6s2nhdibf1igkwn7ynzfjgzrw0jphpmkfmdgwavf8fpcmf9zv"))
+   "asahi-6.6-14" "0bi6s2nhdibf1igkwn7ynzfjgzrw0jphpmkfmdgwavf8fpcmf9zv"
+   (list %speakers-patch-1 %speakers-patch-2)))
 
 (define* (make-asahi-linux name
                            #:key

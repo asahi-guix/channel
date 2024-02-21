@@ -5,14 +5,14 @@
   #:use-module (guix gexp)
   #:export (speakersafetyd-service-type))
 
-(define speakersafetyd-shepherd-service
-  (shepherd-service
-   (documentation "Run the speaker saftey daemon.")
-   (provision '(speakersafetyd))
-   (start #~(make-forkexec-constructor
-             (list #$(file-append rust-speakersafetyd-0.1 "/bin/speakersafetyd"))
-             #:pid-file "/var/run/speakersafetyd.pid"))
-   (stop #~(make-kill-destructor))))
+(define (speakersafetyd-shepherd-service config)
+  (list (shepherd-service
+         (documentation "Run the speaker saftey daemon.")
+         (provision '(speakersafetyd))
+         (start #~(make-forkexec-constructor
+                   (list #$(file-append rust-speakersafetyd-0.1 "/bin/speakersafetyd"))
+                   #:pid-file "/var/run/speakersafetyd.pid"))
+         (stop #~(make-kill-destructor)))))
 
 (define speakersafetyd-service-type
   (service-type

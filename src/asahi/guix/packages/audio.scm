@@ -1,59 +1,10 @@
 (define-module (asahi guix packages audio)
-  #:use-module ((gnu packages linux) #:prefix linux:)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix build-system copy)
   #:use-module (guix build-system gnu)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages))
-
-(define-public asahi-alsa-ucm-conf
-  (package
-    (name "asahi-alsa-ucm-conf")
-    (version "5")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                    (url "https://github.com/AsahiLinux/alsa-ucm-conf-asahi")
-                    (commit (string-append "v" version))))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "072gw5mbi8wgjh8f8gddqcf8pn3fsspsl4zd639ggb0lkb7hv9bm"))))
-    (build-system copy-build-system)
-    (arguments
-     (list
-      #:install-plan
-      #~'(("ucm2" "share/alsa/ucm2"))
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'install 'add-alsa-ucm-conf
-            (lambda* (#:key inputs outputs #:allow-other-keys)
-              (let ((out (assoc-ref outputs "out"))
-                    (alsa-ucm-conf (assoc-ref inputs "alsa-ucm-conf")))
-                (for-each (lambda (dir)
-                            (let ((path (format #f "/share/alsa/~a" dir)))
-                              (copy-recursively
-                               (string-append alsa-ucm-conf path)
-                               (string-append out path)
-                               #:follow-symlinks? #t)))
-                          '("ucm" "ucm2"))))))))
-    (native-inputs
-     `(("alsa-ucm-conf" ,linux:alsa-ucm-conf)))
-    (home-page "https://github.com/AsahiLinux/alsa-ucm-conf-asahi")
-    (synopsis "The Advanced Linux Sound Architecture Use Case Manager")
-    (description
-     "This package contains Advanced Linux Sound Architecture Use Case Manager
-configuration of audio input/output names and routing for specific audio
-hardware.")
-    (license license:bsd-3)))
-
-(define-public asahi-alsa-lib
-  (package
-    (inherit linux:alsa-lib)
-    (inputs
-     (modify-inputs (package-inputs linux:alsa-lib)
-       (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))
 
 (define-public asahi-audio
   (package

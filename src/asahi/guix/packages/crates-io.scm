@@ -1,5 +1,6 @@
 (define-module (asahi guix packages crates-io)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (asahi guix packages audio)
   #:use-module (asahi guix packages rust)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages linux)
@@ -908,7 +909,7 @@ this to write Rust programs which can be customized by end users easily.")
              (let ((target (string-append (assoc-ref outputs "out") "/share")))
                (copy-recursively "conf" target)))))))
     (inputs
-     (list alsa-lib))
+     (list asahi-alsa-lib))
     (native-inputs
      (list pkg-config))
     (home-page "https://github.com/AsahiLinux/speakersafetyd/")

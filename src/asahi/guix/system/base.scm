@@ -4,6 +4,7 @@
   #:use-module (asahi guix packages linux)
   #:use-module (asahi guix services console-font)
   #:use-module (asahi guix services firmware)
+  #:use-module (asahi guix services sound)
   #:use-module (asahi guix substitutes)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
@@ -69,7 +70,8 @@
          %base-packages))
 
 (define %services
-  (modify-services (cons* (service network-manager-service-type)
+  (modify-services (cons* asahi-alsa-service
+                          (service network-manager-service-type)
                           (service openssh-service-type
                                    (openssh-configuration
                                     (openssh openssh-sans-x)))

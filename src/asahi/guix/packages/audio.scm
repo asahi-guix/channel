@@ -51,7 +51,6 @@ hardware.")
 (define-public asahi-alsa-lib
   (package
     (inherit linux:alsa-lib)
-    (name "asahi-alsa-lib")
     (inputs
      (modify-inputs (package-inputs linux:alsa-lib)
        (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))

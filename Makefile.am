@@ -32,8 +32,11 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
-NOCOMP_SOURCES = src/asahi/guix/packages/defconfig.main \
+NOCOMP_SOURCES = src/asahi/guix/files/ssh/authorized-keys/roman.pub \
+                 src/asahi/guix/files/ssh/authorized-keys/root.pub \
+                 src/asahi/guix/packages/defconfig.main \
 		 src/asahi/guix/packages/defconfig.edge \
+                 src/asahi/guix/patches/cuirass-disable-jit.patch \
 		 src/asahi/guix/substitutes.asahi-guix.org.pub
 
 SOURCES = src/asahi/guix/bootloader/m1n1.scm \
@@ -46,16 +49,17 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	  src/asahi/guix/machine/server.scm \
 	  src/asahi/guix/packages/audio.scm \
 	  src/asahi/guix/packages/bootloader.scm \
+          src/asahi/guix/packages/ci.scm \
 	  src/asahi/guix/packages/crates-io.scm \
 	  src/asahi/guix/packages/firmware.scm \
 	  src/asahi/guix/packages/gl.scm \
-	  src/asahi/guix/packages/gnuzilla.scm \
 	  src/asahi/guix/packages/linux.scm \
 	  src/asahi/guix/packages/misc.scm \
 	  src/asahi/guix/packages/rust.scm \
 	  src/asahi/guix/services/channels.scm \
 	  src/asahi/guix/services/console-font.scm \
 	  src/asahi/guix/services/firmware.scm \
+          src/asahi/guix/services/sound.scm \
 	  src/asahi/guix/services/speakersafetyd.scm \
 	  src/asahi/guix/services/udev.scm \
 	  src/asahi/guix/substitutes.scm \

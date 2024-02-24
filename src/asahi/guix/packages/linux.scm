@@ -178,3 +178,9 @@ hardware.")
      (modify-inputs (package-inputs linux:pipewire)
        (replace "alsa-lib" asahi-alsa-lib)))))
 
+(define-public asahi-wireplumber
+  (package/inherit linux:wireplumber
+    (name "asahi-wireplumber")
+    (inputs
+     (modify-inputs (package-inputs linux:wireplumber)
+       (replace "pipewire" asahi-pipewire)))))

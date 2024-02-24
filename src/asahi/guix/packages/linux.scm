@@ -170,3 +170,11 @@ hardware.")
     (inputs
      (modify-inputs (package-inputs linux:alsa-plugins)
        (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))
+
+(define-public asahi-pipewire
+  (package/inherit linux:pipewire
+    (name "asahi-pipewire")
+    (inputs
+     (modify-inputs (package-inputs linux:pipewire)
+       (replace "alsa-lib" asahi-alsa-lib)))))
+

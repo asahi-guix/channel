@@ -157,12 +157,16 @@ configuration of audio input/output names and routing for specific audio
 hardware.")
     (license license:bsd-3)))
 
-(define replace-alsa-ucm-conf
-  (package-input-rewriting
-   `((,linux:alsa-ucm-conf . ,asahi-alsa-ucm-conf))))
-
 (define-public asahi-alsa-lib
-  (package (inherit (replace-alsa-ucm-conf linux:alsa-lib))))
+  (package/inherit linux:alsa-lib
+    (name "asahi-alsa-lib")
+    (inputs
+     (modify-inputs (package-inputs linux:alsa-lib)
+       (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))
 
 (define-public asahi-alsa-plugins
-  (package (inherit (replace-alsa-ucm-conf linux:alsa-plugins))))
+  (package/inherit linux:alsa-plugins
+    (name "asahi-alsa-plugins")
+    (inputs
+     (modify-inputs (package-inputs linux:alsa-plugins)
+       (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))

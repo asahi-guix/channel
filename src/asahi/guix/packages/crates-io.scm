@@ -72,7 +72,7 @@
        #:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
                        ("rust-syn" ,rust-syn-2))))
     (home-page "https://github.com/dtolnay/prettyplease")
-    (synopsis "A minimal `syn` syntax tree pretty-printer")
+    (synopsis "Minimal `syn` syntax tree pretty-printer")
     (description
      "This package provides a minimal `syn` syntax tree pretty-printer")
     (license (list license:expat license:asl2.0))))

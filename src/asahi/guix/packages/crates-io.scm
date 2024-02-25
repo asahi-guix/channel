@@ -29,7 +29,7 @@
                        ("rust-crc32fast" ,rust-crc32fast-1)
                        ("rust-nix" ,rust-nix-0.26))))
     (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
-    (synopsis "A library to parse and write apple-formatted nvram entries")
+    (synopsis "Library to parse and write apple-formatted nvram entries")
     (description
      "This package provides a library to parse and write apple-formatted nvram entries")
     (license license:expat)))
@@ -50,7 +50,7 @@
      `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.2)
                        ("rust-clap" ,rust-clap-3))))
     (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
-    (synopsis "A tool to read and write nvram variables on ARM Macs")
+    (synopsis "Tool to read and write nvram variables on ARM Macs")
     (description
      "This package provides a tool to read and write nvram variables on ARM Macs")
     (license license:expat)))

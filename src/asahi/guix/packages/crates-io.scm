@@ -651,14 +651,14 @@ format")
 (define-public rust-ahash-0.8
   (package
     (name "rust-ahash")
-    (version "0.8.8")
+    (version "0.8.9")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "ahash" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1zxa0dx8i2kkgd9sk1i8276dg5s8ga6n0yw8gb3n3w9x5l855ka2"))))
+        (base32 "17y8qags59458pxppikwr46y7qkn28y5c9fmsh257f3n9n1v64yp"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t

@@ -93,7 +93,7 @@
      `(#:skip-build? #t
        #:cargo-inputs (("rust-serde" ,rust-serde-1)
                        ("rust-winapi" ,rust-winapi-0.3))))
-    (home-page "https://github.com/botika/yansi-term")
+    (home-page "https://github.com/zzau13/yansi-term")
     (synopsis "Library for ANSI terminal colours and styles (bold, underline)")
     (description
      "Library for ANSI terminal colours and styles (bold, underline)")

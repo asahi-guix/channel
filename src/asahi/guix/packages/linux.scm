@@ -164,12 +164,19 @@ hardware.")
      (modify-inputs (package-inputs linux:alsa-lib)
        (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))
 
+(define-public asahi-alsa-utils
+  (package/inherit linux:alsa-utils
+    (name "asahi-alsa-utils")
+    (inputs
+     (modify-inputs (package-inputs linux:alsa-utils)
+       (replace "alsa-lib" asahi-alsa-lib)))))
+
 (define-public asahi-alsa-plugins
   (package/inherit linux:alsa-plugins
     (name "asahi-alsa-plugins")
     (inputs
      (modify-inputs (package-inputs linux:alsa-plugins)
-       (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))
+       (replace "alsa-lib" asahi-alsa-lib)))))
 
 (define-public asahi-pipewire
   (package/inherit linux:pipewire

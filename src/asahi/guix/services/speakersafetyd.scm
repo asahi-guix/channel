@@ -10,8 +10,7 @@
          (documentation "Run the speaker saftey daemon.")
          (provision '(speakersafetyd))
          (start #~(make-forkexec-constructor
-                   (list #$(file-append rust-speakersafetyd-0.1 "/bin/speakersafetyd"))
-                   #:pid-file "/var/run/speakersafetyd.pid"))
+                   (list #$(file-append rust-speakersafetyd-0.1 "/bin/speakersafetyd"))))
          (stop #~(make-kill-destructor)))))
 
 (define speakersafetyd-service-type

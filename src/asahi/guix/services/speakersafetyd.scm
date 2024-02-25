@@ -28,6 +28,9 @@
    (description "Asahi Speaker Saftey daemon")
    (extensions
     (list (service-extension
+           profile-service-type
+           (compose list speakersafetyd-configuration-package))
+          (service-extension
            shepherd-root-service-type
            speakersafetyd-shepherd-service)))
    (default-value (speakersafetyd-configuration))))

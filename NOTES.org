@@ -113,23 +113,36 @@ Device              Start       End   Sectors   Size Type
 
 Format file systems.
 
-#+begin_src sh
+#+begin_src sh :dir /sudo:: :results verbatim
   sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p9
 #+end_src
 
 Mount file systems.
 
-#+begin_src sh
+#+begin_src sh :dir /sudo:: :results verbatim
   sudo mount /dev/nvme0n1p9 /mnt
   sudo mkdir --parents /mnt/boot/efi
   sudo mount /dev/nvme0n1p8 /mnt/boot/efi
 #+end_src
 
-Install systems.
+#+RESULTS:
+
+Install the Asahi Guix system.
 
 #+begin_src sh
   sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
+#+end_src
+
+Install the Asahi Guix edge system.
+
+#+begin_src sh
   sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl /mnt
+#+end_src
+
+Install the Asahi Guix Gnome system.
+
+#+begin_src sh
+  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-gnome-desktop.tmpl /mnt
 #+end_src
 
 Install systems with time machine.
@@ -141,12 +154,14 @@ Install systems with time machine.
        system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
 #+end_src
 
-Unmount file systems.
+Unmount the file systems.
 
-#+begin_src sh
+#+begin_src sh :dir /sudo:: :results verbatim
   sudo umount /mnt/boot/efi
   sudo umount /mnt
 #+end_src
+
+#+RESULTS:
 
 ** Install Guix on Hetzner Cloud
 

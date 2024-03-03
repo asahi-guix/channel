@@ -1,0 +1,428 @@
+This is README.info, produced by makeinfo version 6.8 from README.texi.
+
+INFO-DIR-SECTION Emacs
+START-INFO-DIR-ENTRY
+* Asahi Guix: (Asahi Guix). Asahi Linux on GNU Guix.
+END-INFO-DIR-ENTRY
+
+
+File: README.info,  Node: Top,  Next: Asahi Guix,  Up: (dir)
+
+* Menu:
+
+* Asahi Guix::
+
+— The Detailed Node Listing —
+
+Asahi Guix
+
+* Status::
+* Installation::
+* Firmware::
+* Packages::
+* Server::
+* Thanks::
+* License::
+
+Installation
+
+* System Preparation::
+* Manual Installation::
+* Guix Installer::
+
+Server
+
+* Installation via Hetzner rescue system::
+* Swap File::
+* Offloading::
+* Deployment::
+
+
+
+File: README.info,  Node: Asahi Guix,  Prev: Top,  Up: Top
+
+Asahi Guix
+**********
+
+Asahi Linux on GNU Guix
+
+* Menu:
+
+* Status::
+* Installation::
+* Firmware::
+* Packages::
+* Server::
+* Thanks::
+* License::
+
+
+File: README.info,  Node: Status,  Next: Installation,  Up: Asahi Guix
+
+Status
+======
+
+💣 Experimental
+
+
+File: README.info,  Node: Installation,  Next: Firmware,  Prev: Status,  Up: Asahi Guix
+
+Installation
+============
+
+To install a Guix system on Apple Silicon we need _Asahi Linux Minimal_
+or _Asahi Linux Desktop_ installed on your device, as well as an _UEFI
+only environment_.  At the moment the Asahi Linux installation is needed
+to bootstrap the Guix system/installer with the required firmware.  The
+Guix system itself will be installed into the _UEFI only environment_.
+
+* Menu:
+
+* System Preparation::
+* Manual Installation::
+* Guix Installer::
+
+
+File: README.info,  Node: System Preparation,  Next: Manual Installation,  Up: Installation
+
+System Preparation
+------------------
+
+Please follow the Asahi Linux installation guide
+(https://asahilinux.org/2022/03/asahi-linux-alpha-release/) and install
+either the _Asahi Linux Minimal_ or _Asahi Linux Desktop_ system on your
+device, as well as an _UEFI only environment_.
+
+   Once Asahi Linux and the UEFI only environment are installed, your
+disk should look similar to this:
+
+     sudo fdisk --list /dev/nvme0n1
+
+     Disk /dev/nvme0n1: 1.82 TiB, 2001111162880 bytes, 488552530 sectors
+     Disk model: APPLE SSD APXXXXX
+     Units: sectors of 1 * 4096 = 4096 bytes
+     Sector size (logical/physical): 4096 bytes / 4096 bytes
+     I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+     Disklabel type: gpt
+     Disk identifier: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+
+     Device              Start       End   Sectors   Size Type
+     /dev/nvme0n1p1          6    128005    128000   500M unknown
+     /dev/nvme0n1p2     128006  24542067  24414062  93.1G Apple APFS
+     /dev/nvme0n1p3   24542068  25152371    610304   2.3G Apple APFS
+     /dev/nvme0n1p4   25152372  25274483    122112   477M EFI System
+     /dev/nvme0n1p5   25274484 195440499 170166016   100G Linux filesystem
+     /dev/nvme0n1p6  195440500 196050803    610304   2.3G Apple APFS
+     /dev/nvme0n1p7  196050804 196172915    122112   477M EFI System
+     /dev/nvme0n1p11 487241816 488552524   1310709     5G unknown
+
+     Partition table entries are not in disk order.
+
+   The ‘/dev/nvme0n1p3’ partition is the APFS
+(https://en.wikipedia.org/wiki/Apple_File_System) container of the
+_Asahi Linux installation_, ‘/dev/nvme0n1p4’ its EFI system partition,
+and ‘/dev/nvme0n1p5’ the root partition.
+
+   Next comes ‘/dev/nvme0n1p6’, which is the APFS container of the _UEFI
+only environment_, along with its EFI system partition ‘/dev/nvme0n1p7’.
+The root partition of the Guix system itself will be created during the
+manual installation or via the installer.
+
+   Finally there is the ‘/dev/nvme0n1p11’ partition, which contains the
+Apple recovery system, which should *not* be touched or moved around.
+
+   Boot into Asahi Linux, install
+(https://guix.gnu.org/manual/en/html_node/Installation.html) the Guix
+package manager and follow either the manual installation (recommended)
+or the Guix Installer section of this guide.
+
+
+File: README.info,  Node: Manual Installation,  Next: Guix Installer,  Prev: System Preparation,  Up: Installation
+
+Manual Installation
+-------------------
+
+The manual installation uses the ‘guix system init’ command to install a
+Guix system from the Asahi Linux installation onto the mounted
+partitions of the _UEFI only environment_.
+
+   • System configuration
+
+     First, lookup the filesystem UUID of the EFI system partition
+     ‘/dev/nvme0n1p7’ from the _UEFI only environment_.
+
+          sudo blkid | grep /dev/nvme0n1p7 | sed -n 's/.* UUID="\([^"]*\)".*/\1/p'
+
+          41F0-16FF
+
+     Create a file called ‘asahi-guix.scm’ and instantiate a Guix
+     operating system record, configured with the filesystem UUID of
+     your EFI system partition.  In this example, the filesystem UUID is
+     ‘41F0-16FF’.
+
+          (use-modules (asahi guix system base))
+          (asahi-operating-system #:esp-uuid "41F0-16FF")
+
+     Build the Guix operating system.
+
+          guix system build --load-path=src asahi-guix.scm
+
+     If the operating system builds successfully, we can proceed by
+     installing the operating system onto the hard drive.
+
+   • System installation
+
+     Create a new Linux root partition for the Guix system with
+     ‘cfdisk’, format it with the EXT4 filesystem and label it as
+     ‘asahi-guix-root’.  From now on we assume this new root partition
+     is created as ‘/dev/nvme0n1p8’.
+
+          sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p8
+
+     Mount the new root partition ‘/dev/nvme0n1p8’ under ‘/mnt’, and the
+     EFI system partition ‘/dev/nvme0n1p7’ under ‘/mnt/boot/efi’.
+
+          sudo mount /dev/nvme0n1p8 /mnt
+          sudo mkdir --parents /mnt/boot/efi
+          sudo mount /dev/nvme0n1p7 /mnt/boot/efi
+
+     Install the Guix system onto ‘/mnt’.
+
+          sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
+               system init --load-path=src --system=aarch64-linux asahi-guix.scm /mnt
+
+          💣 This used to work.  It now fails with ‘grub-install: error:
+          unknown filesystem’.  This might be caused by having too many
+          or too large partitions.
+
+     Finally, umount the EFI system partition and then the root
+     partition.
+
+          sudo umount /mnt/boot/efi
+          sudo umount /mnt
+
+     Reboot into your new Guix system.  If the _UEFI only environment_
+     is not your default boot container, you need to switch to the MacOS
+     recovery system and boot it from there.  You can do this, by
+     starting your device and holding down the power button, until you
+     see it is booting into the _MacOS startup options_.  Once in the
+     startup options, select the container you want to boot from.
+
+
+File: README.info,  Node: Guix Installer,  Prev: Manual Installation,  Up: Installation
+
+Guix Installer
+--------------
+
+The Guix installation image can be build with Guix installed on a
+foreign system that has the firmware available at
+‘/boot/efi/vendorfw/firmware.cpio’.  The firmware is typically installed
+on the EFI system partition by the Asahi Linux installer.
+
+   • Installation via USB stick
+
+     Build the Guix installer disk image with the Asahi Linux kernel.
+
+          guix time-machine --channels=src/asahi/guix/channels.scm -- \
+               system image --load-path=src --image-type=efi-raw --image-size=7.2GiB src/asahi/guix/system/install.scm
+
+     Write the installer disk image to the USB stick at ‘/dev/sda’.
+
+          sudo dd if=/gnu/store/2gcs4ki37ad5qc3y0vrcplca8cr72p9y-disk-image \
+               of=/dev/sda bs=4M status=progress oflag=sync
+
+
+File: README.info,  Node: Firmware,  Next: Packages,  Prev: Installation,  Up: Asahi Guix
+
+Firmware
+========
+
+The firmware required to boot Linux on Apple silicon is proprietary and
+cannot be packaged with Asahi Guix.  Instead the ‘asahi-firmware’ Guix
+package assumes for now that the firmware is available in the
+‘/boot/efi/vendorfw/firmware.cpio’ archive at build time.
+
+   When installing Asahi Linux or an UEFI stand-alone system with the
+Asahi Linux installer, the Apple silicon firmware will be saved in the
+‘asahi/all_firmware.tar.gz’ archive on the EFI system partition.
+
+   The asahi-fwextract
+(https://github.com/AsahiLinux/asahi-scripts/blob/main/asahi-fwextract)
+script reads the firmware from the ‘asahi/all_firmware.tar.gz’ archive
+and writes it to the ‘vendorfw’ directory of the EFI system partition as
+a ‘CPIO’ and ‘TAR’ archive.  The EFI system partition should be mounted
+on ‘/boot/efi’ to make these firmware files available.
+
+   On an Asahi Linux system this should already be the case, on an Asahi
+Guix system the EFI system partition can be mounted by adding the
+following file system to the ‘file-systems’ field of your
+‘operating-system’ record.  Please change the UUID to the one of your
+system.
+
+     (file-system
+       (mount-point "/boot/efi")
+       (device (uuid "41F0-16FF" 'fat32))
+       (type "vfat"))
+
+
+File: README.info,  Node: Packages,  Next: Server,  Prev: Firmware,  Up: Asahi Guix
+
+Packages
+========
+
+The Asahi Guix channel provides the following packages.
+
+Asahi Guix Package    Asahi Linux PKGBUILD
+-----------------------------------------------------------------------------------------------------------------------
+asahi-alsa-ucm-conf   alsa-ucm-conf-asahi (https://github.com/AsahiLinux/PKGBUILDs/tree/main/alsa-ucm-conf-asahi)
+asahi-audio           asahi-audio (https://github.com/chadmed/asahi-audio)
+asahi-firmware        n/a
+asahi-fwextract       asahi-fwextract (https://github.com/AsahiLinux/PKGBUILDs/tree/main/asahi-fwextract)
+asahi-linux           linux-asahi (https://github.com/AsahiLinux/PKGBUILDs/tree/main/linux-asahi)
+asahi-linux-edge      linux-asahi (https://github.com/AsahiLinux/PKGBUILDs/tree/main/linux-asahi)
+asahi-m1n1            m1n1 (https://github.com/AsahiLinux/PKGBUILDs/tree/main/m1n1)
+asahi-mesa            mesa-asahi-edge (https://github.com/AsahiLinux/PKGBUILDs/tree/main/mesa-asahi-edge)
+asahi-mesa-headers    n/a
+asahi-mesa-utils      n/a
+asahi-scripts         asahi-scripts (https://github.com/AsahiLinux/PKGBUILDs/tree/main/asahi-scripts)
+u-boot-apple-m1       uboot-asahi (https://github.com/AsahiLinux/PKGBUILDs/tree/main/uboot-asahi)
+
+
+File: README.info,  Node: Server,  Next: Thanks,  Prev: Packages,  Up: Asahi Guix
+
+Server
+======
+
+* Menu:
+
+* Installation via Hetzner rescue system::
+* Swap File::
+* Offloading::
+* Deployment::
+
+
+File: README.info,  Node: Installation via Hetzner rescue system,  Next: Swap File,  Up: Server
+
+Installation via Hetzner rescue system
+--------------------------------------
+
+Clone the Asahi Guix channel.
+
+     git clone --branch server https://github.com/asahi-guix/channel.git
+     cd channel && bash scripts/hetzner/install-server
+
+
+File: README.info,  Node: Swap File,  Next: Offloading,  Prev: Installation via Hetzner rescue system,  Up: Server
+
+Swap File
+---------
+
+Create the swap file.
+
+     fallocate -l 32G /swapfile
+
+   Change file permissions on the swap file.
+
+     chmod 600 /swapfile
+
+   Format the swap file.
+
+     mkswap /swapfile
+
+   Enable the swap file.
+
+     swapon /swapfile
+
+
+File: README.info,  Node: Offloading,  Next: Deployment,  Prev: Swap File,  Up: Server
+
+Offloading
+----------
+
+Authorize the server to be controlled from the local machine.
+
+     cat /etc/guix/signing-key.pub | ssh root@www.asahi-guix.org guix archive --authorize
+
+   Restart the Guix daemon on the server.
+
+     systemctl restart guix-daemon
+
+   Authorize the local Guix daemon to offload to the server.
+
+     ssh root@www.asahi-guix.org cat /etc/guix/signing-key.pub | guix archive --authorize
+
+   Make sure ‘/etc/guix/machines.scm’ on the local machine contains the
+server.
+
+     (list (build-machine
+            (name "www.asahi-guix.org")
+            (systems (list "aarch64-linux"))
+            (user "root")
+            (host-key "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH5brUrwEPR0MGjymBu2EfkEKULlVyUr80l2rwcXNXZD root@asahi-guix")
+            (private-key "/root/.ssh/id_ed25519")))
+
+   Verify builds can be offloaded to the server.
+
+     guix offload test
+
+     retrieving 1 store item from 'www.asahi-guix.org'...
+
+
+File: README.info,  Node: Deployment,  Prev: Offloading,  Up: Server
+
+Deployment
+----------
+
+Deploy the machine in ‘src/asahi/guix/machine/server.scm’ to the server.
+
+     guix deploy src/asahi/guix/machine/server.scm --load-path=src --verbosity=5
+
+
+File: README.info,  Node: Thanks,  Next: License,  Prev: Server,  Up: Asahi Guix
+
+Thanks
+======
+
+Some code and inspirations were taken from:
+
+   • Asahi Linux (https://asahilinux.org/)
+   • David Wilson (https://github.com/daviwil)
+   • GNU Guix (https://guix.gnu.org/)
+
+
+File: README.info,  Node: License,  Prev: Thanks,  Up: Asahi Guix
+
+License
+=======
+
+GPLv3
+
+
+
+Tag Table:
+Node: Top190
+Node: Asahi Guix593
+Node: Status801
+Node: Installation909
+Node: System Preparation1463
+Node: Manual Installation3882
+Ref: System configuration4232
+Ref: System installation5063
+Node: Guix Installer6649
+Ref: Installation via USB stick7030
+Node: Firmware7533
+Node: Packages8915
+Node: Server10201
+Node: Installation via Hetzner rescue system10398
+Node: Swap File10736
+Node: Offloading11101
+Node: Deployment12130
+Node: Thanks12385
+Node: License12664
+
+End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:

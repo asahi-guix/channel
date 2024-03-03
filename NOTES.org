@@ -59,18 +59,80 @@ Build the Asahi Guix operarating system image using the edge kernel.
 #+end_src
 
 ** Test System
+*** Disk Layout
+
+#+begin_src sh :exports both :dir /sudo:: :results verbatim
+  fdisk --list /dev/nvme0n1
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Disk /dev/nvme0n1: 1.82 TiB, 2001111162880 bytes, 488552530 sectors
+Disk model: APPLE SSD AP2048R
+Units: sectors of 1 * 4096 = 4096 bytes
+Sector size (logical/physical): 4096 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: A67A7E47-AE3F-436F-9BF7-9DCBCB1151C5
+
+Device              Start       End   Sectors   Size Type
+/dev/nvme0n1p1          6    128005    128000   500M unknown
+/dev/nvme0n1p2     128006  49030708  48902703 186.5G Apple APFS
+/dev/nvme0n1p3   49030709 195440499 146409791 558.5G Apple APFS
+/dev/nvme0n1p4  195440500 196050803    610304   2.3G Apple APFS
+/dev/nvme0n1p5  196050804 196172915    122112   477M EFI System
+/dev/nvme0n1p6  196173056 418995455 222822400   850G Linux filesystem
+/dev/nvme0n1p7  418995456 419605759    610304   2.3G Apple APFS
+/dev/nvme0n1p8  419605760 419727871    122112   477M EFI System
+/dev/nvme0n1p9  419727872 444141823  24413952  93.1G Linux filesystem
+/dev/nvme0n1p10 444141824 444752127    610304   2.3G Apple APFS
+/dev/nvme0n1p11 444752128 444880127    128000   500M EFI System
+/dev/nvme0n1p12 444880128 445142271    262144     1G Linux filesystem
+/dev/nvme0n1p13 445142272 453907199   8764928  33.4G Linux filesystem
+/dev/nvme0n1p14 487241816 488552524   1310709     5G unknown
+#+end_example
+
+| Device          | Size   | Filesystem       | Description          | UUID                                 |
+|-----------------+--------+------------------+----------------------+--------------------------------------|
+| /dev/nvme0n1p1  | 500M   | unknown          |                      |                                      |
+| /dev/nvme0n1p2  | 186.5G | Apple APFS       |                      |                                      |
+| /dev/nvme0n1p3  | 558.5G | Apple APFS       |                      |                                      |
+| /dev/nvme0n1p4  | 2.3G   | Apple APFS       | Asahi Guix           |                                      |
+| /dev/nvme0n1p5  | 477M   | EFI System       | Asahi Guix EFI       | 9FBE-130E                            |
+| /dev/nvme0n1p6  | 850G   | Linux filesystem | Asahi Guix Root      | 56b68fba-21cb-49b5-ac44-84dc382f3426 |
+| /dev/nvme0n1p7  | 2.3G   | Apple APFS       | Asahi Guix Test      |                                      |
+| /dev/nvme0n1p8  | 477M   | EFI System       | Asahi Guix Test EFI  | 41F0-16FF                            |
+| /dev/nvme0n1p9  | 93.1G  | Linux filesystem | Asahi Guix Test Root | 1fb64061-5e58-496b-9f29-84265f3a442a |
+| /dev/nvme0n1p10 | 2.3G   | Apple APFS       | Asahi Fedora         |                                      |
+| /dev/nvme0n1p11 | 500M   | EFI System       | Asahi Fedora EFI     | 1311-83BA                            |
+| /dev/nvme0n1p12 | 1G     | Linux filesystem | Asahi Fedora Boot    | 7d98b13b-8467-4662-b4ba-1ccd7ebf7634 |
+| /dev/nvme0n1p13 | 33.4G  | Linux filesystem | Asahi Fedora Root    | 6b7fba8b-c7ab-48fe-b5b2-a3ce1dc9476f |
+| /dev/nvme0n1p14 | 5G     | unknown          |                      |                                      |
+
+*** Installation
+
+Format file systems.
 
 #+begin_src sh
-  sudo blkid | grep /dev/nvme0n1p10 | sed -n 's/.* UUID="\([^"]*\)".*/\1/p'
-  sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p12
-  sudo mount /dev/nvme0n1p12 /mnt
+  sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p9
+#+end_src
+
+Mount file systems.
+
+#+begin_src sh
+  sudo mount /dev/nvme0n1p9 /mnt
   sudo mkdir --parents /mnt/boot/efi
-  sudo mount /dev/nvme0n1p10 /mnt/boot/efi
+  sudo mount /dev/nvme0n1p8 /mnt/boot/efi
+#+end_src
+
+Install systems.
+
+#+begin_src sh
   sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
   sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl /mnt
-  sudo umount /mnt/boot/efi
-  sudo umount /mnt
 #+end_src
+
+Install systems with time machine.
 
 #+begin_src sh
   sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
@@ -79,6 +141,30 @@ Build the Asahi Guix operarating system image using the edge kernel.
        system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
 #+end_src
 
+Unmount file systems.
+
+#+begin_src sh
+  sudo umount /mnt/boot/efi
+  sudo umount /mnt
+#+end_src
+
 ** Install Guix on Hetzner Cloud
 
 https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
+** Sound
+*** Wireplumber
+
+#+begin_src sh :results verbatim
+  ls -l $(./pre-inst-env guix build -L src asahi-audio)/share/wireplumber
+#+end_src
+
+#+RESULTS:
+: total 16
+: dr-xr-xr-x 2 root root 4096 Jan  1  1970 main.lua.d
+: dr-xr-xr-x 2 root root 4096 Jan  1  1970 policy.lua.d
+: dr-xr-xr-x 2 root root 4096 Jan  1  1970 scripts
+: dr-xr-xr-x 2 root root 4096 Jan  1  1970 wireplumber.conf.d
+
+#+begin_src sh
+  wireplumber --config-file "$(./pre-inst-env guix build -L src asahi-audio)/share/wireplumber"
+#+end_src

@@ -3,11 +3,13 @@
  (gnu packages autotools)
  (gnu packages disk)
  (gnu packages gettext)
+ (gnu packages gnupg)
  (gnu packages guile)
  (gnu packages guile-xyz)
  (gnu packages linux)
  (gnu packages package-management)
  (gnu packages pkg-config)
+ (gnu packages ssh)
  (gnu packages texinfo)
  (guix build-system gnu)
  (guix build-system guile)
@@ -35,7 +37,11 @@
            autoconf
            automake
            gettext
+           guile-gcrypt
+           guile-git
            guile-hall
+           guile-json-4
+           guile-ssh
            parted
            pkg-config
            texinfo))

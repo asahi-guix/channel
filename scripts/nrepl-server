@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+guile -c '((@ (nrepl server) run-nrepl-server) #:port 7888)'

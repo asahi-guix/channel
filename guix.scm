@@ -37,10 +37,12 @@
            autoconf
            automake
            gettext
+           guile-ares-rs
            guile-gcrypt
            guile-git
            guile-hall
            guile-json-4
+           guile-next
            guile-ssh
            parted
            pkg-config

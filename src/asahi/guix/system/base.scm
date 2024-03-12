@@ -70,7 +70,7 @@
          %base-packages))
 
 (define %services
-  (modify-services (cons* asahi-alsa-service
+  (modify-services (cons* (service alsa-service-type)
                           (service network-manager-service-type)
                           (service openssh-service-type
                                    (openssh-configuration

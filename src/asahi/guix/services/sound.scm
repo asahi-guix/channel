@@ -22,8 +22,8 @@
     #~(string-append #$pipewire "/share/alsa/alsa.conf.d/99-pipewire-default.conf")))
 
 (define (alsa-etc-service config)
-  `(("conf.d/50-pipewire.conf" ,(alsa-pipewire-config-file config))
-    ("conf.d/50-pipewire-default.conf" ,(alsa-pipewire-default-config-file config))))
+  `(("alsa/conf.d/50-pipewire.conf" ,(alsa-pipewire-config-file config))
+    ("alsa/conf.d/50-pipewire-default.conf" ,(alsa-pipewire-default-config-file config))))
 
 (define-public alsa-service-type
   (service-type

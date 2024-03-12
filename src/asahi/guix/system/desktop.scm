@@ -1,4 +1,5 @@
 (define-module (asahi guix system desktop)
+  #:use-module ((gnu services sound) #:prefix sound:)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages linux)
   #:use-module (asahi guix services console-font)
@@ -81,12 +82,14 @@ EndSection
 ")
 
 (define %gnome-desktop-services
-  (modify-services (cons* (service asahi-firmware-service-type)
+  (modify-services (cons* (service alsa-service-type)
+                          (service asahi-firmware-service-type)
                           (service gdm-service-type)
                           (service gnome-desktop-service-type)
                           (service kernel-module-loader-service-type '("asahi" "appledrm"))
                           %desktop-services)
     (delete sddm-service-type)
+    (delete sound:alsa-service-type)
     (console-font-service-type config => (console-font-terminus config))
     (gdm-service-type config =>
                       (gdm-configuration

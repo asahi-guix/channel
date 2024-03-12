@@ -487,10 +487,21 @@ plugins")
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-biquad" ,rust-biquad-0.4)
-                       ("rust-lv2" ,rust-lv2-0.6))))
+                       ("rust-lv2" ,rust-lv2-0.6))
+
+       #:phases
+       (modify-phases %standard-phases
+         (add-before 'install 'install-lv2
+           (lambda* (#:key outputs #:allow-other-keys)
+             (setenv "LIBDIR" (string-append (assoc-ref outputs "out") "/lib"))
+             (invoke "make" "install"))))))
     (home-page "https://github.com/chadmed/bankstown")
     (synopsis "Barebones bass enhancer")
     (description "Halfway-decent three-stage psychoacoustic bass approximation.")
+    (native-search-paths
+     (list (search-path-specification
+            (variable "LV2_PATH")
+            (files '("lib/lv2")))))
     (license license:expat)))
 
 (define-public rust-clap-verbosity-flag-2

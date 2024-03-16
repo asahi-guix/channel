@@ -1,7 +1,9 @@
 (define-module (asahi guix system server)
   #:use-module (asahi guix packages ci)
+  #:use-module (asahi guix system install)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
+  #:use-module (gnu ci)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages databases)
   #:use-module (gnu packages linux)
@@ -25,6 +27,7 @@
   #:use-module (gnu services)
   #:use-module (gnu system accounts)
   #:use-module (gnu system file-systems)
+  #:use-module (gnu system image)
   #:use-module (gnu system keyboard)
   #:use-module (gnu system linux-initrd)
   #:use-module (gnu system nss)
@@ -34,7 +37,8 @@
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix packages)
-  #:export (asahi-guix-server-system))
+  #:use-module (srfi srfi-1)
+  #:export (asahi-guix-server-system cuirass-jobs))
 
 (define %keyboard-layout
   (keyboard-layout "us" #:options '("caps:ctrl_modifier")))
@@ -155,6 +159,20 @@ COMMIT
                (domains '("www.asahi-guix.org"))
                (deploy-hook %nginx-deploy-hook)))))))
 
+(define (cuirass-jobs store arguments)
+  (define systems
+    (arguments->systems arguments))
+  (append-map
+   (lambda (system)
+     (list
+      (image->job store
+                  (image-with-os
+                   iso9660-image
+                   asahi-installation-operating-system)
+                  #:name "asahi-guix-iso9660-image"
+                  #:system system)))
+   systems))
+
 (define %cuirass-service
   (service cuirass-service-type
            (cuirass-configuration
@@ -179,6 +197,29 @@ COMMIT
                      (specification
                       (name "asahi")
                       (build '(channels asahi))
+                      (channels
+                       (list (channel
+                              (name 'guix)
+                              (url "https://github.com/asahi-guix/guix.git")
+                              (branch "main")
+                              (introduction
+                               (make-channel-introduction
+                                "6deb9e28f8208f2081f56eacf11d581c1750523a"
+                                (openpgp-fingerprint
+                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
+                             (channel
+                              (name 'asahi)
+                              (branch "main")
+                              (url "https://github.com/asahi-guix/channel.git")
+                              (introduction
+                               (make-channel-introduction
+                                "3eeb493b037bea44f225c4314c5556aa25aff36c"
+                                (openpgp-fingerprint
+                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                      (systems '("aarch64-linux")))
+                     (specification
+                      (name "asahi-images")
+                      (build '(custom . ((asahi guix system server))))
                       (channels
                        (list (channel
                               (name 'guix)

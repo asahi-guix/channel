@@ -65,6 +65,7 @@ PulseAudio clients to use PipeWire transparently."))
                     ":"
                     #$(home-pipewire-configuration-lsp-plugins config)
                     "/lib/lv2")
+                   "PIPEWIRE_DEBUG=I"
                    (string-append
                     "PIPEWIRE_MODULE_DIR="
                     #$(home-pipewire-configuration-pipewire config)
@@ -97,6 +98,7 @@ PulseAudio clients to use PipeWire transparently."))
                     ":"
                     #$(home-pipewire-configuration-lsp-plugins config)
                     "/lib/lv2")
+                   "PIPEWIRE_DEBUG=I"
                    (string-append
                     "PIPEWIRE_MODULE_DIR="
                     #$(home-pipewire-configuration-pipewire config)
@@ -129,6 +131,7 @@ PulseAudio clients to use PipeWire transparently."))
                     ":"
                     #$(home-pipewire-configuration-lsp-plugins config)
                     "/lib/lv2")
+                   "WIREPLUMBER_DEBUG=I"
                    (string-append
                     "XDG_RUNTIME_DIR="
                     (or (getenv "XDG_RUNTIME_DIR")
@@ -161,7 +164,8 @@ PulseAudio clients to use PipeWire transparently."))
 
 (define (home-pipewire-conf-dir config)
   (let ((asahi-audio (home-pipewire-configuration-asahi-audio config))
-        (pipewire (home-pipewire-configuration-pipewire config)))
+        (pipewire (home-pipewire-configuration-pipewire config))
+        (wireplumber (home-pipewire-configuration-wireplumber config)))
     (file-union
      "pipewire-config"
      `(("client.conf" ,(file-append pipewire "/share/pipewire/client.conf"))
@@ -175,7 +179,9 @@ PulseAudio clients to use PipeWire transparently."))
        ("pipewire.conf.d" ,(combine-dirs "pipewire.conf.d" (list asahi-audio) "/share/pipewire/pipewire.conf.d"))
        ("pipewire-pulse.conf" ,(file-append pipewire "/share/pipewire/pipewire-pulse.conf"))
        ("pipewire-pulse.conf.avail" ,(file-append pipewire "/share/pipewire/pipewire-pulse.conf.avail"))
-       ("pipewire-pulse.conf.d" ,(combine-dirs "pipewire-pulse.conf.d" (list asahi-audio) "/share/pipewire/pipewire-pulse.conf.d"))))))
+       ("pipewire-pulse.conf.d" ,(combine-dirs "pipewire-pulse.conf.d" (list asahi-audio) "/share/pipewire/pipewire-pulse.conf.d"))
+       ("wireplumber.conf" ,(file-append wireplumber "/share/wireplumber/wireplumber.conf"))
+       ("wireplumber.conf.d" ,(combine-dirs "wireplumber.conf.d" (list asahi-audio) "/share/wireplumber/wireplumber.conf.d"))))))
 
 (define (home-wireplumber-conf-dir config)
   (let ((asahi-audio (home-pipewire-configuration-asahi-audio config))
@@ -190,8 +196,9 @@ PulseAudio clients to use PipeWire transparently."))
        ("policy.conf" ,(file-append wireplumber "/share/wireplumber/policy.conf"))
        ("policy.lua.d" ,(combine-dirs "policy.lua.d" (list asahi-audio wireplumber) "/share/wireplumber/policy.lua.d"))
        ("scripts" ,(combine-dirs "scripts" (list asahi-audio wireplumber) "/share/wireplumber/scripts"))
-       ("wireplumber.conf" ,(file-append wireplumber "/share/wireplumber/wireplumber.conf"))
-       ("wireplumber.conf.d" ,(combine-dirs "wireplumber.conf.d" (list asahi-audio) "/share/wireplumber/wireplumber.conf.d"))))))
+       ;; ("wireplumber.conf" ,(file-append wireplumber "/share/wireplumber/wireplumber.conf"))
+       ;; ("wireplumber.conf.d" ,(combine-dirs "wireplumber.conf.d" (list asahi-audio) "/share/wireplumber/wireplumber.conf.d"))
+       ))))
 
 (define home-pipewire-disable-pulseaudio-auto-start
   (plain-file "client.conf" "autospawn = no"))

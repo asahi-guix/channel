@@ -184,9 +184,8 @@ PulseAudio clients to use PipeWire transparently."))
        ("policy.conf" ,(file-append wireplumber "/share/wireplumber/policy.conf"))
        ("policy.lua.d" ,(combine-dirs "policy.lua.d" (list asahi-audio wireplumber) "/share/wireplumber/policy.lua.d"))
        ("scripts" ,(combine-dirs "scripts" (list asahi-audio wireplumber) "/share/wireplumber/scripts"))
-       ;; ("wireplumber.conf" ,(file-append wireplumber "/share/wireplumber/wireplumber.conf"))
-       ;; ("wireplumber.conf.d" ,(combine-dirs "wireplumber.conf.d" (list asahi-audio) "/share/wireplumber/wireplumber.conf.d"))
-       ))))
+       ("wireplumber.conf" ,(file-append wireplumber "/share/wireplumber/wireplumber.conf"))
+       ("wireplumber.conf.d" ,(combine-dirs "wireplumber.conf.d" (list asahi-audio) "/share/wireplumber/wireplumber.conf.d"))))))
 
 (define home-pipewire-disable-pulseaudio-auto-start
   (plain-file "client.conf" "autospawn = no"))

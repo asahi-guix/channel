@@ -171,7 +171,7 @@ COMMIT
                       (channels
                        (list (channel
                               (name 'guix)
-                              (url "https://github.com/asahi-guix/guix.git")
+                              (url "https://github.com/asahi-guix/guix")
                               (branch "main")
                               (introduction
                                (make-channel-introduction
@@ -185,7 +185,7 @@ COMMIT
                       (channels
                        (list (channel
                               (name 'guix)
-                              (url "https://github.com/asahi-guix/guix.git")
+                              (url "https://github.com/asahi-guix/guix")
                               (branch "main")
                               (introduction
                                (make-channel-introduction
@@ -195,7 +195,7 @@ COMMIT
                              (channel
                               (name 'asahi)
                               (branch "main")
-                              (url "https://github.com/asahi-guix/channel.git")
+                              (url "https://github.com/asahi-guix/channel")
                               (introduction
                                (make-channel-introduction
                                 "3eeb493b037bea44f225c4314c5556aa25aff36c"
@@ -208,7 +208,7 @@ COMMIT
                       (channels
                        (list (channel
                               (name 'guix)
-                              (url "https://github.com/asahi-guix/guix.git")
+                              (url "https://github.com/asahi-guix/guix")
                               (branch "main")
                               (introduction
                                (make-channel-introduction
@@ -218,7 +218,7 @@ COMMIT
                              (channel
                               (name 'asahi)
                               (branch "main")
-                              (url "https://github.com/asahi-guix/channel.git")
+                              (url "https://github.com/asahi-guix/channel")
                               (introduction
                                (make-channel-introduction
                                 "3eeb493b037bea44f225c4314c5556aa25aff36c"
@@ -309,7 +309,7 @@ COMMIT
            (unattended-upgrade-configuration
             (channels #~(list (channel
                                (name 'guix)
-                               (url "https://git.savannah.gnu.org/git/guix.git")
+                               (url "https://git.savannah.gnu.org/git/guix")
                                (branch "master")
                                (introduction
                                 (make-channel-introduction
@@ -319,10 +319,10 @@ COMMIT
                               (channel
                                (name 'asahi)
                                (branch "main")
-                               (url "https://github.com/asahi-guix/channel.git")
+                               (url "https://github.com/asahi-guix/channel")
                                (introduction
                                 (make-channel-introduction
-                                 "7677591b60ae62f76d8fcee392f0b249414442f6"
+                                 "3eeb493b037bea44f225c4314c5556aa25aff36c"
                                  (openpgp-fingerprint
                                   "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
             (schedule "0 4 * * *")

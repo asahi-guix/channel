@@ -2,4 +2,4 @@
 (channel
  (version 0)
  (directory "src")
- (url "https://github.com/asahi-guix/channel.git"))
+ (url "https://github.com/asahi-guix/channel"))

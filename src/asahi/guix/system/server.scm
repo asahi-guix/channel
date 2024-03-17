@@ -206,24 +206,16 @@ COMMIT
                       (name "asahi-images")
                       (build '(custom (asahi guix cuirass jobs)))
                       (channels
-                       (list (channel
-                              (name 'guix)
-                              (url "https://github.com/asahi-guix/guix.git")
-                              (branch "main")
-                              (introduction
-                               (make-channel-introduction
-                                "eb0d1bbbe54347b19b2fe93dac9c43b540d6cdcf"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
-                             (channel
-                              (name 'asahi)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/channel.git")
-                              (introduction
-                               (make-channel-introduction
-                                "3eeb493b037bea44f225c4314c5556aa25aff36c"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                       (cons* (channel
+                               (name 'asahi)
+                               (branch "main")
+                               (url "https://github.com/asahi-guix/channel.git")
+                               (introduction
+                                (make-channel-introduction
+                                 "3eeb493b037bea44f225c4314c5556aa25aff36c"
+                                 (openpgp-fingerprint
+                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
+                              %default-channels))
                       (systems '("aarch64-linux")))))
             (use-substitutes? #t)
             (remote-server

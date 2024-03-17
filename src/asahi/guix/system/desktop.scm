@@ -87,6 +87,7 @@ EndSection
                           (service gdm-service-type)
                           (service gnome-desktop-service-type)
                           (service kernel-module-loader-service-type '("asahi" "appledrm"))
+                          (service speakersafetyd-service-type)
                           %desktop-services)
     (delete sddm-service-type)
     (delete sound:alsa-service-type)

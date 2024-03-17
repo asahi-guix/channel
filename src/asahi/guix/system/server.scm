@@ -180,7 +180,7 @@ COMMIT
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))
                      (specification
-                      (name "asahi")
+                      (name "channel")
                       (build '(channels asahi))
                       (channels
                        (list (channel
@@ -203,7 +203,7 @@ COMMIT
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))
                      (specification
-                      (name "asahi-images")
+                      (name "images")
                       (build '(custom (asahi guix cuirass jobs)))
                       (channels
                        (list (channel

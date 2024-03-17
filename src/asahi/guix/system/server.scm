@@ -219,7 +219,7 @@ COMMIT
                       (systems '("aarch64-linux")))
                      (specification
                       (name "asahi-images")
-                      (build '(custom ((asahi guix system server))))
+                      (build '(custom (asahi guix system server)))
                       (channels
                        (list (channel
                               (name 'guix)

@@ -130,9 +130,11 @@ COMMIT
   (service openssh-service-type
            (openssh-configuration
             (authorized-keys
-             `(("root" ,(local-file "../files/ssh/authorized-keys/root.pub"))
-               ("root" ,(local-file "../files/ssh/authorized-keys/roman.pub"))
-               ("roman" ,(local-file "../files/ssh/authorized-keys/roman.pub"))))
+             `(("root" ,(local-file "../files/ssh/authorized-keys/ed25519/roman.pub"))
+               ("root" ,(local-file "../files/ssh/authorized-keys/rsa/root.pub"))
+               ("root" ,(local-file "../files/ssh/authorized-keys/rsa/roman.pub"))
+               ("roman" ,(local-file "../files/ssh/authorized-keys/ed25519/roman.pub"))
+               ("roman" ,(local-file "../files/ssh/authorized-keys/rsa/roman.pub"))))
             (openssh openssh-sans-x)
             (permit-root-login 'prohibit-password)
             (port-number 22))))

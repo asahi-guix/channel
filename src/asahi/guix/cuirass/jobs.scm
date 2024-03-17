@@ -3,19 +3,31 @@
   #:use-module (asahi guix system install)
   #:use-module (gnu ci)
   #:use-module (gnu system image)
+  #:use-module (guix channels)
+  #:use-module (guix store)
   #:use-module (srfi srfi-1)
   #:export (cuirass-jobs))
 
 (define (cuirass-jobs store arguments)
+
+  (define channels
+    (let ((channels (assq-ref arguments 'channels)))
+      (map sexp->channel channels)))
+
   (define systems
     (arguments->systems arguments))
-  (append-map
-   (lambda (system)
-     (list
-      (image->job store
-                  (image-with-os
-                   iso9660-image
-                   asahi-installation-operating-system)
-                  #:name "asahi-guix-iso9660-image"
-                  #:system system)))
-   systems))
+
+  (format #t "Cuirass Job Systems: ~a\n" systems)
+  (format #t "Cuirass Job Channels: ~a\n" channels)
+
+  (parameterize ((%graft? #f))
+    (append-map
+     (lambda (system)
+       (list
+        (image->job store
+                    (image-with-os
+                     iso9660-image
+                     asahi-installation-operating-system)
+                    #:name "asahi-guix-iso9660-image"
+                    #:system system)))
+     systems)))

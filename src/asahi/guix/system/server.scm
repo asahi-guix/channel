@@ -35,7 +35,7 @@
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix packages)
-  #:export (asahi-guix-server-system cuirass-jobs))
+  #:export (asahi-guix-server-system))
 
 (define %keyboard-layout
   (keyboard-layout "us" #:options '("caps:ctrl_modifier")))
@@ -204,7 +204,7 @@ COMMIT
                       (systems '("aarch64-linux")))
                      (specification
                       (name "asahi-images")
-                      (build '(custom (asahi guix system server)))
+                      (build '(custom (asahi guix cuirass jobs)))
                       (channels
                        (list (channel
                               (name 'guix)

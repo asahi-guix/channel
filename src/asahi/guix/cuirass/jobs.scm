@@ -2,7 +2,9 @@
   #:use-module (asahi guix packages ci)
   #:use-module (asahi guix system install)
   #:use-module (gnu ci)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu system image)
+  #:use-module (guix channels)
   #:use-module (guix store)
   #:use-module (srfi srfi-1)
   #:export (cuirass-jobs))
@@ -12,7 +14,22 @@
   (define systems
     (arguments->systems arguments))
 
-  (parameterize ((%graft? #f))
+  (define channels
+    (let ((channels (assq-ref arguments 'channels)))
+      (map sexp->channel channels)))
+
+  (define guix
+    (find guix-channel? channels))
+
+  (define commit
+    (channel-commit guix))
+
+  (define source
+    (channel-url guix))
+
+  (parameterize ((current-guix-package
+                  (channel-source->package source #:commit commit))
+                 (%graft? #f))
     (append-map
      (lambda (system)
        (list

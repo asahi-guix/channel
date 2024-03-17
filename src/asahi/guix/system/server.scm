@@ -3,7 +3,6 @@
   #:use-module (asahi guix system install)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
-  #:use-module (gnu ci)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages databases)
   #:use-module (gnu packages linux)
@@ -27,7 +26,6 @@
   #:use-module (gnu services)
   #:use-module (gnu system accounts)
   #:use-module (gnu system file-systems)
-  #:use-module (gnu system image)
   #:use-module (gnu system keyboard)
   #:use-module (gnu system linux-initrd)
   #:use-module (gnu system nss)
@@ -37,7 +35,6 @@
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix packages)
-  #:use-module (srfi srfi-1)
   #:export (asahi-guix-server-system cuirass-jobs))
 
 (define %keyboard-layout
@@ -160,20 +157,6 @@ COMMIT
               (certificate-configuration
                (domains '("www.asahi-guix.org"))
                (deploy-hook %nginx-deploy-hook)))))))
-
-(define (cuirass-jobs store arguments)
-  (define systems
-    (arguments->systems arguments))
-  (append-map
-   (lambda (system)
-     (list
-      (image->job store
-                  (image-with-os
-                   iso9660-image
-                   asahi-installation-operating-system)
-                  #:name "asahi-guix-iso9660-image"
-                  #:system system)))
-   systems))
 
 (define %cuirass-service
   (service cuirass-service-type

@@ -3,22 +3,14 @@
   #:use-module (asahi guix system install)
   #:use-module (gnu ci)
   #:use-module (gnu system image)
-  #:use-module (guix channels)
   #:use-module (guix store)
   #:use-module (srfi srfi-1)
   #:export (cuirass-jobs))
 
 (define (cuirass-jobs store arguments)
 
-  (define channels
-    (let ((channels (assq-ref arguments 'channels)))
-      (map sexp->channel channels)))
-
   (define systems
     (arguments->systems arguments))
-
-  (format #t "Cuirass Job Systems: ~a\n" systems)
-  (format #t "Cuirass Job Channels: ~a\n" channels)
 
   (parameterize ((%graft? #f))
     (append-map

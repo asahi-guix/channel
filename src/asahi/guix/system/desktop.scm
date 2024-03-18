@@ -82,15 +82,16 @@ EndSection
 ")
 
 (define %gnome-desktop-services
-  (modify-services (cons* (service alsa-service-type)
-                          (service asahi-firmware-service-type)
+  (modify-services (cons* (service asahi-firmware-service-type)
                           (service gdm-service-type)
                           (service gnome-desktop-service-type)
                           (service kernel-module-loader-service-type '("asahi" "appledrm"))
+                          (service pipewire-service-type)
                           (service speakersafetyd-service-type)
                           %desktop-services)
     (delete sddm-service-type)
     (delete sound:alsa-service-type)
+    (delete sound:pulseaudio-service-type)
     (console-font-service-type config => (console-font-terminus config))
     (gdm-service-type config =>
                       (gdm-configuration

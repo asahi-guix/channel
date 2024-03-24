@@ -206,7 +206,7 @@ COMMIT
                       (name "images")
                       (build '(custom (asahi guix cuirass jobs)))
                       (channels
-                       (list (channel
+                       (cons* (channel
                               (name 'asahi-channel)
                               (branch "main")
                               (url "https://github.com/asahi-guix/channel")
@@ -223,7 +223,8 @@ COMMIT
                                (make-channel-introduction
                                 "3a2835615d22d9a0f20667837083625b96c0f1b3"
                                 (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
+                             %default-channels))
                       (systems '("aarch64-linux")))
                      (specification
                       (name "manifest")

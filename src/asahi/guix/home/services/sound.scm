@@ -141,10 +141,10 @@ PulseAudio clients to use PipeWire transparently."))
      "<" pipewire "/share/alsa/alsa.conf.d/50-pipewire.conf>\n"
      "<" pipewire "/share/alsa/alsa.conf.d/99-pipewire-default.conf>\n"
      "pcm_type.pipewire {\n"
-     "  lib \"" pipewire "/lib/libasound_module_pcm_pipewire.so\"\n"
+     "  lib \"" pipewire "/lib/alsa-lib/libasound_module_pcm_pipewire.so\"\n"
      "}\n"
      "ctl_type.pipewire {\n"
-     "  lib \"" pipewire "/lib/libasound_module_ctl_pipewire.so\"\n"
+     "  lib \"" pipewire "/lib/alsa-lib/libasound_module_ctl_pipewire.so\"\n"
      "}\n")))
 
 (define (combine-dirs name packages path)
@@ -192,8 +192,8 @@ PulseAudio clients to use PipeWire transparently."))
 
 (define (home-pipewire-xdg-configuration config)
   (cons* `("alsa/asoundrc" ,(home-pipewire-asoundrc config))
-         `("pipewire" ,(home-pipewire-conf-dir config))
-         `("wireplumber" ,(home-wireplumber-conf-dir config))
+         ;; `("pipewire" ,(home-pipewire-conf-dir config))
+         ;; `("wireplumber" ,(home-wireplumber-conf-dir config))
          (if (home-pipewire-configuration-enable-pulseaudio? config)
              `(("pulse/client.conf"
                 ,home-pipewire-disable-pulseaudio-auto-start))

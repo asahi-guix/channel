@@ -175,6 +175,12 @@ Unmount the file systems.
 
 https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
 ** Sound
+*** Issue with older Eudev packages
+
+https://gitlab.alpinelinux.org/alpine/aports/-/merge_requests/58442/diffs
+https://github.com/eudev-project/eudev/pull/271
+https://github.com/AsahiLinux/asahi-audio/issues/16
+
 *** Wireplumber
 
 #+begin_src sh :results verbatim

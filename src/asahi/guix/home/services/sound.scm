@@ -56,6 +56,10 @@ PulseAudio clients to use PipeWire transparently."))
   #~(string-append #$(home-pipewire-configuration-pipewire config)
                    "/lib/pipewire-0.3"))
 
+(define (wireplumber-module-dir config)
+  #~(string-append #$(home-pipewire-configuration-wireplumber config)
+                   "/lib/wireplumber-0.4"))
+
 (define (home-pipewire-shepherd-service config)
   (shepherd-service
    (documentation "PipeWire media processing.")
@@ -119,6 +123,8 @@ PulseAudio clients to use PipeWire transparently."))
                                   #$(alsa-config-ucm2 config))
                    (string-append "LV2_PATH="
                                   #$(lv2-path config))
+                   (string-append "WIREPLUMBER_MODULE_DIR="
+                                  #$(wireplumber-module-dir config))
                    "WIREPLUMBER_DEBUG=I"
                    (string-append
                     "XDG_RUNTIME_DIR="

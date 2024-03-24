@@ -226,7 +226,7 @@ COMMIT
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))
                      (specification
-                      (name "manifset")
+                      (name "manifest")
                       (build '(manifest ".guix/manifest.scm"))
                       (channels
                        (cons (channel

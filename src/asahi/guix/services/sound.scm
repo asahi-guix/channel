@@ -91,10 +91,10 @@ PulseAudio clients to use PipeWire transparently."))
      "<" pipewire "/share/alsa/alsa.conf.d/50-pipewire.conf>\n"
      "<" pipewire "/share/alsa/alsa.conf.d/99-pipewire-default.conf>\n"
      "pcm_type.pipewire {\n"
-     "  lib \"" pipewire "/lib/alsa-lib/libasound_module_pcm_pipewire.so\"\n"
+     "  lib \"" pipewire "/lib/libasound_module_pcm_pipewire.so\"\n"
      "}\n"
      "ctl_type.pipewire {\n"
-     "  lib \"" pipewire "/lib/alsa-lib/libasound_module_ctl_pipewire.so\"\n"
+     "  lib \"" pipewire "/lib/libasound_module_ctl_pipewire.so\"\n"
      "}\n")))
 
 (define (combine-dirs name packages path)

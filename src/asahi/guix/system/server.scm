@@ -59,6 +59,7 @@
          %base-file-systems))
 
 (define %initrd-modules
+  ;; TODO: sd_mod is only available on aarch64
   (cons* "sd_mod" "virtio_scsi" %base-initrd-modules))
 
 (define %packages

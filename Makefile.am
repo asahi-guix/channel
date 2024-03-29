@@ -32,8 +32,9 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
-NOCOMP_SOURCES = src/asahi/guix/files/ssh/authorized-keys/roman.pub \
-                 src/asahi/guix/files/ssh/authorized-keys/root.pub \
+NOCOMP_SOURCES = src/asahi/guix/files/ssh/authorized-keys/ed25519/roman.pub \
+                 src/asahi/guix/files/ssh/authorized-keys/rsa/roman.pub \
+                 src/asahi/guix/files/ssh/authorized-keys/rsa/root.pub \
                  src/asahi/guix/packages/defconfig.main \
 		 src/asahi/guix/packages/defconfig.edge \
                  src/asahi/guix/patches/cuirass-disable-jit.patch \

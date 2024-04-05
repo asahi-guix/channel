@@ -1,5 +1,6 @@
 (define-module (asahi guix services speakersafetyd)
   #:use-module (asahi guix packages crates-io)
+  #:use-module (gnu services base)
   #:use-module (gnu services shepherd)
   #:use-module (gnu services)
   #:use-module (guix gexp)
@@ -24,6 +25,7 @@
     (list (shepherd-service
            (documentation "Asahi Speaker Saftey daemon")
            (provision '(speakersafetyd))
+           (requirement '(udev))
            (start #~(make-forkexec-constructor
                      (list #$(file-append package "/bin/speakersafetyd")
                            "--blackbox-path" #$blackbox
@@ -40,5 +42,8 @@
            (compose list speakersafetyd-configuration-package))
           (service-extension
            shepherd-root-service-type
-           speakersafetyd-shepherd-service)))
+           speakersafetyd-shepherd-service)
+          (service-extension
+           udev-service-type
+           (compose list speakersafetyd-configuration-package))))
    (default-value (speakersafetyd-configuration))))

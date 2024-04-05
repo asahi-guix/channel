@@ -555,10 +555,22 @@ plugins")
              (substitute* "src/main.rs"
                (("share/speakersafetyd") "share")
                (("/usr/local") (assoc-ref outputs "out")))))
+         (add-after 'unpack 'remove-systemd-udev-rules
+           (lambda _
+             (substitute* "95-speakersafetyd.rules"
+               ((".*SYSTEMD_WANTS.*") ""))))
          (add-after 'install 'install-conf
            (lambda* (#:key outputs #:allow-other-keys)
              (let ((target (string-append (assoc-ref outputs "out") "/share")))
-               (copy-recursively "conf" target)))))))
+               (copy-recursively "conf" target))))
+         (add-after 'install 'install-udev-rules
+           (lambda* (#:key outputs #:allow-other-keys)
+             (let ((out (assoc-ref outputs "out")))
+               (mkdir-p (string-append out "/lib/udev/rules.d"))
+               (copy-file "95-speakersafetyd.rules"
+                          (string-append out
+                                         "/lib/udev/rules.d/"
+                                         "95-speakersafetyd.rules"))))))))
     (inputs
      (list asahi-alsa-lib))
     (native-inputs

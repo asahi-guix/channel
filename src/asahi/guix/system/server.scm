@@ -176,7 +176,7 @@ COMMIT
                               (branch "main")
                               (introduction
                                (make-channel-introduction
-                                "69dead0396c1344b1e1e6e1324ab00809a3c75b8"
+                                "ee32baf1f05cca711111fe64bb89d6f1764b90e1"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))
@@ -190,7 +190,7 @@ COMMIT
                               (branch "main")
                               (introduction
                                (make-channel-introduction
-                                "69dead0396c1344b1e1e6e1324ab00809a3c75b8"
+                                "ee32baf1f05cca711111fe64bb89d6f1764b90e1"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                              (channel
@@ -222,7 +222,7 @@ COMMIT
                               (branch "main")
                               (introduction
                                (make-channel-introduction
-                                "69dead0396c1344b1e1e6e1324ab00809a3c75b8"
+                                "ee32baf1f05cca711111fe64bb89d6f1764b90e1"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))
@@ -245,7 +245,7 @@ COMMIT
                               (branch "main")
                               (introduction
                                (make-channel-introduction
-                                "69dead0396c1344b1e1e6e1324ab00809a3c75b8"
+                                "ee32baf1f05cca711111fe64bb89d6f1764b90e1"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
                       (systems '("aarch64-linux")))))

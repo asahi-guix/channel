@@ -7,6 +7,13 @@ Port forward cuirass web interface to [[http://localhost:8081][localhost]].
   ssh -N -L  8081:localhost:8081 root@www.asahi-guix.org
 #+end_src
 
+** NREPL
+
+Start a NREPL server.
+
+#+begin_src sh
+  guix shell -Df guix.scm -- guile -c '((@ (nrepl server) run-nrepl-server) #:port 7888)'
+#+end_src
 ** Systems
 
 Build the Asahi Guix operarating system image.

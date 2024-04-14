@@ -35,6 +35,7 @@
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix packages)
+  #:use-module (guix utils)
   #:export (asahi-guix-server-system))
 
 (define %keyboard-layout
@@ -59,8 +60,10 @@
          %base-file-systems))
 
 (define %initrd-modules
-  ;; TODO: sd_mod is only available on aarch64
-  (cons* "sd_mod" "virtio_scsi" %base-initrd-modules))
+  (append (cond ((target-aarch64?)
+                 (list "sd_mod" "virtio_scsi"))
+                (else '()))
+          %base-initrd-modules))
 
 (define %packages
   (append (map specification->package

@@ -29,6 +29,7 @@
   #:use-module (gnu system keyboard)
   #:use-module (gnu system linux-initrd)
   #:use-module (gnu system nss)
+  #:use-module (gnu system shadow)
   #:use-module (gnu system uuid)
   #:use-module (gnu system)
   #:use-module (guix channels)
@@ -77,12 +78,13 @@
           %base-packages))
 
 (define %users
-  (list (user-account
+  (cons (user-account
          (name "roman")
          (comment "Roman")
          (group "users")
          (home-directory "/home/roman")
-         (supplementary-groups '("audio" "netdev" "video" "wheel")))))
+         (supplementary-groups '("audio" "netdev" "video" "wheel")))
+        %base-user-accounts))
 
 (define %avahi-service
   (service avahi-service-type))

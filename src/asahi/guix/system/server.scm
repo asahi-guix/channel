@@ -233,7 +233,7 @@ COMMIT
                       (systems '("aarch64-linux")))
                      (specification
                       (name "manifest")
-                      (build '(manifest ".guix/manifest.scm"))
+                      (build '(manifests ".guix/manifest.scm"))
                       (channels
                        (append (list (channel
                                       (name 'asahi)

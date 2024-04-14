@@ -400,8 +400,11 @@ COMMIT
 (define %qemu-service-x86-64
   (service qemu-binfmt-service-type
            (qemu-binfmt-configuration
-            ;; Note: Don't emulate the arch the system is running under.
-            (platforms (lookup-qemu-platforms "x86_64")))))
+            (platforms (lookup-qemu-platforms
+                        (cond ((target-aarch64?)
+                               "x86_64")
+                              ((target-x86-64?)
+                               "aarch64")))))))
 
 (define %services
   (cons* %avahi-service

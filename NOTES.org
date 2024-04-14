@@ -181,6 +181,16 @@ Unmount the file systems.
 ** Install Guix on Hetzner Cloud
 
 https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
+** Server
+
+Run the server in a virtual machine.
+
+#+begin_src sh
+  $(./pre-inst-env guix system vm -L src src/asahi/guix/system/server.scm) \
+      -m 2048 \
+      -smp 4 \
+      -nic user,model=virtio-net-pci,hostfwd=tcp::2222-:22
+#+end_src
 ** Sound
 *** Issue with older Eudev packages
 

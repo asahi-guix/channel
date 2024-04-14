@@ -1,5 +1,10 @@
-(use-modules (guix)
+(use-modules (asahi guix initrd)
+             (asahi guix packages linux)
+             (asahi guix system base)
              (gnu packages base)
+             (gnu system)
+             (guix gexp)
+             (guix packages)
              (guix profiles))
 
 (define* (package->manifest-entry* package system
@@ -22,4 +27,15 @@ TARGET."
                   (package->manifest-entry* hello system))
                 '("aarch64-linux")))))
 
-(concatenate-manifests (list native-builds))
+(concatenate-manifests
+ (list (manifest
+        (list (manifest-entry
+                (name "asahi-guix-system")
+                (version "1")
+                (item (asahi-operating-system
+                       #:esp-uuid "41F0-16FF"
+                       #:initrd-modules asahi-initrd-modules-edge
+                       #:kernel asahi-linux-edge)))))))
+
+
+;; (concatenate-manifests (list native-builds))

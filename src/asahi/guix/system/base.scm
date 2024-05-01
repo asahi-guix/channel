@@ -66,7 +66,6 @@
 (define %packages
   (cons* e2fsprogs
          network-manager
-         nss-certs
          %base-packages))
 
 (define %services

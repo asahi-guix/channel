@@ -104,7 +104,7 @@ cat > /etc/bootstrap-config.scm << EOF
                 (supplementary-groups '("wheel"))
                 (home-directory "/home/${USERNAME}"))
                %base-user-accounts))
-  (packages (cons* openssh nss-certs gnutls %base-packages))
+  (packages (cons* openssh gnutls %base-packages))
   (services (cons*
   (service dhcp-client-service-type)
   (service openssh-service-type

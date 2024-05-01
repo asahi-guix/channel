@@ -73,7 +73,6 @@
                  "htop"
                  "net-tools"
                  "network-manager"
-                 "nss-certs"
                  "screen"))
           %base-packages))
 

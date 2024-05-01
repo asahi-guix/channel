@@ -172,7 +172,7 @@ COMMIT
             (specifications
              #~(list (specification
                       (name "guix")
-                      (build '(packages "icecat" "jemalloc" "rust"))
+                      (build '(packages "jemalloc" "rust"))
                       (channels
                        (list (channel
                               (name 'guix)

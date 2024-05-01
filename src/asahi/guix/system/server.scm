@@ -222,43 +222,43 @@ COMMIT
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                              (channel
                               (name 'asahi-guix
-                              (url "https://github.com/asahi-guix/guix")
-                              (branch "main")
-                              (introduction
-                               (make-channel-introduction
-                                "e3a6e9f687699ef67986c3f12a3198aefa701853"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
-                      (systems '("aarch64-linux")))
-                     (specification
-                      (name "manifest")
-                      (build '(manifest ".guix/manifest.scm"))
-                      (channels
-                       (list (channel
-                              (name 'asahi-channel)
-                              (branch "main")
-                              (url "https://github.com/asahi-guix/channel")
-                              (introduction
-                               (make-channel-introduction
-                                "3eeb493b037bea44f225c4314c5556aa25aff36c"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
-                             (channel
-                              (name 'asahi-guix
-                              (url "https://github.com/asahi-guix/guix")
-                              (branch "main")
-                              (introduction
-                               (make-channel-introduction
-                                "e3a6e9f687699ef67986c3f12a3198aefa701853"
-                                (openpgp-fingerprint
-                                 "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
-                      (systems '("aarch64-linux")))))
-            (use-substitutes? #t)
-            (remote-server
-             (cuirass-remote-server-configuration
-              (backend-port 5555)
-              (log-port 5556)
-              (publish-port 5557))))))
+                                    (url "https://github.com/asahi-guix/guix")
+                                    (branch "main")
+                                    (introduction
+                                     (make-channel-introduction
+                                      "e3a6e9f687699ef67986c3f12a3198aefa701853"
+                                      (openpgp-fingerprint
+                                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                       (systems '("aarch64-linux")))
+                      (specification
+                       (name "manifest")
+                       (build '(manifest ".guix/manifest.scm"))
+                       (channels
+                        (list (channel
+                               (name 'asahi-channel)
+                               (branch "main")
+                               (url "https://github.com/asahi-guix/channel")
+                               (introduction
+                                (make-channel-introduction
+                                 "3eeb493b037bea44f225c4314c5556aa25aff36c"
+                                 (openpgp-fingerprint
+                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
+                              (channel
+                               (name 'asahi-guix
+                                     (url "https://github.com/asahi-guix/guix")
+                                     (branch "main")
+                                     (introduction
+                                      (make-channel-introduction
+                                       "e3a6e9f687699ef67986c3f12a3198aefa701853"
+                                       (openpgp-fingerprint
+                                        "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+                        (systems '("aarch64-linux")))))
+                     (use-substitutes? #t)
+                     (remote-server
+                      (cuirass-remote-server-configuration
+                       (backend-port 5555)
+                       (log-port 5556)
+                       (publish-port 5557))))))))
 
 (define %cuirass-remote-worker-service
   (service cuirass-remote-worker-service-type

@@ -1,7 +1,7 @@
 (define-module (asahi guix channels)
   #:use-module (guix channels)
-  #:export (asahi-guix-channel
-            asahi-guix-next-channel
+  #:export (asahi-channel
+            asahi-next-channel
             channels
             guix-channel))
 

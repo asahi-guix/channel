@@ -166,7 +166,12 @@ COMMIT
 (define %cuirass-specifications
   #~(list (specification
            (name "guix")
-           (build '(packages "jemalloc" "rust"))
+           (build '(packages
+                    "gnome-desktop"
+                    "icecat"
+                    "jemalloc"
+                    "plasma-desktop"
+                    "rust"))
            (channels
             (list (channel
                    (name 'guix)

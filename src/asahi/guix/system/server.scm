@@ -183,7 +183,7 @@ COMMIT
                                 "e7c865b437185ffd90e524c2f5cf9015a20dc466"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
-                      (systems '("aarch64-linux")))
+                      (systems (list "aarch64-linux")))
                      (specification
                       (name "channel")
                       (build '(channels asahi))
@@ -206,7 +206,7 @@ COMMIT
                                 "3eeb493b037bea44f225c4314c5556aa25aff36c"
                                 (openpgp-fingerprint
                                  "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
-                      (systems '("aarch64-linux")))
+                      (systems (list "aarch64-linux")))
                      (specification
                       (name "images")
                       (build '(custom (asahi guix cuirass jobs)))
@@ -229,7 +229,7 @@ COMMIT
                                       "e7c865b437185ffd90e524c2f5cf9015a20dc466"
                                       (openpgp-fingerprint
                                        "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
-                       (systems '("aarch64-linux")))
+                       (systems (list "aarch64-linux")))
                       (specification
                        (name "manifest")
                        (build '(manifest ".guix/manifest.scm"))
@@ -252,7 +252,7 @@ COMMIT
                                        "e7c865b437185ffd90e524c2f5cf9015a20dc466"
                                        (openpgp-fingerprint
                                         "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
-                        (systems '("aarch64-linux")))))
+                        (systems (list "aarch64-linux")))))
                      (use-substitutes? #t)
                      (remote-server
                       (cuirass-remote-server-configuration
@@ -263,7 +263,7 @@ COMMIT
 (define %cuirass-remote-worker-service
   (service cuirass-remote-worker-service-type
            (cuirass-remote-worker-configuration
-            (systems '("aarch64-linux"))
+            (systems (list "aarch64-linux"))
             (workers 1))))
 
 (define (certbot-ssl-certificate domain)

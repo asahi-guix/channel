@@ -186,7 +186,7 @@ https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
 Run the server in a virtual machine.
 
 #+begin_src sh
-  $(./pre-inst-env guix system vm -L src src/asahi/guix/system/server.scm) \
+  $(./pre-inst-env guix system vm src/asahi/guix/system/server.scm) \
       -m 2048 \
       -smp 4 \
       -nic user,model=virtio-net-pci,hostfwd=tcp::2222-:22
@@ -201,7 +201,7 @@ https://github.com/AsahiLinux/asahi-audio/issues/16
 *** Wireplumber
 
 #+begin_src sh :results verbatim
-  ls -l $(./pre-inst-env guix build -L src asahi-audio)/share/wireplumber
+  ls -l $(./pre-inst-env guix build asahi-audio)/share/wireplumber
 #+end_src
 
 #+RESULTS:
@@ -212,5 +212,5 @@ https://github.com/AsahiLinux/asahi-audio/issues/16
 : dr-xr-xr-x 2 root root 4096 Jan  1  1970 wireplumber.conf.d
 
 #+begin_src sh
-  wireplumber --config-file "$(./pre-inst-env guix build -L src asahi-audio)/share/wireplumber"
+  wireplumber --config-file "$(./pre-inst-env guix build asahi-audio)/share/wireplumber"
 #+end_src

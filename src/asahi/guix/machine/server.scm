@@ -13,6 +13,7 @@
    (operating-system asahi-guix-server-system)
    (environment managed-host-environment-type)
    (configuration (machine-ssh-configuration
+                   (allow-downgrades? #t)
                    (build-locally? #f)
                    (host-key host-key)
                    (host-name "www.asahi-guix.org")

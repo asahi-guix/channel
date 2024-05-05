@@ -1,5 +1,6 @@
 (define-module (asahi guix packages gl)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (asahi guix packages llvm)
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages linux)
@@ -14,10 +15,10 @@
   #:use-module (guix utils))
 
 (define-public asahi-mesa
-  (let ((commit "4acd685189c341c66a60d947384f2c9ef5b84b9d"))
+  (let ((commit "eebfe8416a6266bc1662f2d99485b2dce87a34f5"))
     (package/inherit mesa
       (name "asahi-mesa")
-      (version (git-version "20230904" "0" commit))
+      (version (git-version "20240228" "0" commit))
       (source
        (origin
          (method git-fetch)
@@ -26,7 +27,7 @@
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "0219rc1nbqsz1v0psz588yh64ap3ga4k02hyf6vzkx8lbz6xf5w4"))))
+          (base32 "1cbd5knr3m7kikz5d6kg4j7j2hzzrxr1vnni2fqsqdz8hz4lkqf0"))))
       (arguments
        (substitute-keyword-arguments (package-arguments mesa)
          ((#:configure-flags flags)
@@ -60,8 +61,9 @@
               (delete 'set-layer-path-in-manifests)))))
       (inputs
        (modify-inputs (package-inputs mesa)
-         (prepend `(,lm-sensors "lib") libglvnd libressl valgrind)
-         (replace "llvm" llvm-15))))))
+         (prepend `(,lm-sensors "lib") asahi-libclc clang-18 libglvnd libressl valgrind)
+         (replace "llvm" llvm-18)
+         (replace "llvm-for-mesa" llvm-18))))))
 
 (define-public asahi-mesa-headers
   (package/inherit mesa-headers

@@ -220,7 +220,7 @@ COMMIT
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                   (channel
-                   (name 'asahi-channel)
+                   (name 'asahi)
                    (branch "main")
                    (url "https://github.com/asahi-guix/channel.git")
                    (introduction
@@ -234,7 +234,7 @@ COMMIT
            (build '(manifests ".guix/manifest.scm"))
            (channels
             (list (channel
-                   (name 'asahi-channel)
+                   (name 'asahi)
                    (branch "main")
                    (url "https://github.com/asahi-guix/channel.git")
                    (introduction

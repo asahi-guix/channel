@@ -17,8 +17,6 @@
                    (build-locally? #f)
                    (host-key host-key)
                    (host-name "www.asahi-guix.org")
-                   ;; (identity "/home/roman/.ssh/id_ed25519")
-                   (identity "/home/roman/.ssh/id_rsa")
                    (port 22)
                    (system "aarch64-linux")
                    (user "root")))))

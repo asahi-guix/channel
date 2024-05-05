@@ -412,22 +412,28 @@ COMMIT
                                "aarch64")))))))
 
 (define %services
-  (cons* %avahi-service
-         %certbot-service
-         %cuirass-remote-worker-service
-         %cuirass-service
-         %fail2ban-service
-         %firewall-service
-         %guix-publish-service
-         ;; %http-service-bootstrap
-         %http-service
-         %ntp-service
-         %openssh-service
-         %postgresql-service
-         %qemu-service-x86-64
-         %unattended-upgrade-service
-         (service dhcp-client-service-type)
-         %base-services))
+  (modify-services (cons* %avahi-service
+                          %certbot-service
+                          %cuirass-remote-worker-service
+                          %cuirass-service
+                          %fail2ban-service
+                          %firewall-service
+                          %guix-publish-service
+                          ;; %http-service-bootstrap
+                          %http-service
+                          %ntp-service
+                          %openssh-service
+                          %postgresql-service
+                          %qemu-service-x86-64
+                          %unattended-upgrade-service
+                          (service dhcp-client-service-type)
+                          %base-services)
+    (guix-service-type
+     config => (guix-configuration
+                (inherit config)
+                (authorized-keys
+                 (cons* (local-file "../files/authorized-keys/apple-m1.pub")
+                        (guix-configuration-authorized-keys config)))))))
 
 (define %swap-devices
   (list (swap-space (target "/swapfile"))))

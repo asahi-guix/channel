@@ -6,7 +6,7 @@
   #:export (append-substitutes))
 
 (define %authorized-keys
-  (list (local-file "files/substitutes.asahi-guix.org.pub")
+  (list (local-file "files/apple-m1.pub")
         (local-file "files/substitutes.asahi-guix.org.pub")))
 
 (define %substitute-urls

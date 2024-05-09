@@ -140,8 +140,8 @@ created as =/dev/nvme0n1p8=.
 #+end_src
 
 💣 Make sure the =metadata_csum_seed= feature isn't enabled on this
-device. If it is enabled you might run into the =grub-install: error:
-unknown filesystem= error with Grub 2.06.
+device. If it is enabled you might run into the =grub-install: error: unknown filesystem=
+error with Grub 2.06.
 
 #+begin_src sh :dir /sudo:: :results verbatim
   tune2fs -O ^metadata_csum_seed /dev/nvme0n1p8

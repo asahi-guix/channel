@@ -132,6 +132,13 @@ Format file systems.
   sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p9
 #+end_src
 
+#+begin_src sh :dir /sudo:: :results verbatim
+  tune2fs -O ^metadata_csum_seed /dev/nvme0n1p9
+#+end_src
+
+#+RESULTS:
+: tune2fs 1.47.0 (5-Feb-2023)
+
 Mount file systems.
 
 #+begin_src sh :dir /sudo:: :results verbatim

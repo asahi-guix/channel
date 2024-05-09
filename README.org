@@ -139,6 +139,14 @@ created as =/dev/nvme0n1p8=.
   sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p8
 #+end_src
 
+💣 Make sure the =metadata_csum_seed= feature isn't enabled on this
+device. If it is enabled you might run into the =grub-install: error:
+unknown filesystem= error with Grub 2.06.
+
+#+begin_src sh :dir /sudo:: :results verbatim
+  tune2fs -O ^metadata_csum_seed /dev/nvme0n1p8
+#+end_src
+
 Mount the new root partition =/dev/nvme0n1p8= under =/mnt=, and the
 EFI system partition =/dev/nvme0n1p7= under =/mnt/boot/efi=.
 
@@ -154,11 +162,6 @@ Install the Guix system onto =/mnt=.
   sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
        system init --load-path=src --system=aarch64-linux asahi-guix.scm /mnt
 #+end_src
-
-#+begin_quote
-💣 This used to work. It now fails with =grub-install: error: unknown filesystem=.
-This might be caused by having too many or too large partitions.
-#+end_quote
 
 Finally, umount the EFI system partition and then the root partition.
 
@@ -196,6 +199,28 @@ Write the installer disk image to the USB stick at =/dev/sda=.
   sudo dd if=/gnu/store/2gcs4ki37ad5qc3y0vrcplca8cr72p9y-disk-image \
        of=/dev/sda bs=4M status=progress oflag=sync
 #+end_src
+
+*** Troubleshooting
+**** Unsupported Ext4 filesystem feature
+
+When installing the Guix system on an [[https://en.wikipedia.org/wiki/Ext4][Ext4]] filesystem, the
+installation of the Grub bootloader might fail with the following
+error message:
+
+#+begin_quote
+grub-install: error: unknown filesystem
+#+end_quote
+
+This seems to be an issue with Grub 2.06 and the =metadata_csum_seed=
+filesystem feature being enabled on an Ext4 partition. You can disable
+the feature on the device with the following command:
+
+#+begin_src sh :dir /sudo:: :results verbatim
+  tune2fs -O ^metadata_csum_seed /dev/<device>
+#+end_src
+
+- [[https://mail.gnu.org/archive/html/guix-devel/2024-04/msg00195.html][GNU Guix: Guix bios installation: Grub error: unknown filesystem]]
+- [[https://bugs.launchpad.net/ubuntu/+source/grub2/+bug/1844012][Ubuntu Launchpad: Grub2 doesn't recognize ext4 with metadata_csum_seed enabled]]
 
 ** Firmware
 

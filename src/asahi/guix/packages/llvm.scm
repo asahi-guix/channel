@@ -9,5 +9,5 @@
     (version (package-version llvm-18))
     (native-inputs
      (modify-inputs (package-native-inputs libclc)
-       (replace "clang" clang-15)
-       (replace "llvm" llvm-15)))))
+       (replace "clang" clang-18)
+       (replace "llvm" llvm-18)))))

@@ -2,14 +2,15 @@
   #:use-module ((gnu services sound) #:prefix sound:)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages linux)
+  #:use-module (asahi guix packages xorg)
   #:use-module (asahi guix services console-font)
   #:use-module (asahi guix services firmware)
   #:use-module (asahi guix services sound)
   #:use-module (asahi guix services speakersafetyd)
   #:use-module (asahi guix substitutes)
   #:use-module (asahi guix system base)
-  #:use-module (gnu packages gnome)
   #:use-module (gnu packages emacs)
+  #:use-module (gnu packages gnome)
   #:use-module (gnu packages libusb)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages wm)
@@ -23,9 +24,9 @@
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
   #:use-module (gnu services)
-  #:use-module (srfi srfi-1)
   #:use-module (gnu system)
   #:use-module (guix packages)
+  #:use-module (srfi srfi-1)
   #:export (asahi-desktop-operating-system
             asahi-gnome-desktop-operating-system))
 
@@ -108,6 +109,7 @@ EndSection
                        (inherit config)
                        (xorg-configuration
                         (xorg-configuration
+                         (server asahi-xorg-server)
                          (extra-config (list %xorg-libinput-config
                                              %xorg-modeset-config))))))
     (guix-service-type config => (append-substitutes config))))

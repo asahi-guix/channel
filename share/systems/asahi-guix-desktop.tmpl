@@ -2,11 +2,19 @@
 
 ;; Template for a Guix operating system using the Asahi Linux edge kernel.
 
-(use-modules (asahi guix initrd))
-(use-modules (asahi guix packages linux))
-(use-modules (asahi guix system desktop))
+(use-modules (asahi guix system desktop)
+             (gnu))
 
-(asahi-desktop-operating-system
- #:esp-uuid "41F0-16FF"
- #:initrd-modules asahi-initrd-modules-edge
- #:kernel asahi-linux-edge)
+(operating-system
+  (inherit asahi-desktop-operating-system)
+  (file-systems (cons* (file-system
+                         (device (uuid "41F0-16FF" 'fat32))
+                         (mount-point "/boot/efi")
+                         (needed-for-boot? #t)
+                         (type "vfat"))
+                       (file-system
+                         (device (file-system-label "asahi-guix-root"))
+                         (mount-point "/")
+                         (needed-for-boot? #t)
+                         (type "ext4"))
+                       %base-file-systems)))

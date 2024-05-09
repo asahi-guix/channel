@@ -29,7 +29,8 @@
   #:use-module (guix modules)
   #:use-module (guix packages)
   #:use-module (ice-9 optargs)
-  #:export (asahi-operating-system))
+  #:export (asahi-operating-system
+            asahi-edge-operating-system))
 
 (define %kernel-arguments
   (append '("net.ifnames=0") %default-kernel-arguments))
@@ -41,42 +42,32 @@
 (define %keyboard-layout
   (keyboard-layout "us" #:options %keyboard-options))
 
-(define (make-esp-file-system uuid-str)
-  (file-system
-    (device (uuid uuid-str 'fat32))
-    (mount-point "/boot/efi")
-    (needed-for-boot? #t)
-    (type "vfat")))
-
-(define (make-root-file-system label)
-  (file-system
-    (device (file-system-label label))
-    (mount-point "/")
-    (needed-for-boot? #t)
-    (type "ext4")))
-
-(define* (make-file-systems #:key esp-uuid root-label)
-  (append (filter file-system?
-                  (list (when (string? esp-uuid)
-                          (make-esp-file-system esp-uuid))
-                        (when (string? root-label)
-                          (make-root-file-system root-label))))
-          %base-file-systems))
+(define %file-systems
+  (cons* (file-system
+           (device (file-system-label "EFI - UEFI"))
+           (mount-point "/boot/efi")
+           (needed-for-boot? #t)
+           (type "vfat"))
+         (file-system
+           (device (file-system-label "asahi-guix-root"))
+           (mount-point "/")
+           (needed-for-boot? #t)
+           (type "ext4"))
+         %base-file-systems))
 
 (define %packages
-  (cons* e2fsprogs
-         network-manager
-         %base-packages))
+  (cons* e2fsprogs network-manager %base-packages))
+
+(define %openssh-configuration
+  (openssh-configuration (openssh openssh-sans-x)))
 
 (define %services
-  (modify-services (cons* (service pipewire-service-type)
+  (modify-services (cons* (service asahi-firmware-service-type)
+                          (service pipewire-service-type)
                           (service network-manager-service-type)
-                          (service openssh-service-type
-                                   (openssh-configuration
-                                    (openssh openssh-sans-x)))
+                          (service openssh-service-type %openssh-configuration)
                           (service wpa-supplicant-service-type)
-                          (append %base-services
-                                  (list (service asahi-firmware-service-type))))
+                          %base-services)
     (console-font-service-type config => (console-font-terminus config))
     (guix-service-type config => (append-substitutes config))))
 
@@ -88,31 +79,26 @@
          (supplementary-groups '("wheel" "audio" "netdev" "video")))
         %base-user-accounts))
 
-(define* (asahi-operating-system
-          #:key
-          (esp-uuid #f)
-          (host-name "asahi-guix")
-          (initrd-modules asahi-initrd-modules)
-          (kernel asahi-linux)
-          (keyboard-layout %keyboard-layout)
-          (locale "en_US.utf8")
-          (root-label "asahi-guix-root")
-          (timezone "Europe/Berlin"))
+(define asahi-operating-system
   (operating-system
-    (host-name host-name)
-    (locale locale)
-    (timezone timezone)
-    (keyboard-layout keyboard-layout)
+    (host-name "asahi-guix")
+    (locale "en_US.utf8")
+    (timezone "Europe/Berlin")
+    (keyboard-layout %keyboard-layout)
     (bootloader (bootloader-configuration
                  (bootloader m1n1-u-boot-grub-bootloader)
                  (targets (list "/boot/efi"))
-                 (keyboard-layout keyboard-layout)))
-    (kernel kernel)
+                 (keyboard-layout %keyboard-layout)))
+    (kernel asahi-linux-edge)
     (kernel-arguments %kernel-arguments)
-    (initrd-modules initrd-modules)
-    (file-systems (make-file-systems
-                   #:esp-uuid esp-uuid
-                   #:root-label root-label))
+    (initrd-modules asahi-initrd-modules-edge)
+    (file-systems %file-systems)
     (packages %packages)
     (services %services)
     (users %users)))
+
+(define asahi-edge-operating-system
+  (operating-system
+    (inherit asahi-operating-system)
+    (kernel asahi-linux-edge)
+    (initrd-modules asahi-initrd-modules-edge)))

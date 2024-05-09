@@ -8,6 +8,8 @@
   #:use-module (asahi guix services speakersafetyd)
   #:use-module (asahi guix substitutes)
   #:use-module (asahi guix system base)
+  #:use-module (gnu packages gnome)
+  #:use-module (gnu packages emacs)
   #:use-module (gnu packages libusb)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages wm)
@@ -21,12 +23,14 @@
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
   #:use-module (gnu services)
+  #:use-module (srfi srfi-1)
   #:use-module (gnu system)
+  #:use-module (guix packages)
   #:export (asahi-desktop-operating-system
             asahi-gnome-desktop-operating-system))
 
-(define* (asahi-desktop-operating-system . config)
-  (let ((base (apply asahi-operating-system config)))
+(define asahi-desktop-operating-system
+  (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)
       (services (modify-services (cons* fontconfig-file-system-service
@@ -47,7 +51,7 @@
                                         (service usb-modeswitch-service-type)
                                         (simple-service 'mtp udev-service-type (list libmtp))
                                         (operating-system-user-services base))))
-      (packages (cons* foot sway (operating-system-packages base))))))
+      (packages (cons* emacs kitty sway (operating-system-packages base))))))
 
 ;; Gnome Desktop
 
@@ -81,10 +85,16 @@ Section \"OutputClass\"
 EndSection
 ")
 
+(define %gnome-desktop-configuration
+  (gnome-desktop-configuration
+   (shell (map cadr (modify-inputs (package-propagated-inputs gnome-meta-core-shell)
+                      ;; These packages can't be built.
+                      (delete "orca" "rygel"))))))
+
 (define %gnome-desktop-services
   (modify-services (cons* (service asahi-firmware-service-type)
                           (service gdm-service-type)
-                          (service gnome-desktop-service-type)
+                          (service gnome-desktop-service-type %gnome-desktop-configuration)
                           (service kernel-module-loader-service-type '("asahi" "appledrm"))
                           (service pipewire-service-type)
                           (service speakersafetyd-service-type)
@@ -102,8 +112,9 @@ EndSection
                                              %xorg-modeset-config))))))
     (guix-service-type config => (append-substitutes config))))
 
-(define* (asahi-gnome-desktop-operating-system . config)
-  (let ((base (apply asahi-operating-system config)))
+(define asahi-gnome-desktop-operating-system
+  (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)
-      (services %gnome-desktop-services))))
+      (services %gnome-desktop-services)
+      (packages (cons* emacs (operating-system-packages base))))))

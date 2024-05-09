@@ -15,17 +15,13 @@
   (manifest-entry
     (name "asahi-guix-system")
     (version %asahi-guix-version)
-    (item (asahi-operating-system
-           #:esp-uuid "41F0-16FF"))))
+    (item asahi-operating-system)))
 
 (define %asahi-guix-system-edge
   (manifest-entry
     (name "asahi-guix-system-edge")
     (version %asahi-guix-version)
-    (item (asahi-operating-system
-           #:esp-uuid "41F0-16FF"
-           #:initrd-modules asahi-initrd-modules-edge
-           #:kernel asahi-linux-edge))))
+    (item asahi-edge-operating-system)))
 
 (define %asahi-guix-installer
   (manifest-entry

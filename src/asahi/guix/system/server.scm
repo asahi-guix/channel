@@ -233,7 +233,16 @@ COMMIT
            (name "manifest")
            (build '(manifests ".guix/manifest.scm"))
            (channels
-            (cons (channel
+            (list (channel
+                   (name 'guix)
+                   (url "https://github.com/asahi-guix/guix.git")
+                   (branch "main")
+                   (introduction
+                    (make-channel-introduction
+                     "f802d404b7229704190c821f89afd987be6a6905"
+                     (openpgp-fingerprint
+                      "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
+                  (channel
                    (name 'asahi)
                    (branch "main")
                    (url "https://github.com/asahi-guix/channel.git")
@@ -241,8 +250,7 @@ COMMIT
                     (make-channel-introduction
                      "3eeb493b037bea44f225c4314c5556aa25aff36c"
                      (openpgp-fingerprint
-                      "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
-                  %default-channels))
+                      "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
            (systems '("aarch64-linux")))))
 
 (define %cuirass-service

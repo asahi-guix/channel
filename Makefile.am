@@ -32,13 +32,14 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
-NOCOMP_SOURCES = src/asahi/guix/files/ssh/authorized-keys/ed25519/roman.pub \
+NOCOMP_SOURCES = src/asahi/guix/files/authorized-keys/apple-m1.pub \
+                 src/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
+                 src/asahi/guix/files/ssh/authorized-keys/ed25519/roman.pub \
                  src/asahi/guix/files/ssh/authorized-keys/rsa/roman.pub \
                  src/asahi/guix/files/ssh/authorized-keys/rsa/root.pub \
                  src/asahi/guix/packages/defconfig.main \
 		 src/asahi/guix/packages/defconfig.edge \
-                 src/asahi/guix/patches/cuirass-disable-jit.patch \
-		 src/asahi/guix/substitutes.asahi-guix.org.pub
+                 src/asahi/guix/patches/cuirass-disable-jit.patch
 
 SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	  src/asahi/guix/build/block-devices.scm \

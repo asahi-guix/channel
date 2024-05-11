@@ -1,4 +1,6 @@
 (define-module (asahi guix substitutes)
+  #:use-module (asahi guix channels)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu services base)
   #:use-module (gnu services)
   #:use-module (guix gexp)
@@ -22,6 +24,7 @@
     (append
      (guix-configuration-authorized-keys config)
      authorized-keys))
+   (guix (guix-for-channels (list asahi-channel guix-channel)))
    (substitute-urls
     (append
      (guix-configuration-substitute-urls config)

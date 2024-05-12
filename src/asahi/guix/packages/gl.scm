@@ -35,7 +35,7 @@
                  "-Db_lto=false"
                  "-Ddri3=enabled"
                  "-Degl=enabled"
-                 "-Dgallium-drivers=swrast,virgl,kmsro,asahi"
+                 "-Dgallium-drivers=swrast,virgl,kmsro,asahi,zink"
                  "-Dgallium-extra-hud=true"
                  "-Dgallium-opencl=disabled"
                  "-Dgallium-rusticl=false"

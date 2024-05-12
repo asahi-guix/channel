@@ -92,13 +92,8 @@
               (invoke "ninja" "install"))))))
     (inputs
      (modify-inputs (package-inputs mesa-utils)
-       (replace "mesa" asahi-mesa)))))
-
-(define-public asahi-glu
-  (package/inherit glu
-    (name "asahi-glu")
-    (propagated-inputs
-     (modify-inputs (package-propagated-inputs glu)
+       (replace "freeglut" asahi-freeglut)
+       (replace "glew" asahi-glew)
        (replace "mesa" asahi-mesa)))))
 
 (define-public asahi-freeglut
@@ -107,4 +102,21 @@
     (propagated-inputs
      (modify-inputs (package-propagated-inputs freeglut)
        (replace "glu" asahi-glu)
+       (replace "mesa" asahi-mesa)))))
+
+(define-public asahi-glew
+  (package/inherit glew
+    (name "asahi-glew")
+    (inputs
+     (modify-inputs (package-inputs glew)
+       (replace "mesa" asahi-mesa)))
+    (propagated-inputs
+     (modify-inputs (package-propagated-inputs glew)
+       (replace "glu" asahi-glu)))))
+
+(define-public asahi-glu
+  (package/inherit glu
+    (name "asahi-glu")
+    (propagated-inputs
+     (modify-inputs (package-propagated-inputs glu)
        (replace "mesa" asahi-mesa)))))

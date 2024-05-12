@@ -8,4 +8,4 @@
     (name "asahi-slim")
     (inputs
      (modify-inputs (package-inputs slim)
-       (replace "mesa" asahi-mesa)))))
+       (replace "freeglut" asahi-freeglut)))))

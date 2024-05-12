@@ -93,3 +93,18 @@
     (inputs
      (modify-inputs (package-inputs mesa-utils)
        (replace "mesa" asahi-mesa)))))
+
+(define-public asahi-glu
+  (package/inherit glu
+    (name "asahi-glu")
+    (propagated-inputs
+     (modify-inputs (package-propagated-inputs glu)
+       (replace "mesa" asahi-mesa)))))
+
+(define-public asahi-freeglut
+  (package/inherit freeglut
+    (name "asahi-freeglut")
+    (propagated-inputs
+     (modify-inputs (package-propagated-inputs freeglut)
+       (replace "glu" asahi-glu)
+       (replace "mesa" asahi-mesa)))))

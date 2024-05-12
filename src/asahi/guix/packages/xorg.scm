@@ -1,5 +1,4 @@
 (define-module (asahi guix packages xorg)
-  #:use-module ((guix licenses) #:prefix license:)
   #:use-module (asahi guix packages gl)
   #:use-module (gnu packages xorg)
   #:use-module (guix packages))

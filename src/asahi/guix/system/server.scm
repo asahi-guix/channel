@@ -176,7 +176,7 @@ COMMIT
            (channels
             (list (channel
                    (name 'guix)
-                   (url "https://github.com/asahi-guix/guix.git")
+                   (url "https://github.com/asahi-guix/guix")
                    (branch "main")
                    (introduction
                     (make-channel-introduction
@@ -190,7 +190,7 @@ COMMIT
            (channels
             (list (channel
                    (name 'guix)
-                   (url "https://github.com/asahi-guix/guix.git")
+                   (url "https://github.com/asahi-guix/guix")
                    (branch "main")
                    (introduction
                     (make-channel-introduction
@@ -200,7 +200,7 @@ COMMIT
                   (channel
                    (name 'asahi)
                    (branch "main")
-                   (url "https://github.com/asahi-guix/channel.git")
+                   (url "https://github.com/asahi-guix/channel")
                    (introduction
                     (make-channel-introduction
                      "3eeb493b037bea44f225c4314c5556aa25aff36c"
@@ -213,7 +213,7 @@ COMMIT
            (channels
             (list (channel
                    (name 'guix)
-                   (url "https://github.com/asahi-guix/guix.git")
+                   (url "https://github.com/asahi-guix/guix")
                    (branch "main")
                    (introduction
                     (make-channel-introduction
@@ -223,7 +223,7 @@ COMMIT
                   (channel
                    (name 'asahi)
                    (branch "main")
-                   (url "https://github.com/asahi-guix/channel.git")
+                   (url "https://github.com/asahi-guix/channel")
                    (introduction
                     (make-channel-introduction
                      "3eeb493b037bea44f225c4314c5556aa25aff36c"
@@ -236,7 +236,7 @@ COMMIT
            (channels
             (list (channel
                    (name 'guix)
-                   (url "https://github.com/asahi-guix/guix.git")
+                   (url "https://github.com/asahi-guix/guix")
                    (branch "main")
                    (introduction
                     (make-channel-introduction
@@ -246,7 +246,7 @@ COMMIT
                   (channel
                    (name 'asahi)
                    (branch "main")
-                   (url "https://github.com/asahi-guix/channel.git")
+                   (url "https://github.com/asahi-guix/channel")
                    (introduction
                     (make-channel-introduction
                      "3eeb493b037bea44f225c4314c5556aa25aff36c"

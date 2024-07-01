@@ -194,7 +194,7 @@ https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
 Clone the Asahi Guix channel.
 
 #+begin_src sh :dir /ssh:root@www.asahi-guix.org:~ :exports code :results verbatim
-  git clone --branch server https://github.com/asahi-guix/channel.git
+  git clone https://github.com/asahi-guix/channel.git
   cd channel && bash scripts/hetzner/install-server
 #+end_src
 

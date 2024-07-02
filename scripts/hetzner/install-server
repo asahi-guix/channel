@@ -7,9 +7,6 @@ ROOT_PARTITION=/dev/sda1
 BOOT_PARTITION=/dev/sda15
 GUIX_COMMIT="${GUIX_COMMIT:-4b3a553ca5ba5ac190739309eb5f7aa8170cf2a8}"
 
-echo "*** Installing Guix ..."
-bash ${BASH_SOURCE%/*}/install-guix
-
 echo "*** Unmounting partitions..."
 umount --force --quiet /mnt/boot/efi
 umount --force --quiet /mnt
@@ -25,9 +22,12 @@ mount $ROOT_PARTITION /mnt
 mkdir --parents /mnt/boot/efi
 mount $BOOT_PARTITION /mnt/boot/efi
 
+echo "*** Installing Guix ..."
+bash ${BASH_SOURCE%/*}/install-guix
+
 echo "*** Initializing Guix system with $GUIX_COMMIT..."
 guix time-machine --commit=$GUIX_COMMIT -- \
-     guix system init --load-path=src --system=aarch64-linux src/asahi/guix/system/server.scm /mnt
+     system init --load-path=src --system=aarch64-linux src/asahi/guix/system/server.scm /mnt
 
 echo "*** Unmounting partitions..."
 umount /mnt/boot/efi

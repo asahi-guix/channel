@@ -5,6 +5,7 @@ set -x
 
 ROOT_PARTITION=/dev/sda1
 BOOT_PARTITION=/dev/sda15
+GUIX_COMMIT="${GUIX_COMMIT:-4b3a553ca5ba5ac190739309eb5f7aa8170cf2a8}"
 
 bash ${BASH_SOURCE%/*}/install-guix
 
@@ -15,5 +16,7 @@ mount $ROOT_PARTITION /mnt
 mkdir --parents /mnt/boot/efi
 mount $BOOT_PARTITION /mnt/boot/efi
 
-guix system init --load-path=src --system=aarch64-linux src/asahi/guix/system/server.scm /mnt
+guix time-machine --commit=$GUIX_COMMIT -- \
+     guix system init --load-path=src --system=aarch64-linux src/asahi/guix/system/server.scm /mnt
+
 umount /mnt/boot/efi && umount /mnt

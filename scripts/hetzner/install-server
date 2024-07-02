@@ -7,9 +7,15 @@ ROOT_PARTITION=/dev/sda1
 BOOT_PARTITION=/dev/sda15
 GUIX_COMMIT="${GUIX_COMMIT:-4b3a553ca5ba5ac190739309eb5f7aa8170cf2a8}"
 
-echo "*** Unmounting partitions..."
-umount --force --quiet /mnt/boot/efi
-umount --force --quiet /mnt
+if mountpoint -q /mnt/boot/efi; then
+    echo "*** Formatting boot partition $BOOT_PARTITION..."
+    umount /mnt/boot/efi
+fi
+
+if mountpoint -q /mnt; then
+    echo "*** Formatting boot partition $ROOT_PARTITION..."
+    umount /mnt
+fi
 
 echo "*** Formatting root partition $ROOT_PARTITION..."
 mkfs.ext4 -L root -F $ROOT_PARTITION

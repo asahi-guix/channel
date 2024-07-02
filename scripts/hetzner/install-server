@@ -24,6 +24,8 @@ mount $BOOT_PARTITION /mnt/boot/efi
 
 echo "*** Installing Guix ..."
 bash ${BASH_SOURCE%/*}/install-guix
+GUIX_PROFILE="/root/.guix-profile"
+source "$GUIX_PROFILE/etc/profile"
 
 echo "*** Initializing Guix system with $GUIX_COMMIT..."
 guix time-machine --commit=$GUIX_COMMIT -- \

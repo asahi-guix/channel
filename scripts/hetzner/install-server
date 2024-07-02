@@ -3,9 +3,10 @@
 set -euxo pipefail
 set -x
 
-ROOT_PARTITION=/dev/sda1
 BOOT_PARTITION=/dev/sda15
 GUIX_COMMIT="${GUIX_COMMIT:-4b3a553ca5ba5ac190739309eb5f7aa8170cf2a8}"
+GUIX_PROFILE="${GUIX_PROFILE:-/root/.guix-profile}"
+ROOT_PARTITION=/dev/sda1
 
 if mountpoint -q /mnt/boot/efi; then
     echo "*** Formatting boot partition $BOOT_PARTITION..."
@@ -28,9 +29,10 @@ mount $ROOT_PARTITION /mnt
 mkdir --parents /mnt/boot/efi
 mount $BOOT_PARTITION /mnt/boot/efi
 
-echo "*** Installing Guix ..."
+echo "*** Installing Guix..."
 bash ${BASH_SOURCE%/*}/install-guix
-GUIX_PROFILE="/root/.guix-profile"
+
+echo "*** Setting up Guix profile $GUIX_PROFILE..."
 source "$GUIX_PROFILE/etc/profile"
 
 echo "*** Initializing Guix system with $GUIX_COMMIT..."

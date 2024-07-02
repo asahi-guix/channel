@@ -167,6 +167,15 @@ Install the Asahi Guix Gnome system.
   sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-gnome-desktop.tmpl /mnt
 #+end_src
 
+Build systems with time machine.
+
+#+begin_src sh
+  guix time-machine --channels=src/asahi/guix/channels.scm -- \
+       system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
+  guix time-machine --channels=src/asahi/guix/channels.scm -- \
+       system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
+#+end_src
+
 Install systems with time machine.
 
 #+begin_src sh

@@ -10,6 +10,10 @@ GUIX_COMMIT="${GUIX_COMMIT:-4b3a553ca5ba5ac190739309eb5f7aa8170cf2a8}"
 echo "*** Installing Guix ..."
 bash ${BASH_SOURCE%/*}/install-guix
 
+echo "*** Unmounting partitions..."
+umount --force --quiet /mnt/boot/efi
+umount --force --quiet /mnt
+
 echo "*** Formatting root partition $ROOT_PARTITION..."
 mkfs.ext4 -L root -F $ROOT_PARTITION
 

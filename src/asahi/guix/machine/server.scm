@@ -6,7 +6,7 @@
   #:export (asahi-guix-server-machine))
 
 (define host-key
-  (string-append "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAhdngke8Fhf7ruQFij8riXXiFIfkPi/XiX262TzTLYM root@(none)"))
+  (string-append "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPDGYVv+hWFyx/CaKC0li/8mpnvzCD6mnyJKytoIxErX root@(none)"))
 
 (define asahi-guix-server-machine
   (machine

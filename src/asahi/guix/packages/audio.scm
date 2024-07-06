@@ -9,7 +9,7 @@
 (define-public asahi-audio
   (package
     (name "asahi-audio")
-    (version "1.7")
+    (version "2.2")
     (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -17,7 +17,7 @@
                     (commit (string-append "v" version))))
               (file-name (git-file-name name version))
               (sha256
-               (base32 "16ggnqjz31qfpjgnbl5s377lr0yp36aam7kap0k2aj2hij4q4nv4"))))
+               (base32 "0qdvwpk84sqnqag2gld64kgh9r6dvjm1gwzlyxdz4xbzpf4m1075"))))
     (build-system gnu-build-system)
     (arguments
      `(#:make-flags
@@ -27,7 +27,7 @@
          (add-after 'unpack 'patch-source
            (lambda* (#:key inputs outputs #:allow-other-keys)
              (let ((out (assoc-ref outputs "out")))
-               (substitute* "conf/85-asahi-policy.lua"
+               (substitute* "conf/wireplumber.conf"
                  (("/usr/share/asahi-audio")
                   (string-append out "/share/asahi-audio")))
                (substitute* (find-files "firs" "\\.json$")

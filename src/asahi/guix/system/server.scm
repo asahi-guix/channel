@@ -3,10 +3,14 @@
   #:use-module (asahi guix system install)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
+  #:use-module (gnu packages admin)
+  #:use-module (gnu packages screen)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages databases)
+  #:use-module (gnu packages emacs)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages ssh)
+  #:use-module (gnu packages terminals)
   #:use-module (gnu packages xorg)
   #:use-module (gnu packages)
   #:use-module (gnu services admin)
@@ -15,6 +19,7 @@
   #:use-module (gnu services certbot)
   #:use-module (gnu services cuirass)
   #:use-module (gnu services databases)
+  #:use-module (gnu packages version-control)
   #:use-module (gnu services networking)
   #:use-module (gnu services security)
   #:use-module (gnu services sound)
@@ -67,14 +72,15 @@
           %base-initrd-modules))
 
 (define %packages
-  (append (map specification->package
-               '("e2fsprogs"
-                 "git"
-                 "htop"
-                 "net-tools"
-                 "network-manager"
-                 "screen"))
-          %base-packages))
+  (cons* e2fsprogs
+         emacs
+         git
+         htop
+         htop
+         kitty
+         net-tools
+         screen
+         %base-packages))
 
 (define %users
   (cons (user-account

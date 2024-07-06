@@ -41,9 +41,9 @@
     (patches patches)
     (sha256 (base32 hash))))
 
-(define asahi-linux-source-6.8.6-3
+(define asahi-linux-source-6.8.10-4
   (make-asahi-linux-source
-   "asahi-6.8.6-3" "1w0ghs91yj0i9wr8rpf1nqwmvhjdvmzplmp4j5l79wk1zcmjfw7k"
+   "asahi-6.8.10-4" "005afl5d6rnj3304riq8zazhz33yha4dkpskdyf02szqqw82fjgx"
    (list %speakers-patch-1 %speakers-patch-2)))
 
 (define* (make-asahi-linux name
@@ -52,8 +52,8 @@
                            (extra-options '())
                            (extra-version #f)
                            (linux linux-libre-arm64-generic)
-                           (source asahi-linux-source-6.8.6-3)
-                           (version "6.8.6-asahi"))
+                           (source asahi-linux-source-6.8.10-4)
+                           (version "6.8.10-asahi"))
   (let ((base (customize-linux
                #:configs (config->string (or extra-options '()))
                #:defconfig defconfig

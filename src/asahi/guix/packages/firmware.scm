@@ -52,10 +52,10 @@ propriatary and can not be packaged.")
     (license license:expat)))
 
 (define-public asahi-fwextract
-  (let ((commit "380d86edeb7fc297f5c691b8654850851f2ca868"))
+  (let ((commit "5f0814ba90d2814081c2e9ed516675dd75ab3c6e"))
     (package
       (name "asahi-fwextract")
-      (version (git-version "0.6.9" "0" commit))
+      (version (git-version "0.7.8" "0" commit))
       (source
        (origin
          (method git-fetch)
@@ -64,11 +64,10 @@ propriatary and can not be packaged.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "0nl96vigknn9dzgp9s93xk2xk4f36ak5mwpzg8gqhkv083h64hrj"))
+          (base32 "0yj4gn1p6cvk7d507y5l608axp72rkrn0f5f7hywhv8il9c0fs2j"))
          (modules '((guix build utils)))
          (snippet
           '(begin
-             (delete-file-recursively "vendor")
              (with-output-to-file "entry_points.txt"
                (lambda ()
                  (format #t "[console_scripts]\n")

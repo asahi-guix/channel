@@ -175,6 +175,7 @@ COMMIT
            (build '(packages
                     ;; "gnome-desktop"
                     ;; "icecat"
+                    "gtk"
                     "jemalloc"
                     ;; "librewolf"
                     ;; "plasma-desktop"

@@ -133,7 +133,7 @@ Format file systems.
 #+end_src
 
 #+begin_src sh :dir /sudo:: :results verbatim
-  tune2fs -O ^metadata_csum_seed /dev/nvme0n1p9
+  sudo tune2fs -O ^metadata_csum_seed /dev/nvme0n1p9
 #+end_src
 
 #+RESULTS:

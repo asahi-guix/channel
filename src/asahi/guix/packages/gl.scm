@@ -71,9 +71,14 @@
     (version (package-version asahi-mesa))
     (source (package-source asahi-mesa))))
 
+(define replace-mesa
+  (package-input-rewriting/spec
+   `(("mesa" . ,(const asahi-mesa)))))
+
 (define-public asahi-mesa-utils
   ;; TODO: glxinfo and friends are not compiled
-  (package/inherit mesa-utils
+  (package
+    (inherit (replace-mesa mesa-utils))
     (name "asahi-mesa-utils")
     (version "9.0.0")
     (source
@@ -89,34 +94,4 @@
       #~(modify-phases %standard-phases
           (replace 'install
             (lambda* (#:key outputs #:allow-other-keys)
-              (invoke "ninja" "install"))))))
-    (inputs
-     (modify-inputs (package-inputs mesa-utils)
-       (replace "freeglut" asahi-freeglut)
-       (replace "glew" asahi-glew)
-       (replace "mesa" asahi-mesa)))))
-
-(define-public asahi-freeglut
-  (package/inherit freeglut
-    (name "asahi-freeglut")
-    (propagated-inputs
-     (modify-inputs (package-propagated-inputs freeglut)
-       (replace "glu" asahi-glu)
-       (replace "mesa" asahi-mesa)))))
-
-(define-public asahi-glew
-  (package/inherit glew
-    (name "asahi-glew")
-    (inputs
-     (modify-inputs (package-inputs glew)
-       (replace "mesa" asahi-mesa)))
-    (propagated-inputs
-     (modify-inputs (package-propagated-inputs glew)
-       (replace "glu" asahi-glu)))))
-
-(define-public asahi-glu
-  (package/inherit glu
-    (name "asahi-glu")
-    (propagated-inputs
-     (modify-inputs (package-propagated-inputs glu)
-       (replace "mesa" asahi-mesa)))))
+              (invoke "ninja" "install"))))))))

@@ -157,37 +157,31 @@ configuration of audio input/output names and routing for specific audio
 hardware.")
     (license license:bsd-3)))
 
+(define replace-alsa-ucm-conf
+  (package-input-rewriting/spec
+   `(("alsa-ucm-conf" . ,(const asahi-alsa-ucm-conf)))))
+
 (define-public asahi-alsa-lib
-  (package/inherit linux:alsa-lib
-    (name "asahi-alsa-lib")
-    (inputs
-     (modify-inputs (package-inputs linux:alsa-lib)
-       (replace "alsa-ucm-conf" asahi-alsa-ucm-conf)))))
+  (package
+    (inherit (replace-alsa-ucm-conf linux:alsa-lib))
+    (name "asahi-alsa-lib")))
 
 (define-public asahi-alsa-utils
-  (package/inherit linux:alsa-utils
-    (name "asahi-alsa-utils")
-    (inputs
-     (modify-inputs (package-inputs linux:alsa-utils)
-       (replace "alsa-lib" asahi-alsa-lib)))))
+  (package
+    (inherit (replace-alsa-ucm-conf linux:alsa-utils))
+    (name "asahi-alsa-utils")))
 
 (define-public asahi-alsa-plugins
-  (package/inherit linux:alsa-plugins
-    (name "asahi-alsa-plugins")
-    (inputs
-     (modify-inputs (package-inputs linux:alsa-plugins)
-       (replace "alsa-lib" asahi-alsa-lib)))))
+  (package
+    (inherit (replace-alsa-ucm-conf linux:alsa-plugins))
+    (name "asahi-alsa-plugins")))
 
 (define-public asahi-pipewire
-  (package/inherit linux:pipewire
-    (name "asahi-pipewire")
-    (inputs
-     (modify-inputs (package-inputs linux:pipewire)
-       (replace "alsa-lib" asahi-alsa-lib)))))
+  (package
+    (inherit (replace-alsa-ucm-conf linux:pipewire))
+    (name "asahi-pipewire")))
 
 (define-public asahi-wireplumber
-  (package/inherit linux:wireplumber
-    (name "asahi-wireplumber")
-    (inputs
-     (modify-inputs (package-inputs linux:wireplumber)
-       (replace "pipewire" asahi-pipewire)))))
+  (package
+    (inherit (replace-alsa-ucm-conf linux:wireplumber))
+    (name "asahi-wireplumber")))

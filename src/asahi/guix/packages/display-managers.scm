@@ -3,9 +3,11 @@
   #:use-module (gnu packages display-managers)
   #:use-module (guix packages))
 
+(define replace-mesa
+  (package-input-rewriting/spec
+   `(("mesa" . ,(const asahi-mesa)))))
+
 (define-public asahi-slim
-  (package/inherit slim
-    (name "asahi-slim")
-    (inputs
-     (modify-inputs (package-inputs slim)
-       (replace "freeglut" asahi-freeglut)))))
+  (package
+    (inherit (replace-mesa slim))
+    (name "asahi-slim")))

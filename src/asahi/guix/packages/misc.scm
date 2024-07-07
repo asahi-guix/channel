@@ -12,7 +12,7 @@
 (define-public asahi-scripts
   (package
     (name "asahi-scripts")
-    (version "20231219.1")
+    (version "20240623")
     (source
      (origin
        (method git-fetch)
@@ -20,7 +20,7 @@
              (url "https://github.com/AsahiLinux/asahi-scripts.git")
              (commit version)))
        (sha256
-        (base32 "1i7a007m744b358fhx925vywrn3alr7105lal9ggm73pacy5g6aj"))))
+        (base32 "0nbwk6wcv901w7qpjj57xqv6dilllaadfk7mkhpdwvfx78q76jd1"))))
     (build-system gnu-build-system)
     (arguments
      `(#:phases

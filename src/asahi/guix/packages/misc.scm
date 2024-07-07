@@ -30,6 +30,13 @@
              (let ((out (assoc-ref outputs "out")))
                (substitute* "Makefile"
                  (("PREFIX=/usr/local") "PREFIX="))
+               (substitute* "asahi-diagnose"
+                 (("journalctl -b 0 -tkernel")
+                  "dmesg --kernel")
+                 (("cmd 'journalctl -b -1.*")
+                  "")
+                 (("logfile /var/log/pacman.log 500")
+                  ""))
                (substitute* "asahi-fwupdate"
                  (("/usr/share/asahi-scripts/functions.sh")
                   (string-append out "/share/asahi-scripts/functions.sh"))

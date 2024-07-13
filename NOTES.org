@@ -197,6 +197,16 @@ Unmount the file systems.
 ** Install Guix on Hetzner Cloud
 
 https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
+** REPL
+*** Build operating system
+#+begin_src scheme
+  (use-modules (asahi guix system base)
+               (guix store))
+
+  (with-store %store
+    (run-with-store %store
+      (lower-object asahi-operating-system)))
+#+end_src
 ** Server
 *** Installation via Hetzner rescue system
 

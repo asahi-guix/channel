@@ -177,7 +177,7 @@ COMMIT
                     ;; "icecat"
                     "gtk"
                     "jemalloc"
-                    ;; "librewolf"
+                    "librewolf"
                     ;; "plasma-desktop"
                     "rust"))
            (channels

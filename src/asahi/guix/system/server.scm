@@ -187,7 +187,7 @@ COMMIT
                    (branch "main")
                    (introduction
                     (make-channel-introduction
-                     "1678dd5a1c7956773303a7b66dcc91560e513f3c"
+                     "47ad87a9190dd8710121fd24b0e9169dd828bfa8"
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
            (systems '("aarch64-linux")))
@@ -201,7 +201,7 @@ COMMIT
                    (branch "main")
                    (introduction
                     (make-channel-introduction
-                     "1678dd5a1c7956773303a7b66dcc91560e513f3c"
+                     "47ad87a9190dd8710121fd24b0e9169dd828bfa8"
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                   (channel
@@ -224,7 +224,7 @@ COMMIT
                    (branch "main")
                    (introduction
                     (make-channel-introduction
-                     "1678dd5a1c7956773303a7b66dcc91560e513f3c"
+                     "47ad87a9190dd8710121fd24b0e9169dd828bfa8"
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                   (channel
@@ -247,7 +247,7 @@ COMMIT
                    (branch "main")
                    (introduction
                     (make-channel-introduction
-                     "1678dd5a1c7956773303a7b66dcc91560e513f3c"
+                     "47ad87a9190dd8710121fd24b0e9169dd828bfa8"
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                   (channel

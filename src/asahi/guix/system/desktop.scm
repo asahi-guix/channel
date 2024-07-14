@@ -104,7 +104,7 @@ EndSection
                                              %xorg-modeset-config))))))
     (guix-service-type config => (append-substitutes config))))
 
-(define asahi-gnome-desktop-operating-system
+(define-public asahi-gnome-desktop-operating-system
   (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)

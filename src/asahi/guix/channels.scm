@@ -34,7 +34,7 @@
    (branch "main")
    (introduction
     (make-channel-introduction
-     "cfba8d90682d0d71c60b32c4217edc089490b923"
+     "59c86958338970cac132f45da37de3b00a26a8cc"
      (openpgp-fingerprint
       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199")))))
 

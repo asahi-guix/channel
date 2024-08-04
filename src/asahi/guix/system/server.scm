@@ -215,8 +215,8 @@ COMMIT
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
            (systems '("aarch64-linux")))
           (specification
-           (name "r0man/channel")
-           (build '(channels r0man/channel))
+           (name "r0man-channel")
+           (build '(channels r0man-channel))
            (channels
             (list (channel
                    (name 'guix)
@@ -228,7 +228,7 @@ COMMIT
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                   (channel
-                   (name 'r0man/channel)
+                   (name 'r0man-channel)
                    (branch "main")
                    (url "https://github.com/r0man/guix-channel")
                    (introduction

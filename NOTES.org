@@ -332,6 +332,62 @@ https://github.com/AsahiLinux/asahi-audio/issues/16
 : dr-xr-xr-x 2 root root 4096 Jan  1  1970 scripts
 : dr-xr-xr-x 2 root root 4096 Jan  1  1970 wireplumber.conf.d
 
-#+begin_src sh
+#+begin_src sh :results verbatim
   wireplumber --config-file "$(./pre-inst-env guix build asahi-audio)/share/wireplumber"
 #+end_src
+** Fedora Minimal Archive
+
+Download =fedora-40-minimal-202405221600.zip=.
+
+#+begin_src sh :results verbatim
+  mkdir -p fedora
+  wget -c https://asahilinux-fedora.b-cdn.net/os/fedora-40-minimal-202405221600.zip -o fedora/fedora-40-minimal-202405221600.zip
+#+end_src
+
+#+begin_src sh :results verbatim
+  cd fedora && unzip -l fedora/fedora-40-minimal-202405221600.zip
+#+end_src
+
+*** boot.img
+
+File Type
+
+#+begin_src sh :results verbatim
+  file fedora/boot.img
+#+end_src
+
+#+RESULTS:
+: fedora/boot.img: Linux rev 1.0 ext4 filesystem data, UUID=7540c875-efa9-459c-9f5a-2cb156f6d709, volume name "BOOT" (extents) (64bit) (large files) (huge files)
+
+Fdisk
+
+#+begin_src sh :results verbatim
+  fdisk -l fedora/boot.img
+#+end_src
+
+#+RESULTS:
+: Disk fedora/boot.img: 1 GiB, 1073741824 bytes, 2097152 sectors
+: Units: sectors of 1 * 512 = 512 bytes
+: Sector size (logical/physical): 512 bytes / 512 bytes
+: I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+*** root.img
+
+File Type
+
+#+begin_src sh :results verbatim
+  file fedora/root.img
+#+end_src
+
+#+RESULTS:
+: fedora/root.img: BTRFS Filesystem label "fedora", sectorsize 4096, nodesize 16384, leafsize 16384, UUID=fef23143-fe46-4f7f-bbb9-efc46a2a5e48, 1160269824/3933188096 bytes used, 1 devices
+
+#+begin_src sh :results verbatim
+  fdisk -l fedora/root.img
+#+end_src
+
+#+RESULTS:
+: Disk fedora/root.img: 3.66 GiB, 3933188096 bytes, 7682008 sectors
+: Units: sectors of 1 * 512 = 512 bytes
+: Sector size (logical/physical): 512 bytes / 512 bytes
+: I/O size (minimum/optimal): 512 bytes / 512 bytes

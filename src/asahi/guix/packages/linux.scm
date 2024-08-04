@@ -16,18 +16,6 @@
   #:use-module (guix utils)
   #:use-module (srfi srfi-1))
 
-(define %speakers-patch-1
-  (origin
-    (method url-fetch)
-    (uri "https://github.com/AsahiLinux/linux/commit/385ea7b5023486aba7919cec8b6b3f6a843a1013.patch")
-    (sha256 "1hq5dbp2xy7mc7m1i7bh8q02rxisibpnwxyjyzd6sqw712yqdqgk")))
-
-(define %speakers-patch-2
-  (origin
-    (method url-fetch)
-    (uri "https://github.com/AsahiLinux/linux/commit/6a24102c06c95951ab992e2d41336cc6d4bfdf23.patch")
-    (sha256 "165gc37jcv5pm34jiaf7kk409q3fbnc4s6v6s7fvpv17li05aq2p")))
-
 (define config->string
   (@@ (gnu packages linux) config->string))
 
@@ -41,10 +29,10 @@
     (patches patches)
     (sha256 (base32 hash))))
 
-(define asahi-linux-source-6.8.10-4
+(define asahi-linux-source-6.9.12-1
   (make-asahi-linux-source
-   "asahi-6.8.10-4" "005afl5d6rnj3304riq8zazhz33yha4dkpskdyf02szqqw82fjgx"
-   (list %speakers-patch-1 %speakers-patch-2)))
+   "asahi-6.9.12-1" "13xvsp0mcny19bpqgp6m0kydhnv9648q3wlbg2zx4f2mwhdjn8rc"
+   (list)))
 
 (define* (make-asahi-linux name
                            #:key
@@ -52,8 +40,8 @@
                            (extra-options '())
                            (extra-version #f)
                            (linux linux-libre-arm64-generic)
-                           (source asahi-linux-source-6.8.10-4)
-                           (version "6.8.10-asahi"))
+                           (source asahi-linux-source-6.9.12-1)
+                           (version "6.9.12-asahi"))
   (let ((base (customize-linux
                #:configs (config->string (or extra-options '()))
                #:defconfig defconfig

@@ -215,6 +215,29 @@ COMMIT
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
            (systems '("aarch64-linux")))
           (specification
+           (name "r0man/channel")
+           (build '(channels r0man/channel))
+           (channels
+            (list (channel
+                   (name 'guix)
+                   (url "https://github.com/asahi-guix/guix")
+                   (branch "main")
+                   (introduction
+                    (make-channel-introduction
+                     "59c86958338970cac132f45da37de3b00a26a8cc"
+                     (openpgp-fingerprint
+                      "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
+                  (channel
+                   (name 'r0man/channel)
+                   (branch "main")
+                   (url "https://github.com/r0man/guix-channel")
+                   (introduction
+                    (make-channel-introduction
+                     "8eb7a76af9b51b80f5c01f18639e6360833fc377"
+                     (openpgp-fingerprint
+                      "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+           (systems '("aarch64-linux")))
+          (specification
            (name "images")
            (build '(custom (asahi guix cuirass jobs)))
            (channels

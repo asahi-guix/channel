@@ -64,7 +64,7 @@
               (delete 'set-layer-path-in-manifests)))))
       (inputs
        (modify-inputs (package-inputs mesa)
-         (prepend `(,lm-sensors "lib") asahi-libclc clang-18 libglvnd libressl valgrind)
+         (prepend `(,lm-sensors "lib") asahi-libclc clang-18 libressl valgrind)
          (replace "llvm" llvm-18)
          (replace "llvm-for-mesa" llvm-18))))))
 
@@ -98,28 +98,3 @@
           (replace 'install
             (lambda* (#:key outputs #:allow-other-keys)
               (invoke "ninja" "install"))))))))
-
-(define-public asahi-freeglut
-  (package/inherit freeglut
-    (name "asahi-freeglut")
-    (propagated-inputs
-     (modify-inputs (package-propagated-inputs freeglut)
-       (replace "glu" asahi-glu)
-       (replace "mesa" asahi-mesa)))))
-
-(define-public asahi-glew
-  (package/inherit glew
-    (name "asahi-glew")
-    (inputs
-     (modify-inputs (package-inputs glew)
-       (replace "mesa" asahi-mesa)))
-    (propagated-inputs
-     (modify-inputs (package-propagated-inputs glew)
-       (replace "glu" asahi-glu)))))
-
-(define-public asahi-glu
-  (package/inherit glu
-    (name "asahi-glu")
-    (propagated-inputs
-     (modify-inputs (package-propagated-inputs glu)
-       (replace "mesa" asahi-mesa)))))

@@ -31,8 +31,9 @@
       (arguments
        (substitute-keyword-arguments (package-arguments mesa)
          ((#:configure-flags flags)
-          `(list "-Db_ndebug=true"
-                 "-Db_lto=false"
+          `(list "-Db_lto=false"
+                 "-Db_ndebug=true"
+                 "-Dbuild-tests=true"
                  "-Ddri3=enabled"
                  "-Degl=enabled"
                  "-Dgallium-drivers=swrast,virgl,kmsro,asahi,zink"
@@ -48,14 +49,17 @@
                  "-Dglx=dri"
                  "-Dlibunwind=disabled"
                  "-Dllvm=enabled"
+                 "-Dllvm=enabled"
                  "-Dlmsensors=enabled"
                  "-Dmicrosoft-clc=disabled"
                  "-Dosmesa=true"
                  "-Dplatforms=x11,wayland"
                  "-Dshared-glapi=enabled"
                  "-Dvalgrind=enabled"
+                 "-Dvideo-codecs=all"
                  "-Dvulkan-drivers=swrast"
-                 "-Dvulkan-layers="))
+                 "-Dvulkan-layers=device-select,overlay"
+                 "-Dzstd=enabled"))
          ((#:phases phases '%standard-phases)
           #~(modify-phases #$phases
               (delete 'set-layer-path-in-manifests)))))
@@ -95,3 +99,28 @@
           (replace 'install
             (lambda* (#:key outputs #:allow-other-keys)
               (invoke "ninja" "install"))))))))
+
+(define-public asahi-freeglut
+  (package/inherit freeglut
+    (name "asahi-freeglut")
+    (propagated-inputs
+     (modify-inputs (package-propagated-inputs freeglut)
+       (replace "glu" asahi-glu)
+       (replace "mesa" asahi-mesa)))))
+
+(define-public asahi-glew
+  (package/inherit glew
+    (name "asahi-glew")
+    (inputs
+     (modify-inputs (package-inputs glew)
+       (replace "mesa" asahi-mesa)))
+    (propagated-inputs
+     (modify-inputs (package-propagated-inputs glew)
+       (replace "glu" asahi-glu)))))
+
+(define-public asahi-glu
+  (package/inherit glu
+    (name "asahi-glu")
+    (propagated-inputs
+     (modify-inputs (package-propagated-inputs glu)
+       (replace "mesa" asahi-mesa)))))

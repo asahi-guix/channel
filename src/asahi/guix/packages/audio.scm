@@ -29,7 +29,9 @@
              (let ((out (assoc-ref outputs "out")))
                (substitute* "conf/wireplumber.conf"
                  (("/usr/share/asahi-audio")
-                  (string-append out "/share/asahi-audio")))
+                  (string-append out "/share/asahi-audio"))
+                 (("device/asahi-limit-volume.lua")
+                  (string-append out "/share/wireplumber/scripts/device/asahi-limit-volume.lua")))
                (substitute* (find-files "firs" "\\.json$")
                  (("/usr/share/asahi-audio")
                   (string-append out "/share/asahi-audio"))))))

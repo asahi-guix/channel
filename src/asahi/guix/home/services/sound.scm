@@ -58,7 +58,7 @@ PulseAudio clients to use PipeWire transparently."))
 
 (define (wireplumber-module-dir config)
   #~(string-append #$(home-pipewire-configuration-wireplumber config)
-                   "/lib/wireplumber-0.4"))
+                   "/lib/wireplumber-0.5"))
 
 (define (home-pipewire-shepherd-service config)
   (shepherd-service

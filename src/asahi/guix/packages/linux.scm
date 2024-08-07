@@ -1,5 +1,6 @@
 (define-module (asahi guix packages linux)
   #:use-module ((gnu packages linux) #:prefix linux:)
+  #:use-module ((gnu packages pulseaudio) #:prefix pulseaudio:)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (asahi guix packages crates-io)
   #:use-module (asahi guix packages rust)
@@ -154,6 +155,10 @@ hardware.")
     (inherit (replace-alsa-ucm-conf linux:alsa-lib))
     (name "asahi-alsa-lib")))
 
+(define replace-alsa-lib
+  (package-input-rewriting/spec
+   `(("alsa-lib" . ,(const asahi-alsa-lib)))))
+
 (define-public asahi-alsa-utils
   (package
     (inherit (replace-alsa-ucm-conf linux:alsa-utils))
@@ -168,6 +173,11 @@ hardware.")
   (package
     (inherit (replace-alsa-ucm-conf linux:pipewire))
     (name "asahi-pipewire")))
+
+(define-public asahi-pulseaudio
+  (package
+    (inherit (replace-alsa-lib pulseaudio:pulseaudio))
+    (name "asahi-pulseaudio")))
 
 (define-public asahi-wireplumber
   (package

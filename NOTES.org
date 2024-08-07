@@ -313,6 +313,9 @@ Run the server in a virtual machine.
       -nic user,model=virtio-net-pci,hostfwd=tcp::2222-:22
 #+end_src
 ** Sound
+*** Diagnose differences betwen Guix and Fedora
+- OS firmware: 12.3 vs 13.5
+- m1n1 stage 2: unknown vs v1.4.14
 *** Issue with older Eudev packages
 
 https://gitlab.alpinelinux.org/alpine/aports/-/merge_requests/58442/diffs

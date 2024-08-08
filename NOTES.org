@@ -116,7 +116,7 @@ Device              Start       End   Sectors   Size Type
 | /dev/nvme0n1p5  | 477M   | EFI System       | Asahi Guix EFI       | 9FBE-130E                            |
 | /dev/nvme0n1p6  | 850G   | Linux filesystem | Asahi Guix Root      | 56b68fba-21cb-49b5-ac44-84dc382f3426 |
 | /dev/nvme0n1p7  | 2.3G   | Apple APFS       | Asahi Guix Test      |                                      |
-| /dev/nvme0n1p8  | 477M   | EFI System       | Asahi Guix Test EFI  | 41F0-16FF                            |
+| /dev/nvme0n1p8  | 477M   | EFI System       | Asahi Guix Test EFI  | 7DF0-1D0A                            |
 | /dev/nvme0n1p9  | 93.1G  | Linux filesystem | Asahi Guix Test Root | 1fb64061-5e58-496b-9f29-84265f3a442a |
 | /dev/nvme0n1p10 | 2.3G   | Apple APFS       | Asahi Fedora         |                                      |
 | /dev/nvme0n1p11 | 500M   | EFI System       | Asahi Fedora EFI     | 1311-83BA                            |

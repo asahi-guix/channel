@@ -93,12 +93,12 @@ First, lookup the filesystem UUID of the EFI system partition
 
 #+RESULTS:
 #+begin_example
-41F0-16FF
+7DF0-1D0A
 #+end_example
 
 Create a file called =asahi-guix.scm= and instantiate a Guix operating
 system record, configured with the filesystem UUID of your EFI system
-partition. In this example, the filesystem UUID is =41F0-16FF=.
+partition. In this example, the filesystem UUID is =7DF0-1D0A=.
 
 #+begin_src scheme
   (use-modules (asahi guix system base)
@@ -107,7 +107,7 @@ partition. In this example, the filesystem UUID is =41F0-16FF=.
   (operating-system
     (inherit asahi-operating-system)
     (file-systems (cons* (file-system
-                           (device (uuid "41F0-16FF" 'fat32))
+                           (device (uuid "7DF0-1D0A" 'fat32))
                            (mount-point "/boot/efi")
                            (needed-for-boot? #t)
                            (type "vfat"))
@@ -248,7 +248,7 @@ system.
 #+begin_src scheme
   (file-system
     (mount-point "/boot/efi")
-    (device (uuid "41F0-16FF" 'fat32))
+    (device (uuid "7DF0-1D0A" 'fat32))
     (type "vfat"))
 #+end_src
 

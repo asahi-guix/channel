@@ -1,7 +1,7 @@
 * Notes
 ** Cuirass
 
-Port forward cuirass web interface to [[http://localhost:8081][localhost]].
+Port forward Cuirass web interface to [[http://localhost:8081][localhost]].
 
 #+begin_src sh
   ssh -N -L  8081:localhost:8081 root@www.asahi-guix.org

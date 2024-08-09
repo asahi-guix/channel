@@ -32,45 +32,57 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
-NOCOMP_SOURCES = src/asahi/guix/files/authorized-keys/apple-m1.pub \
-                 src/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
-                 src/asahi/guix/files/ssh/authorized-keys/ed25519/roman.pub \
-                 src/asahi/guix/files/ssh/authorized-keys/rsa/roman.pub \
-                 src/asahi/guix/files/ssh/authorized-keys/rsa/root.pub \
-                 src/asahi/guix/packages/defconfig.main \
-		 src/asahi/guix/packages/defconfig.edge \
-                 src/asahi/guix/patches/cuirass-disable-jit.patch
+NOCOMP_SOURCES = src/asahi/guix/files/ssh/authorized-keys/rsa/root.pub \
+	src/asahi/guix/files/ssh/authorized-keys/rsa/roman.pub \
+	src/asahi/guix/files/ssh/authorized-keys/ed25519/roman.pub \
+	src/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
+	src/asahi/guix/files/authorized-keys/apple-m1.pub \
+	src/asahi/guix/files/asahi-bootlogo.svg \
+	src/asahi/guix/packages/defconfig.main \
+	src/asahi/guix/packages/defconfig.edge \
+	src/asahi/guix/patches/cuirass-disable-jit.patch
 
 SOURCES = src/asahi/guix/bootloader/m1n1.scm \
-	  src/asahi/guix/build/block-devices.scm \
-	  src/asahi/guix/build/bootloader/m1n1.scm \
-	  src/asahi/guix/build/firmware.scm \
-	  src/asahi/guix/build/modules.scm \
-	  src/asahi/guix/channels.scm \
-	  src/asahi/guix/initrd.scm \
-	  src/asahi/guix/machine/server.scm \
-	  src/asahi/guix/packages/audio.scm \
-	  src/asahi/guix/packages/bootloader.scm \
-          src/asahi/guix/packages/ci.scm \
-	  src/asahi/guix/packages/crates-io.scm \
-	  src/asahi/guix/packages/firmware.scm \
-	  src/asahi/guix/packages/gl.scm \
-	  src/asahi/guix/packages/linux.scm \
-	  src/asahi/guix/packages/misc.scm \
-	  src/asahi/guix/packages/rust.scm \
-	  src/asahi/guix/services/channels.scm \
-	  src/asahi/guix/services/console-font.scm \
-	  src/asahi/guix/services/firmware.scm \
-          src/asahi/guix/services/sound.scm \
-	  src/asahi/guix/services/speakersafetyd.scm \
-	  src/asahi/guix/services/udev.scm \
-	  src/asahi/guix/substitutes.scm \
-	  src/asahi/guix/system/base.scm \
-	  src/asahi/guix/system/desktop.scm \
-	  src/asahi/guix/system/install.scm \
-	  src/asahi/guix/system/server.scm \
-	  src/asahi/guix/transformations.scm \
-	  src/asahi/guix/udev.scm
+	src/asahi/guix/build/block-devices.scm \
+	src/asahi/guix/build/bootloader/m1n1.scm \
+	src/asahi/guix/build/firmware.scm \
+	src/asahi/guix/build/modules.scm \
+	src/asahi/guix/channels.scm \
+	src/asahi/guix/cuirass/jobs.scm \
+	src/asahi/guix/home/config.scm \
+	src/asahi/guix/home/services/sound.scm \
+	src/asahi/guix/initrd.scm \
+	src/asahi/guix/machine/server.scm \
+	src/asahi/guix/packages/audio.scm \
+	src/asahi/guix/packages/bootloader.scm \
+	src/asahi/guix/packages/ci.scm \
+	src/asahi/guix/packages/crates-io.scm \
+	src/asahi/guix/packages/display-managers.scm \
+	src/asahi/guix/packages/firmware.scm \
+	src/asahi/guix/packages/gl.scm \
+	src/asahi/guix/packages/linux.scm \
+	src/asahi/guix/packages/llvm.scm \
+	src/asahi/guix/packages/misc.scm \
+	src/asahi/guix/packages/music.scm \
+	src/asahi/guix/packages/pulseaudio.scm \
+	src/asahi/guix/packages/rust-apps.scm \
+	src/asahi/guix/packages/rust.scm \
+	src/asahi/guix/packages/wm.scm \
+	src/asahi/guix/packages/xorg.scm \
+	src/asahi/guix/services/channels.scm \
+	src/asahi/guix/services/console-font.scm \
+	src/asahi/guix/services/firmware.scm \
+	src/asahi/guix/services/sound.scm \
+	src/asahi/guix/services/speakersafetyd.scm \
+	src/asahi/guix/services/udev.scm \
+	src/asahi/guix/substitutes.scm \
+	src/asahi/guix/system/base.scm \
+	src/asahi/guix/system/desktop.scm \
+	src/asahi/guix/system/image.scm \
+	src/asahi/guix/system/install.scm \
+	src/asahi/guix/system/server.scm \
+	src/asahi/guix/transformations.scm \
+	src/asahi/guix/udev.scm
 
 TESTS = tests/asahi/guix/build/block-devices.scm
 

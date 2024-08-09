@@ -98,15 +98,14 @@ Device              Start       End   Sectors   Size Type
 /dev/nvme0n1p5  196050804 196172915    122112   477M EFI System
 /dev/nvme0n1p6  196173056 418995455 222822400   850G Linux filesystem
 /dev/nvme0n1p7  418995456 419605759    610304   2.3G Apple APFS
-/dev/nvme0n1p8  419605760 419727871    122112   477M EFI System
-/dev/nvme0n1p9  444141824 444752127    610304   2.3G Apple APFS
-/dev/nvme0n1p10 444752128 444880127    128000   500M EFI System
-/dev/nvme0n1p11 444880128 445142271    262144     1G Linux filesystem
-/dev/nvme0n1p12 445142272 453907199   8764928  33.4G Linux filesystem
-/dev/nvme0n1p13 487241816 488552524   1310709     5G unknown
-/dev/nvme0n1p14 419727872 444141823  24413952  93.1G Linux filesystem
-
-Partition table entries are not in disk order.
+/dev/nvme0n1p8  419605760 419733759    128000   500M EFI System
+/dev/nvme0n1p9  419733760 419995903    262144     1G Linux filesystem
+/dev/nvme0n1p10 419995904 443409407  23413504  89.3G Linux filesystem
+/dev/nvme0n1p11 443409408 444019711    610304   2.3G Apple APFS
+/dev/nvme0n1p12 444019712 444147711    128000   500M EFI System
+/dev/nvme0n1p13 444147712 444409855    262144     1G Linux filesystem
+/dev/nvme0n1p14 444409856 480030463  35620608 135.9G Linux filesystem
+/dev/nvme0n1p15 487241816 488552524   1310709     5G unknown
 #+end_example
 
 | Device          | Size   | Filesystem       | Description          | UUID                                 |
@@ -117,14 +116,15 @@ Partition table entries are not in disk order.
 | /dev/nvme0n1p4  | 2.3G   | Apple APFS       | Asahi Guix           |                                      |
 | /dev/nvme0n1p5  | 477M   | EFI System       | Asahi Guix EFI       | 9FBE-130E                            |
 | /dev/nvme0n1p6  | 850G   | Linux filesystem | Asahi Guix Root      | 56b68fba-21cb-49b5-ac44-84dc382f3426 |
-| /dev/nvme0n1p7  | 2.3G   | Apple APFS       | Asahi Guix Test      |                                      |
-| /dev/nvme0n1p8  | 477M   | EFI System       | Asahi Guix Test EFI  | 7DF0-1D0A                            |
-| /dev/nvme0n1p9  | 2.3G   | Apple APFS       | Asahi Fedora         |                                      |
-| /dev/nvme0n1p10 | 500M   | EFI System       | Asahi Fedora EFI     | 1311-83BA                            |
-| /dev/nvme0n1p11 | 1G     | Linux filesystem | Asahi Fedora Boot    | 7d98b13b-8467-4662-b4ba-1ccd7ebf7634 |
-| /dev/nvme0n1p12 | 33.4G  | Linux filesystem | Asahi Fedora Root    | 6b7fba8b-c7ab-48fe-b5b2-a3ce1dc9476f |
-| /dev/nvme0n1p13 | 5G     | unknown          |                      |                                      |
-| /dev/nvme0n1p14 | 93.1G  | Linux filesystem | Asahi Guix Test Root | 1fb64061-5e58-496b-9f29-84265f3a442a |
+| /dev/nvme0n1p7  | 2.3G   | Apple APFS       | Asahi Fedora         |                                      |
+| /dev/nvme0n1p8  | 500M   | EFI System       | Asahi Fedora EFI     | A63E-863C                            |
+| /dev/nvme0n1p9  | 1G     | Linux filesystem | Asahi Fedora Boot    | b02b4c25-ab2a-43a0-a381-539b17e531cb |
+| /dev/nvme0n1p10 | 89.3G  | Linux filesystem | Asahi Fedora Root    | 990d9cc0-4a80-45f1-ba19-72e86f580a57 |
+| /dev/nvme0n1p11 | 2.3G   | Apple APFS       | Asahi Guix Test      |                                      |
+| /dev/nvme0n1p12 | 500M   | EFI System       | Asahi Guix Test EFI  | 86E8-4498                            |
+| /dev/nvme0n1p13 | 1G     | Linux filesystem | Asahi Guix Test Boot | 7540c875-efa9-459c-9f5a-2cb156f6d709 |
+| /dev/nvme0n1p14 | 135.9G | Linux filesystem | Asahi Guix Test Root | fef23143-fe46-4f7f-bbb9-efc46a2a5e48 |
+| /dev/nvme0n1p15 | 5G     | unknown          |                      |                                      |
 
 *** Installation
 
@@ -146,7 +146,7 @@ Mount file systems.
 #+begin_src sh :dir /sudo:: :results verbatim
   sudo mount /dev/nvme0n1p14 /mnt
   sudo mkdir --parents /mnt/boot/efi
-  sudo mount /dev/nvme0n1p8 /mnt/boot/efi
+  sudo mount /dev/nvme0n1p12 /mnt/boot/efi
 #+end_src
 
 #+RESULTS:

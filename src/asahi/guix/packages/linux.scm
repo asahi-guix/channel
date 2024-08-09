@@ -155,7 +155,7 @@ hardware.")
     (inherit (replace-alsa-ucm-conf linux:alsa-lib))
     (name "asahi-alsa-lib")))
 
-(define replace-alsa-lib
+(define-public replace-alsa-lib
   (package-input-rewriting/spec
    `(("alsa-lib" . ,(const asahi-alsa-lib)))))
 

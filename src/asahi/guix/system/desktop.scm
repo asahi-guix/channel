@@ -4,6 +4,7 @@
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages gl)
   #:use-module (asahi guix packages linux)
+  #:use-module (asahi guix packages pulseaudio)
   #:use-module (asahi guix packages wm)
   #:use-module (asahi guix packages xorg)
   #:use-module (asahi guix services console-font)
@@ -424,6 +425,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
                                         (operating-system-user-services base))))
       (packages (cons* asahi-alsa-utils
                        asahi-mesa-utils
+                       asahi-pulseaudio
                        asahi-sway
                        emacs-next-pgtk
                        foot

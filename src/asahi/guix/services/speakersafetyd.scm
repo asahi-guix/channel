@@ -16,7 +16,7 @@
   (max-reduction speakersafetyd-configuration-max-reduction
                  (default 7))
   (package speakersafetyd-configuration-package
-           (default rust-speakersafetyd-0.1)))
+           (default rust-speakersafetyd)))
 
 (define (speakersafetyd-shepherd-service config)
   (let ((blackbox (speakersafetyd-configuration-blackbox config))

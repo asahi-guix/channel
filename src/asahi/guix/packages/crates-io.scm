@@ -530,20 +530,20 @@ plugins")
     (description "Easily add a `--verbose` flag to CLIs using Clap")
     (license (list license:expat license:asl2.0))))
 
-(define-public rust-speakersafetyd-0.1
+(define-public rust-speakersafetyd
   (package
     (name "rust-speakersafetyd")
-    (version "0.1.9")
+    (version "1.0.0")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "speakersafetyd" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0dsy2gbrqiv6ky9mz09z95i111yqi16dn13vi9m8hc7gwv3bk0pj"))))
+        (base32 "1hrkmp7qhq8l53j4rf8ibmk1rin3w2kibdzs0ksz4nln4pisnndm"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-alsa" ,rust-alsa-0.8)
+     `(#:cargo-inputs (("rust-alsa" ,rust-asahi-alsa)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-clap" ,rust-clap-4)
                        ("rust-clap-verbosity-flag" ,rust-clap-verbosity-flag-2)

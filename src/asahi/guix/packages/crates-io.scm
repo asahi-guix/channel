@@ -64,14 +64,14 @@
 (define-public rust-prettyplease-0.2
   (package
     (name "rust-prettyplease")
-    (version "0.2.16")
+    (version "0.2.20")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "prettyplease" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1dfbq98rkq86l9g8w1l81bdvrz4spcfl48929n0pyz79clhzc754"))))
+        (base32 "0pk4vm9fir1p0bl11p9fkgl9r1x9vi4avv8l7flb1wx2i1a364jz"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t

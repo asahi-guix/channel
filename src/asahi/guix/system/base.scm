@@ -76,7 +76,7 @@
          (name "guest")
          (comment "Guest")
          (group "users")
-         (supplementary-groups '("wheel" "audio" "netdev" "video")))
+         (supplementary-groups '("audio" "netdev" "video" "wheel")))
         %base-user-accounts))
 
 (define asahi-operating-system

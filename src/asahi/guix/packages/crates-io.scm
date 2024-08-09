@@ -449,14 +449,14 @@ plugins")
 (define-public rust-clap-verbosity-flag-2
   (package
     (name "rust-clap-verbosity-flag")
-    (version "2.2.0")
+    (version "2.2.1")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "clap-verbosity-flag" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0y54kb14nr2vddl5j5h1s4217hbnxfxh7ln8j7lw5r2qvp0216xv"))))
+        (base32 "0lzzirrsjqpy3bbs5d1657f9smhb9a8wjqkikz2n915nsrj9ilb3"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t

@@ -382,7 +382,9 @@ exec --no-startup-id pactl stat
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 # Lock the screen at login.
-#exec " asahi-desktop-swaylock-command))
+#exec " asahi-desktop-swaylock-command "
+
+include " #~(string-append #$sway "/etc/sway/config.d/*")))
 
 (define %asahi-desktop-home-environment
   (home-environment

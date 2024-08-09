@@ -114,12 +114,13 @@ PulseAudio clients to use PipeWire transparently."))
 
 (define (pipewire-etc-configuration config)
   (cons* `("alsa/asoundrc" ,(pipewire-asoundrc config))
-         `("pipewire" ,(pipewire-conf-dir config))
-         `("wireplumber" ,(wireplumber-conf-dir config))
-         (if (pipewire-configuration-enable-pulseaudio? config)
-             `(("pulse/client.conf"
-                ,pipewire-disable-pulseaudio-auto-start))
-             '())))
+         ;; `("pipewire" ,(pipewire-conf-dir config))
+         ;; `("wireplumber" ,(wireplumber-conf-dir config))
+         ;; (if (pipewire-configuration-enable-pulseaudio? config)
+         ;;     `(("pulse/client.conf"
+         ;;        ,pipewire-disable-pulseaudio-auto-start))
+         ;;     '())
+         ))
 
 (define (pipewire-profile-entries config)
   (list (pipewire-configuration-lsp-plugins config)

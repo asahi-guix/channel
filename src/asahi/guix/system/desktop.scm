@@ -1,5 +1,6 @@
 (define-module (asahi guix system desktop)
   #:use-module ((gnu services sound) #:prefix sound:)
+  #:use-module (asahi guix home services sound)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages gl)
   #:use-module (asahi guix packages linux)
@@ -12,6 +13,7 @@
   #:use-module (asahi guix substitutes)
   #:use-module (asahi guix system base)
   #:use-module (gnu artwork)
+  #:use-module (gnu home services desktop)
   #:use-module (gnu home services)
   #:use-module (gnu home)
   #:use-module (gnu packages admin)
@@ -390,9 +392,10 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
   (home-environment
    (packages (list brightnessctl i3status kitty sway swaybg swayidle swaylock wofi))
    (services
-    (list (simple-service 'asahi-desktop-sway-home-files home-xdg-configuration-files-service-type
-                          `(("sway/config" ,%asahi-desktop-sway-config)))
-          (simple-service 'asahi-desktop-sway-home-profile home-profile-service-type packages)))))
+    (list (service home-dbus-service-type)
+          (service home-pipewire-service-type)
+          (simple-service 'asahi-desktop-sway-home-files home-xdg-configuration-files-service-type
+                          `(("sway/config" ,%asahi-desktop-sway-config)))))))
 
 (define-public asahi-desktop-operating-system
   (let ((base asahi-edge-operating-system))

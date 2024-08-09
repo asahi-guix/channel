@@ -187,7 +187,7 @@ PulseAudio clients to use PipeWire transparently."))
   (plain-file "client.conf" "autospawn = no"))
 
 (define (home-pipewire-xdg-configuration config)
-  (cons* `("alsa/asoundrc" ,(home-pipewire-asoundrc config))
+  (cons* ;; `("alsa/asoundrc" ,(home-pipewire-asoundrc config))
          `("pipewire" ,(home-pipewire-conf-dir config))
          `("wireplumber" ,(home-wireplumber-conf-dir config))
          (if (home-pipewire-configuration-enable-pulseaudio? config)

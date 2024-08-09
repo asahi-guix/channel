@@ -12,6 +12,11 @@
   #:use-module (guix git-download)
   #:use-module (guix packages))
 
+(define-public rust-asahi-alsa
+  (package
+    (inherit (replace-alsa-lib rust-alsa-0.8))
+    (name "rust-asahi-alsa")))
+
 (define-public rust-apple-nvram-0.2
   (package
     (name "rust-apple-nvram")

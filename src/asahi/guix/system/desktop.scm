@@ -406,6 +406,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
       (services (modify-services (cons* fontconfig-file-system-service
                                         polkit-wheel-service
                                         (service accountsservice-service-type)
+                                        (service alsa-service-type)
                                         (service asahi-firmware-service-type)
                                         (service avahi-service-type)
                                         (service colord-service-type)

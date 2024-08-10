@@ -140,8 +140,7 @@ PulseAudio clients to use PipeWire transparently."))
              '())))
 
 (define (home-pipewire-asoundrc config)
-  (match-record config <home-pipewire-configuration>
-    (pipewire)
+  (match-record config <home-pipewire-configuration> (pipewire)
     (mixed-text-file
      "asoundrc"
      "<" pipewire "/share/alsa/alsa.conf.d/50-pipewire.conf>\n"
@@ -153,41 +152,25 @@ PulseAudio clients to use PipeWire transparently."))
      "  lib \"" pipewire "/lib/alsa-lib/libasound_module_ctl_pipewire.so\"\n"
      "}\n")))
 
-(define (combine-dirs name packages path)
-  (directory-union name (map (lambda (package) (file-append package path)) packages)))
-
 (define (home-pipewire-conf-dir config)
   (let ((asahi-audio (home-pipewire-configuration-asahi-audio config))
         (pipewire (home-pipewire-configuration-pipewire config)))
-    (file-union
-     "pipewire-config"
-     `(("client-rt.conf" ,(file-append pipewire "/share/pipewire/client-rt.conf"))
-       ("client-rt.conf.avail" ,(file-append pipewire "/share/pipewire/client-rt.conf.avail"))
-       ("client.conf" ,(file-append pipewire "/share/pipewire/client.conf"))
-       ("client.conf.avail" ,(file-append pipewire "/share/pipewire/client.conf.avail"))
-       ("filter-chain" ,(file-append pipewire "/share/pipewire/filter-chain"))
-       ("filter-chain.conf" ,(file-append pipewire "/share/pipewire/filter-chain.conf"))
-       ("pipewire-pulse.conf" ,(file-append pipewire "/share/pipewire/pipewire-pulse.conf"))
-       ("pipewire-pulse.conf.avail" ,(file-append pipewire "/share/pipewire/pipewire-pulse.conf.avail"))
-       ("pipewire-pulse.conf.d" ,(combine-dirs "pipewire-pulse.conf.d" (list asahi-audio) "/share/pipewire/pipewire-pulse.conf.d"))
-       ("pipewire.conf" ,(file-append pipewire "/share/pipewire/pipewire.conf"))
-       ("pipewire.conf.avail" ,(file-append pipewire "/share/pipewire/pipewire.conf.avail"))
-       ("pipewire.conf.d" ,(combine-dirs "pipewire.conf.d" (list asahi-audio) "/share/pipewire/pipewire.conf.d"))))))
+    (directory-union "pipewire-config"
+                     (list (file-append pipewire "/share/pipewire")
+                           (file-append asahi-audio "/share/pipewire")))))
 
 (define (home-wireplumber-conf-dir config)
   (let ((asahi-audio (home-pipewire-configuration-asahi-audio config))
         (wireplumber (home-pipewire-configuration-wireplumber config)))
-    (file-union
-     "wireplumber-config"
-     `(("scripts" ,(combine-dirs "scripts" (list asahi-audio wireplumber) "/share/wireplumber/scripts"))
-       ("wireplumber.conf" ,(file-append wireplumber "/share/wireplumber/wireplumber.conf"))
-       ("wireplumber.conf.d" ,(combine-dirs "wireplumber.conf.d" (list asahi-audio) "/share/wireplumber/wireplumber.conf.d"))))))
+    (directory-union "wireplumber-config"
+                     (list (file-append wireplumber "/share/wireplumber")
+                           (file-append asahi-audio "/share/wireplumber")))))
 
 (define home-pipewire-disable-pulseaudio-auto-start
   (plain-file "client.conf" "autospawn = no"))
 
 (define (home-pipewire-xdg-configuration config)
-  (cons* ;; `("alsa/asoundrc" ,(home-pipewire-asoundrc config))
+  (cons* `("alsa/asoundrc" ,(home-pipewire-asoundrc config))
          `("pipewire" ,(home-pipewire-conf-dir config))
          `("wireplumber" ,(home-wireplumber-conf-dir config))
          (if (home-pipewire-configuration-enable-pulseaudio? config)

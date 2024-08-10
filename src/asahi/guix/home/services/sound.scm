@@ -48,9 +48,9 @@ PulseAudio clients to use PipeWire transparently."))
                    "/share/alsa/ucm2"))
 
 (define (lv2-path config)
-  #~(string-append
-     #$(home-pipewire-configuration-bankstown config) "/lib/lv2" ":"
-     #$(home-pipewire-configuration-lsp-plugins config) "/lib/lv2"))
+  (let ((lsp-plugins (home-pipewire-configuration-lsp-plugins config)))
+    #~(string-append #$(home-pipewire-configuration-bankstown config) "/lib/lv2:"
+                     #$lsp-plugins:lv2 "/lib/lv2")))
 
 (define (pipewire-module-dir config)
   #~(string-append #$(home-pipewire-configuration-pipewire config)
@@ -181,9 +181,10 @@ PulseAudio clients to use PipeWire transparently."))
              '())))
 
 (define (home-pipewire-profile-entries config)
-  (list (home-pipewire-configuration-lsp-plugins config)
-        (home-pipewire-configuration-pipewire config)
-        (home-pipewire-configuration-wireplumber config)))
+  (let ((lsp-plugins (home-pipewire-configuration-lsp-plugins config)))
+    (list (list lsp-plugins "lv2")
+          (home-pipewire-configuration-pipewire config)
+          (home-pipewire-configuration-wireplumber config))))
 
 (define (home-pipewire-environment-variables config)
   `(("ALSA_CONFIG_UCM2" . ,(alsa-config-ucm2 config))))

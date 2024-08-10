@@ -17,12 +17,21 @@
 
 (define-record-type* <alsa-configuration>
   alsa-configuration make-alsa-configuration alsa-configuration?
+  (alsa-ucm-conf alsa-configuration-alsa-ucm-conf
+                 (default asahi-alsa-ucm-conf))
   (alsa-plugins alsa-configuration-alsa-plugins
                 (default asahi-alsa-plugins))
   (pipewire alsa-configuration-pipewire
             (default asahi-pipewire))
   (extra-options alsa-configuration-extra-options
                  (default "")))
+
+(define (alsa-config-ucm2 config)
+  (let ((alsa-ucm-conf (alsa-configuration-alsa-ucm-conf config)))
+    #~(string-append #$alsa-ucm-conf "/share/alsa/ucm2")))
+
+(define (alsa-environment-variables config)
+  `(("ALSA_CONFIG_UCM2" . ,(alsa-config-ucm2 config))))
 
 (define (alsa-pipewire-config-file config)
   (let ((pipewire (alsa-configuration-pipewire config)))
@@ -36,11 +45,21 @@
   `(("alsa/conf.d/50-pipewire.conf" ,(alsa-pipewire-config-file config))
     ("alsa/conf.d/50-pipewire-default.conf" ,(alsa-pipewire-default-config-file config))))
 
+(define (alsa-profile-entries config)
+  (list (alsa-configuration-alsa-plugins config)
+        (alsa-configuration-alsa-ucm-conf config)
+        (alsa-configuration-pipewire config)))
+
 (define-public alsa-service-type
   (service-type
    (name 'alsa)
    (extensions
-    (list (service-extension etc-service-type alsa-etc-service)))
+    (list (service-extension etc-service-type
+                             alsa-etc-service)
+          (service-extension profile-service-type
+                             alsa-profile-entries)
+          (service-extension session-environment-service-type
+                             alsa-environment-variables)))
    (default-value (alsa-configuration))
    (description "Configure low-level Linux sound support, ALSA.")))
 
@@ -69,10 +88,6 @@
    (boolean #t)
    "When true, enable PipeWire's PulseAudio emulation support, allowing
 PulseAudio clients to use PipeWire transparently."))
-
-(define (alsa-config-ucm2 config)
-  #~(string-append #$(pipewire-configuration-alsa-ucm-conf config)
-                   "/share/alsa/ucm2"))
 
 (define (lv2-path config)
   #~(string-append
@@ -113,22 +128,17 @@ PulseAudio clients to use PipeWire transparently."))
   (plain-file "client.conf" "autospawn = no"))
 
 (define (pipewire-etc-configuration config)
-  (cons* `("alsa/asoundrc" ,(pipewire-asoundrc config))
-         ;; `("pipewire" ,(pipewire-conf-dir config))
-         ;; `("wireplumber" ,(wireplumber-conf-dir config))
-         ;; (if (pipewire-configuration-enable-pulseaudio? config)
-         ;;     `(("pulse/client.conf"
-         ;;        ,pipewire-disable-pulseaudio-auto-start))
-         ;;     '())
-         '()))
+  (cons* `("pipewire" ,(pipewire-conf-dir config))
+         `("wireplumber" ,(wireplumber-conf-dir config))
+         (if (pipewire-configuration-enable-pulseaudio? config)
+             `(("pulse/client.conf"
+                ,pipewire-disable-pulseaudio-auto-start))
+             '())))
 
 (define (pipewire-profile-entries config)
   (list (pipewire-configuration-lsp-plugins config)
         (pipewire-configuration-pipewire config)
         (pipewire-configuration-wireplumber config)))
-
-(define (pipewire-environment-variables config)
-  `(("ALSA_CONFIG_UCM2" . ,(alsa-config-ucm2 config))))
 
 (define-public pipewire-service-type
   (service-type
@@ -137,9 +147,7 @@ PulseAudio clients to use PipeWire transparently."))
     (list (service-extension etc-service-type
                              pipewire-etc-configuration)
           (service-extension profile-service-type
-                             pipewire-profile-entries)
-          (service-extension session-environment-service-type
-                             pipewire-environment-variables)))
+                             pipewire-profile-entries)))
    (description
     "Start essential PipeWire services.")
    (default-value (pipewire-configuration))))

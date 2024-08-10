@@ -342,6 +342,9 @@ https://github.com/AsahiLinux/asahi-audio/issues/16
 #+begin_src sh :results verbatim
   wireplumber --config-file "$(./pre-inst-env guix build asahi-audio)/share/wireplumber"
 #+end_src
+*** Links
+[[https://logs.guix.gnu.org/guix/2023-11-20.log][Guix IRC discussion about Alsa Config Ucm2]]
+
 ** Fedora Minimal Archive
 
 Download =fedora-40-minimal-202405221600.zip=.

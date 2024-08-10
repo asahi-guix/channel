@@ -44,7 +44,7 @@
 (define %asahi-desktop-background
   (file-append %artwork-repository "/backgrounds/guix-silver-checkered-16-9.svg"))
 
-(define %kernel-module-loader-service
+(define %asahi-kernel-module-loader-service
   (service kernel-module-loader-service-type '("asahi" "appledrm")))
 
 ;; Gnome Desktop
@@ -92,7 +92,7 @@ EndSection
                           (service asahi-firmware-service-type)
                           (service gdm-service-type)
                           (service gnome-desktop-service-type %gnome-desktop-configuration)
-                          %kernel-module-loader-service
+                          %asahi-kernel-module-loader-service
                           (service pipewire-service-type)
                           (service speakersafetyd-service-type)
                           (remove (lambda (service)
@@ -120,15 +120,15 @@ EndSection
 
 ;; Plasma
 
-(define %plasma-desktop-configuration
-  (plasma-desktop-configuration))
+(define %asahi-plasma-desktop-service
+  (service plasma-desktop-service-type))
 
-(define %plasma-desktop-services
+(define %asahi-plasma-desktop-services
   (modify-services (cons* (service alsa-service-type)
                           (service asahi-firmware-service-type)
                           (service gdm-service-type)
-                          (service plasma-desktop-service-type %plasma-desktop-configuration)
-                          %kernel-module-loader-service
+                          %asahi-plasma-desktop-service
+                          %asahi-kernel-module-loader-service
                           (service pipewire-service-type)
                           (service speakersafetyd-service-type)
                           (remove (lambda (service)
@@ -151,7 +151,7 @@ EndSection
   (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)
-      (services %plasma-desktop-services)
+      (services %asahi-plasma-desktop-services)
       (packages (cons* emacs (operating-system-packages base))))))
 
 ;; Sway
@@ -454,7 +454,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
                                         (service elogind-service-type)
                                         (service geoclue-service-type)
                                         (service guix-home-service-type `(("guest" ,%asahi-desktop-home-environment)))
-                                        %kernel-module-loader-service
+                                        %asahi-kernel-module-loader-service
                                         (service modem-manager-service-type)
                                         (service ntp-service-type)
                                         (service polkit-service-type)

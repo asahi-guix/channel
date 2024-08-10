@@ -120,7 +120,7 @@ PulseAudio clients to use PipeWire transparently."))
          ;;     `(("pulse/client.conf"
          ;;        ,pipewire-disable-pulseaudio-auto-start))
          ;;     '())
-         ))
+         '()))
 
 (define (pipewire-profile-entries config)
   (list (pipewire-configuration-lsp-plugins config)

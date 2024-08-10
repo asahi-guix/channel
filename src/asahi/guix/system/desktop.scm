@@ -47,8 +47,6 @@
 (define %asahi-kernel-module-loader-service
   (service kernel-module-loader-service-type '("asahi" "appledrm")))
 
-;; Gnome Desktop
-
 (define %xorg-libinput-config "
 Section \"InputClass\"
   Identifier \"Touchpads\"
@@ -79,6 +77,15 @@ Section \"OutputClass\"
 EndSection
 ")
 
+(define %asahi-gdm-service
+  (service gdm-service-type
+           (gdm-configuration
+            (xorg-configuration
+             (xorg-configuration
+              (server asahi-xorg-server)
+              (extra-config (list %xorg-libinput-config
+                                  %xorg-modeset-config)))))))
+
 ;; Gnome
 
 (define %gnome-desktop-configuration
@@ -88,11 +95,11 @@ EndSection
                       (delete "orca" "rygel"))))))
 
 (define %gnome-desktop-services
-  (modify-services (cons* (service alsa-service-type)
-                          (service asahi-firmware-service-type)
-                          (service gdm-service-type)
-                          (service gnome-desktop-service-type %gnome-desktop-configuration)
+  (modify-services (cons* %asahi-gdm-service
                           %asahi-kernel-module-loader-service
+                          (service alsa-service-type)
+                          (service asahi-firmware-service-type)
+                          (service gnome-desktop-service-type %gnome-desktop-configuration)
                           (service pipewire-service-type)
                           (service speakersafetyd-service-type)
                           (remove (lambda (service)
@@ -101,14 +108,6 @@ EndSection
     (delete sound:alsa-service-type)
     (delete sound:pulseaudio-service-type)
     (console-font-service-type config => (console-font-terminus config))
-    (gdm-service-type config =>
-                      (gdm-configuration
-                       (inherit config)
-                       (xorg-configuration
-                        (xorg-configuration
-                         (server asahi-xorg-server)
-                         (extra-config (list %xorg-libinput-config
-                                             %xorg-modeset-config))))))
     (guix-service-type config => (append-substitutes config))))
 
 (define-public asahi-gnome-desktop-operating-system
@@ -120,16 +119,13 @@ EndSection
 
 ;; Plasma
 
-(define %asahi-plasma-desktop-service
-  (service plasma-desktop-service-type))
-
 (define %asahi-plasma-desktop-services
-  (modify-services (cons* (service alsa-service-type)
-                          (service asahi-firmware-service-type)
-                          (service gdm-service-type)
-                          %asahi-plasma-desktop-service
+  (modify-services (cons* %asahi-gdm-service
                           %asahi-kernel-module-loader-service
+                          (service alsa-service-type)
+                          (service asahi-firmware-service-type)
                           (service pipewire-service-type)
+                          (service plasma-desktop-service-type)
                           (service speakersafetyd-service-type)
                           (remove (lambda (service)
                                     (eq? (service-kind service) sddm-service-type))
@@ -137,14 +133,6 @@ EndSection
     (delete sound:alsa-service-type)
     (delete sound:pulseaudio-service-type)
     (console-font-service-type config => (console-font-terminus config))
-    (gdm-service-type config =>
-                      (gdm-configuration
-                       (inherit config)
-                       (xorg-configuration
-                        (xorg-configuration
-                         (server asahi-xorg-server)
-                         (extra-config (list %xorg-libinput-config
-                                             %xorg-modeset-config))))))
     (guix-service-type config => (append-substitutes config))))
 
 (define-public asahi-plasma-desktop-operating-system

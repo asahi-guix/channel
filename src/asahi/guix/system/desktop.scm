@@ -85,7 +85,8 @@ EndSection
                       (delete "orca" "rygel"))))))
 
 (define %gnome-desktop-services
-  (modify-services (cons* (service asahi-firmware-service-type)
+  (modify-services (cons* (service alsa-service-type)
+                          (service asahi-firmware-service-type)
                           (service gdm-service-type)
                           (service gnome-desktop-service-type %gnome-desktop-configuration)
                           (service kernel-module-loader-service-type '("asahi" "appledrm"))

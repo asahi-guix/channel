@@ -3,6 +3,7 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (asahi guix packages rust)
   #:use-module (asahi guix packages rust-apps)
+  #:use-module (gnu packages audio)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages llvm)
@@ -169,9 +170,12 @@ hardware.")
     (name "asahi-alsa-plugins")))
 
 (define-public asahi-pipewire
-  (package
-    (inherit (replace-alsa-ucm-conf linux:pipewire))
-    (name "asahi-pipewire")))
+  (let ((base (replace-alsa-ucm-conf linux:pipewire)))
+    (package
+      (inherit base)
+      (name "asahi-pipewire")
+      (inputs (modify-inputs (package-inputs base)
+                (prepend lilv))))))
 
 (define-public asahi-wireplumber
   (package

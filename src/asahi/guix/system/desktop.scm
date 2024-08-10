@@ -44,10 +44,23 @@
 (define %asahi-desktop-background
   (file-append %artwork-repository "/backgrounds/guix-silver-checkered-16-9.svg"))
 
-(define %asahi-kernel-module-loader-service
+(define %asahi-desktop-home-services
+  (list (service home-dbus-service-type)
+        (service home-pipewire-service-type)))
+
+(define %asahi-desktop-kernel-modules
   (service kernel-module-loader-service-type '("asahi" "appledrm")))
 
-(define %xorg-libinput-touchpads "
+(define %asahi-desktop-packages
+  (cons* asahi-alsa-utils
+         asahi-mesa-utils
+         asahi-pulseaudio
+         brightnessctl
+         emacs
+         kitty
+         (operating-system-packages asahi-edge-operating-system)))
+
+(define %asahi-desktop-xorg-touchpads "
   Section \"InputClass\"
     Driver \"libinput\"
     Identifier \"Touchpads\"
@@ -60,7 +73,7 @@
     Option \"Tapping\" \"on\"
   EndSection\n")
 
-(define %xorg-libinput-keyboards "
+(define %asahi-desktop-xorg-keyboards "
   Section \"InputClass\"
     Driver \"libinput\"
     Identifier \"Keyboards\"
@@ -68,7 +81,7 @@
     MatchIsKeyboard \"on\"
   EndSection\n")
 
-(define %xorg-modesetting-apple-drm "
+(define %asahi-desktop-xorg-modesetting "
   Section \"OutputClass\"
     Driver \"modesetting\"
     Identifier \"appledrm\"
@@ -76,69 +89,62 @@
     Option \"PrimaryGPU\" \"true\"
   EndSection\n")
 
+(define %asahi-xorg-configuration
+  (xorg-configuration
+   (server asahi-xorg-server)
+   (extra-config (list %asahi-desktop-xorg-keyboards
+                       %asahi-desktop-xorg-touchpads
+                       %asahi-desktop-xorg-modesetting))))
+
 (define %asahi-gdm-service
   (service gdm-service-type
            (gdm-configuration
-            (xorg-configuration
-             (xorg-configuration
-              (server asahi-xorg-server)
-              (extra-config (list %xorg-libinput-keyboards
-                                  %xorg-libinput-touchpads
-                                  %xorg-modesetting-apple-drm)))))))
+            (xorg-configuration %asahi-xorg-configuration))))
+
+(define %asahi-sddm-service
+  (service sddm-service-type
+           (sddm-configuration
+            (xorg-configuration %asahi-xorg-configuration))))
 
 (define %asahi-desktop-services
-  (cons* %asahi-kernel-module-loader-service
-         (service alsa-service-type)
-         (service asahi-firmware-service-type)
-         (service pipewire-service-type)
-         (service speakersafetyd-service-type)
-         (remove (lambda (service)
-                   (or (eq? (service-kind service) gdm-service-type)
-                       (eq? (service-kind service) sddm-service-type)))
-                 %desktop-services)))
+  (modify-services (cons* %asahi-desktop-kernel-modules
+                          (service alsa-service-type)
+                          (service asahi-firmware-service-type)
+                          (service openssh-service-type)
+                          (service pipewire-service-type)
+                          (service speakersafetyd-service-type)
+                          (remove (lambda (service)
+                                    (or (eq? (service-kind service) gdm-service-type)
+                                        (eq? (service-kind service) sddm-service-type)))
+                                  %desktop-services))
+    (delete sound:alsa-service-type)
+    (delete sound:pulseaudio-service-type)))
 
 ;; Gnome
 
 (define %asahi-desktop-gnome-shell
   (map cadr (modify-inputs (package-propagated-inputs gnome-meta-core-shell)
-              ;; These packages can't be built.
-              (delete "orca" "rygel"))))
-
-(define %asahi-desktop-gnome-services
-  (modify-services (cons* (service gnome-desktop-service-type
-                                   (gnome-desktop-configuration
-                                    (shell %asahi-desktop-gnome-shell)))
-                          %asahi-gdm-service
-                          %asahi-desktop-services)
-    (delete sound:alsa-service-type)
-    (delete sound:pulseaudio-service-type)
-    (console-font-service-type config => (console-font-terminus config))
-    (guix-service-type config => (append-substitutes config))))
+              (delete "orca" "rygel")))) ;; These packages can't be built.
 
 (define-public asahi-desktop-gnome
-  (let ((base asahi-edge-operating-system))
-    (operating-system
-      (inherit base)
-      (services %asahi-desktop-gnome-services)
-      (packages (cons* emacs (operating-system-packages base))))))
+  (operating-system
+    (inherit asahi-edge-operating-system)
+    (services (cons* (service gnome-desktop-service-type
+                              (gnome-desktop-configuration
+                               (shell %asahi-desktop-gnome-shell)))
+                     %asahi-gdm-service
+                     %asahi-desktop-services))
+    (packages %asahi-desktop-packages)))
 
 ;; Plasma
 
-(define %asahi-desktop-plasma-services
-  (modify-services (cons* (service plasma-desktop-service-type)
-                          %asahi-gdm-service
-                          %asahi-desktop-services)
-    (delete sound:alsa-service-type)
-    (delete sound:pulseaudio-service-type)
-    (console-font-service-type config => (console-font-terminus config))
-    (guix-service-type config => (append-substitutes config))))
-
 (define-public asahi-desktop-plasma
-  (let ((base asahi-edge-operating-system))
-    (operating-system
-      (inherit base)
-      (services %asahi-desktop-plasma-services)
-      (packages (cons* emacs (operating-system-packages base))))))
+  (operating-system
+    (inherit asahi-edge-operating-system)
+    (services (cons* (service plasma-desktop-service-type)
+                     %asahi-gdm-service
+                     %asahi-desktop-services))
+    (packages %asahi-desktop-packages)))
 
 ;; Sway
 
@@ -417,44 +423,24 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
 
 (define %asahi-desktop-sway-home-environment
   (home-environment
-   (packages (list brightnessctl i3status kitty sway swaybg swayidle swaylock wofi))
    (services
-    (list (service home-dbus-service-type)
-          (service home-pipewire-service-type)
-          (simple-service 'asahi-desktop-sway-home-files home-xdg-configuration-files-service-type
-                          `(("sway/config" ,%asahi-desktop-sway-config)))))))
+    (cons* (simple-service 'asahi-desktop-sway-home-files home-xdg-configuration-files-service-type
+                           `(("sway/config" ,%asahi-desktop-sway-config)))
+           %asahi-desktop-home-services))))
+
+(define %asahi-desktop-sway-home-service
+  (service guix-home-service-type `(("guest" ,%asahi-desktop-sway-home-environment))))
+
+(define %asahi-desktop-sway-packages
+  (cons* asahi-sway emacs-pgtk foot i3status sway swaybg swayidle swaylock wofi
+         (remove (lambda (package)
+                   (eq? "emacs" (package-name package)))
+                 %asahi-desktop-packages)))
 
 (define-public asahi-desktop-sway
-  (let ((base asahi-edge-operating-system))
-    (operating-system
-      (inherit base)
-      (services (modify-services (cons* fontconfig-file-system-service
-                                        polkit-wheel-service
-                                        (service accountsservice-service-type)
-                                        (service alsa-service-type)
-                                        (service asahi-firmware-service-type)
-                                        (service avahi-service-type)
-                                        (service colord-service-type)
-                                        (service cups-pk-helper-service-type)
-                                        (service dbus-root-service-type)
-                                        (service elogind-service-type)
-                                        (service geoclue-service-type)
-                                        (service guix-home-service-type `(("guest" ,%asahi-desktop-sway-home-environment)))
-                                        %asahi-kernel-module-loader-service
-                                        (service modem-manager-service-type)
-                                        (service ntp-service-type)
-                                        (service polkit-service-type)
-                                        (service speakersafetyd-service-type)
-                                        (service udisks-service-type)
-                                        (service upower-service-type)
-                                        (service usb-modeswitch-service-type)
-                                        (simple-service 'mtp udev-service-type (list libmtp))
-                                        (operating-system-user-services base))))
-      (packages (cons* asahi-alsa-utils
-                       asahi-mesa-utils
-                       asahi-pulseaudio
-                       asahi-sway
-                       emacs-pgtk
-                       foot
-                       kitty
-                       (operating-system-packages asahi-edge-operating-system))))))
+  (operating-system
+    (inherit asahi-edge-operating-system)
+    (services (modify-services (cons* %asahi-desktop-sway-home-service
+                                      %asahi-sddm-service
+                                      %asahi-desktop-services)))
+    (packages %asahi-desktop-sway-packages)))

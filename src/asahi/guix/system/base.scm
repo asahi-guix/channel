@@ -63,7 +63,6 @@
 
 (define %services
   (modify-services (cons* (service asahi-firmware-service-type)
-                          (service pipewire-service-type)
                           (service network-manager-service-type)
                           (service openssh-service-type %openssh-configuration)
                           (service wpa-supplicant-service-type)

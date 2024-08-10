@@ -122,7 +122,7 @@
 
 ;; Plasma
 
-(define %asahi-plasma-desktop-services
+(define %asahi-desktop-plasma-services
   (modify-services (cons* %asahi-kernel-module-loader-service
                           (service alsa-service-type)
                           (service asahi-firmware-service-type)
@@ -135,11 +135,11 @@
     (console-font-service-type config => (console-font-terminus config))
     (guix-service-type config => (append-substitutes config))))
 
-(define-public asahi-plasma-desktop-operating-system
+(define-public asahi-desktop-plasma
   (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)
-      (services %asahi-plasma-desktop-services)
+      (services %asahi-desktop-plasma-services)
       (packages (cons* emacs (operating-system-packages base))))))
 
 ;; Sway

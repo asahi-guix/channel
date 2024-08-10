@@ -86,50 +86,48 @@
                                   %xorg-libinput-touchpads
                                   %xorg-modesetting-apple-drm)))))))
 
-(define %asahi-gdm-desktop-services
-  (cons* %asahi-gdm-service
-         %asahi-kernel-module-loader-service
+(define %asahi-desktop-services
+  (cons* %asahi-kernel-module-loader-service
+         (service alsa-service-type)
+         (service asahi-firmware-service-type)
+         (service pipewire-service-type)
+         (service speakersafetyd-service-type)
          (remove (lambda (service)
-                   (eq? (service-kind service) sddm-service-type))
+                   (or (eq? (service-kind service) gdm-service-type)
+                       (eq? (service-kind service) sddm-service-type)))
                  %desktop-services)))
 
 ;; Gnome
 
-(define %asahi-gnome-desktop-configuration
-  (gnome-desktop-configuration
-   (shell (map cadr (modify-inputs (package-propagated-inputs gnome-meta-core-shell)
-                      ;; These packages can't be built.
-                      (delete "orca" "rygel"))))))
+(define %asahi-desktop-gnome-shell
+  (map cadr (modify-inputs (package-propagated-inputs gnome-meta-core-shell)
+              ;; These packages can't be built.
+              (delete "orca" "rygel"))))
 
-(define %asahi-gnome-desktop-services
-  (modify-services (cons* (service alsa-service-type)
-                          (service asahi-firmware-service-type)
-                          (service gnome-desktop-service-type %asahi-gnome-desktop-configuration)
-                          (service pipewire-service-type)
-                          (service speakersafetyd-service-type)
-                          %asahi-gdm-desktop-services)
+(define %asahi-desktop-gnome-services
+  (modify-services (cons* (service gnome-desktop-service-type
+                                   (gnome-desktop-configuration
+                                    (shell %asahi-desktop-gnome-shell)))
+                          %asahi-gdm-service
+                          %asahi-desktop-services)
     (delete sound:alsa-service-type)
     (delete sound:pulseaudio-service-type)
     (console-font-service-type config => (console-font-terminus config))
     (guix-service-type config => (append-substitutes config))))
 
-(define-public asahi-gnome-desktop-operating-system
+(define-public asahi-desktop-gnome
   (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)
-      (services %asahi-gnome-desktop-services)
+      (services %asahi-desktop-gnome-services)
       (packages (cons* emacs (operating-system-packages base))))))
 
 ;; Plasma
 
 (define %asahi-desktop-plasma-services
-  (modify-services (cons* %asahi-kernel-module-loader-service
-                          (service alsa-service-type)
-                          (service asahi-firmware-service-type)
-                          (service pipewire-service-type)
-                          (service plasma-desktop-service-type)
-                          (service speakersafetyd-service-type)
-                          %asahi-gdm-desktop-services)
+  (modify-services (cons* (service plasma-desktop-service-type)
+                          %asahi-gdm-service
+                          %asahi-desktop-services)
     (delete sound:alsa-service-type)
     (delete sound:pulseaudio-service-type)
     (console-font-service-type config => (console-font-terminus config))

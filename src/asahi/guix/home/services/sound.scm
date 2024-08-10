@@ -123,6 +123,8 @@ PulseAudio clients to use PipeWire transparently."))
                                   #$(alsa-config-ucm2 config))
                    (string-append "LV2_PATH="
                                   #$(lv2-path config))
+                   (string-append "PIPEWIRE_MODULE_DIR="
+                                  #$(pipewire-module-dir config))
                    (string-append "WIREPLUMBER_MODULE_DIR="
                                   #$(wireplumber-module-dir config))
                    "WIREPLUMBER_DEBUG=I"

@@ -43,14 +43,14 @@
 (define-public rust-asahi-nvram-0.2
   (package
     (name "rust-asahi-nvram")
-    (version "0.2.2")
+    (version "0.2.1")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "asahi-nvram" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0k1slgayjxf4pz6f44gckqwh44wk1n0iln6s3008x8rxxvsmxqac"))))
+        (base32 "04qp73w97792flzkv9b3qb549iwa9mam837b0l8zh04lcnbcgci6"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.2)

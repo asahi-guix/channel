@@ -124,12 +124,6 @@ Air, and MacBook Pro."))))
       #~'(("ucm2" "share/alsa/ucm2"))
       #:phases
       #~(modify-phases %standard-phases
-          (add-after 'unpack 'patch-source
-            (lambda* (#:key inputs outputs #:allow-other-keys)
-              (let ((out (assoc-ref outputs "out")))
-                (substitute* (find-files "ucm2" "\\.conf$")
-                  (("/conf.d")
-                   (string-append out "/share/alsa/ucm2/conf.d"))))))
           (add-after 'install 'add-alsa-ucm-conf
             (lambda* (#:key inputs outputs #:allow-other-keys)
               (let ((out (assoc-ref outputs "out"))

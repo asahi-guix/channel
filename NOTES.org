@@ -166,7 +166,7 @@ Install the Asahi Guix edge system.
 Install the Asahi Guix Gnome system.
 
 #+begin_src sh
-  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-gnome-desktop.tmpl /mnt
+  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-desktop-gnome.tmpl /mnt
 #+end_src
 
 Build systems with time machine.

@@ -6,7 +6,7 @@
              (gnu))
 
 (operating-system
-  (inherit asahi-desktop-operating-system)
+  (inherit asahi-desktop-sway)
   (file-systems (cons* (file-system
                          (device (uuid "86E8-4498" 'fat32))
                          (mount-point "/boot/efi")

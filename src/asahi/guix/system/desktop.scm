@@ -86,25 +86,28 @@
                                   %xorg-libinput-touchpads
                                   %xorg-modesetting-apple-drm)))))))
 
+(define %asahi-gdm-desktop-services
+  (cons* %asahi-gdm-service
+         %asahi-kernel-module-loader-service
+         (remove (lambda (service)
+                   (eq? (service-kind service) sddm-service-type))
+                 %desktop-services)))
+
 ;; Gnome
 
-(define %gnome-desktop-configuration
+(define %asahi-gnome-desktop-configuration
   (gnome-desktop-configuration
    (shell (map cadr (modify-inputs (package-propagated-inputs gnome-meta-core-shell)
                       ;; These packages can't be built.
                       (delete "orca" "rygel"))))))
 
-(define %gnome-desktop-services
-  (modify-services (cons* %asahi-gdm-service
-                          %asahi-kernel-module-loader-service
-                          (service alsa-service-type)
+(define %asahi-gnome-desktop-services
+  (modify-services (cons* (service alsa-service-type)
                           (service asahi-firmware-service-type)
-                          (service gnome-desktop-service-type %gnome-desktop-configuration)
+                          (service gnome-desktop-service-type %asahi-gnome-desktop-configuration)
                           (service pipewire-service-type)
                           (service speakersafetyd-service-type)
-                          (remove (lambda (service)
-                                    (eq? (service-kind service) sddm-service-type))
-                                  %desktop-services))
+                          %asahi-gdm-desktop-services)
     (delete sound:alsa-service-type)
     (delete sound:pulseaudio-service-type)
     (console-font-service-type config => (console-font-terminus config))
@@ -114,22 +117,19 @@
   (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)
-      (services %gnome-desktop-services)
+      (services %asahi-gnome-desktop-services)
       (packages (cons* emacs (operating-system-packages base))))))
 
 ;; Plasma
 
 (define %asahi-plasma-desktop-services
-  (modify-services (cons* %asahi-gdm-service
-                          %asahi-kernel-module-loader-service
+  (modify-services (cons* %asahi-kernel-module-loader-service
                           (service alsa-service-type)
                           (service asahi-firmware-service-type)
                           (service pipewire-service-type)
                           (service plasma-desktop-service-type)
                           (service speakersafetyd-service-type)
-                          (remove (lambda (service)
-                                    (eq? (service-kind service) sddm-service-type))
-                                  %desktop-services))
+                          %asahi-gdm-desktop-services)
     (delete sound:alsa-service-type)
     (delete sound:pulseaudio-service-type)
     (console-font-service-type config => (console-font-terminus config))
@@ -426,7 +426,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
           (simple-service 'asahi-desktop-sway-home-files home-xdg-configuration-files-service-type
                           `(("sway/config" ,%asahi-desktop-sway-config)))))))
 
-(define-public asahi-desktop-operating-system
+(define-public asahi-desktop-sway
   (let ((base asahi-edge-operating-system))
     (operating-system
       (inherit base)

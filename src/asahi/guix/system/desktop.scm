@@ -44,6 +44,9 @@
 (define %asahi-desktop-background
   (file-append %artwork-repository "/backgrounds/guix-silver-checkered-16-9.svg"))
 
+(define %kernel-module-loader-service
+  (service kernel-module-loader-service-type '("asahi" "appledrm")))
+
 ;; Gnome Desktop
 
 (define %xorg-libinput-config "
@@ -89,7 +92,7 @@ EndSection
                           (service asahi-firmware-service-type)
                           (service gdm-service-type)
                           (service gnome-desktop-service-type %gnome-desktop-configuration)
-                          (service kernel-module-loader-service-type '("asahi" "appledrm"))
+                          %kernel-module-loader-service
                           (service pipewire-service-type)
                           (service speakersafetyd-service-type)
                           (remove (lambda (service)
@@ -113,6 +116,42 @@ EndSection
     (operating-system
       (inherit base)
       (services %gnome-desktop-services)
+      (packages (cons* emacs (operating-system-packages base))))))
+
+;; Plasma
+
+(define %plasma-desktop-configuration
+  (plasma-desktop-configuration))
+
+(define %plasma-desktop-services
+  (modify-services (cons* (service alsa-service-type)
+                          (service asahi-firmware-service-type)
+                          (service gdm-service-type)
+                          (service plasma-desktop-service-type %plasma-desktop-configuration)
+                          %kernel-module-loader-service
+                          (service pipewire-service-type)
+                          (service speakersafetyd-service-type)
+                          (remove (lambda (service)
+                                    (eq? (service-kind service) sddm-service-type))
+                                  %desktop-services))
+    (delete sound:alsa-service-type)
+    (delete sound:pulseaudio-service-type)
+    (console-font-service-type config => (console-font-terminus config))
+    (gdm-service-type config =>
+                      (gdm-configuration
+                       (inherit config)
+                       (xorg-configuration
+                        (xorg-configuration
+                         (server asahi-xorg-server)
+                         (extra-config (list %xorg-libinput-config
+                                             %xorg-modeset-config))))))
+    (guix-service-type config => (append-substitutes config))))
+
+(define-public asahi-plasma-desktop-operating-system
+  (let ((base asahi-edge-operating-system))
+    (operating-system
+      (inherit base)
+      (services %plasma-desktop-services)
       (packages (cons* emacs (operating-system-packages base))))))
 
 ;; Sway
@@ -415,7 +454,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
                                         (service elogind-service-type)
                                         (service geoclue-service-type)
                                         (service guix-home-service-type `(("guest" ,%asahi-desktop-home-environment)))
-                                        (service kernel-module-loader-service-type '("asahi" "appledrm"))
+                                        %kernel-module-loader-service
                                         (service modem-manager-service-type)
                                         (service ntp-service-type)
                                         (service polkit-service-type)

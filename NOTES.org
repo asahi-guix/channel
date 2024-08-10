@@ -16,13 +16,13 @@ Start a NREPL server.
 #+end_src
 ** Systems
 
-Build the Asahi Guix operarating system image.
+Build the Asahi Guix operating system image.
 
 #+begin_src sh :results verbatim
   guix system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
 #+end_src
 
-Build the Asahi Guix operarating system image using the edge kernel.
+Build the Asahi Guix operating system image using the edge kernel.
 
 #+begin_src sh :results verbatim
   guix system build --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl

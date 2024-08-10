@@ -47,35 +47,34 @@
 (define %asahi-kernel-module-loader-service
   (service kernel-module-loader-service-type '("asahi" "appledrm")))
 
-(define %xorg-libinput-config "
-Section \"InputClass\"
-  Identifier \"Touchpads\"
-  Driver \"libinput\"
-  MatchDevicePath \"/dev/input/event*\"
-  MatchIsTouchpad \"on\"
-  Option \"Tapping\" \"on\"
-  Option \"TappingDrag\" \"on\"
-  Option \"DisableWhileTyping\" \"on\"
-  Option \"MiddleEmulation\" \"on\"
-  Option \"ScrollMethod\" \"twofinger\"
-EndSection
+(define %xorg-libinput-touchpads "
+  Section \"InputClass\"
+    Driver \"libinput\"
+    Identifier \"Touchpads\"
+    MatchDevicePath \"/dev/input/event*\"
+    MatchIsTouchpad \"on\"
+    Option \"DisableWhileTyping\" \"on\"
+    Option \"MiddleEmulation\" \"on\"
+    Option \"ScrollMethod\" \"twofinger\"
+    Option \"TappingDrag\" \"on\"
+    Option \"Tapping\" \"on\"
+  EndSection\n")
 
-Section \"InputClass\"
-  Identifier \"Keyboards\"
-  Driver \"libinput\"
-  MatchDevicePath \"/dev/input/event*\"
-  MatchIsKeyboard \"on\"
-EndSection
-")
+(define %xorg-libinput-keyboards "
+  Section \"InputClass\"
+    Driver \"libinput\"
+    Identifier \"Keyboards\"
+    MatchDevicePath \"/dev/input/event*\"
+    MatchIsKeyboard \"on\"
+  EndSection\n")
 
-(define %xorg-modeset-config "
-Section \"OutputClass\"
+(define %xorg-modesetting-apple-drm "
+  Section \"OutputClass\"
+    Driver \"modesetting\"
     Identifier \"appledrm\"
     MatchDriver \"apple\"
-    Driver \"modesetting\"
     Option \"PrimaryGPU\" \"true\"
-EndSection
-")
+  EndSection\n")
 
 (define %asahi-gdm-service
   (service gdm-service-type
@@ -83,8 +82,9 @@ EndSection
             (xorg-configuration
              (xorg-configuration
               (server asahi-xorg-server)
-              (extra-config (list %xorg-libinput-config
-                                  %xorg-modeset-config)))))))
+              (extra-config (list %xorg-libinput-keyboards
+                                  %xorg-libinput-touchpads
+                                  %xorg-modesetting-apple-drm)))))))
 
 ;; Gnome
 

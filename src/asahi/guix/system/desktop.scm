@@ -417,7 +417,7 @@ exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DE
 
 include " #~(string-append #$sway "/etc/sway/config.d/*")))
 
-(define %asahi-desktop-home-environment
+(define %asahi-desktop-sway-home-environment
   (home-environment
    (packages (list brightnessctl i3status kitty sway swaybg swayidle swaylock wofi))
    (services
@@ -441,7 +441,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
                                         (service dbus-root-service-type)
                                         (service elogind-service-type)
                                         (service geoclue-service-type)
-                                        (service guix-home-service-type `(("guest" ,%asahi-desktop-home-environment)))
+                                        (service guix-home-service-type `(("guest" ,%asahi-desktop-sway-home-environment)))
                                         %asahi-kernel-module-loader-service
                                         (service modem-manager-service-type)
                                         (service ntp-service-type)

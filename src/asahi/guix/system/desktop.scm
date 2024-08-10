@@ -427,7 +427,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
                        asahi-mesa-utils
                        asahi-pulseaudio
                        asahi-sway
-                       emacs-next-pgtk
+                       emacs-pgtk
                        foot
                        kitty
                        (operating-system-packages asahi-edge-operating-system))))))

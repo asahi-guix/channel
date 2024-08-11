@@ -203,7 +203,8 @@ COMMIT
             (list (channel
                    (name 'guix)
                    (url "https://github.com/asahi-guix/guix")
-                   (branch "next"))))
+                   (branch "next")
+                   (introduction #f))))
            (systems '("aarch64-linux")))
           (specification
            (name "channel")

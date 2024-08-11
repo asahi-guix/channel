@@ -204,7 +204,11 @@ COMMIT
                    (name 'guix)
                    (url "https://github.com/asahi-guix/guix")
                    (branch "next")
-                   (introduction #f))))
+                   (introduction
+                    (make-channel-introduction
+                     "cd5937d01eb3fa12af1bc36a8eacd4b2e6e0eb44"
+                     (openpgp-fingerprint
+                      "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
            (systems '("aarch64-linux")))
           (specification
            (name "channel")

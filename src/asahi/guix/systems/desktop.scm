@@ -121,23 +121,23 @@
 
 ;; Gnome
 
-(define %asahi-desktop-gnome-shell
+(define %asahi-gnome-shell
   (map cadr (modify-inputs (package-propagated-inputs gnome-meta-core-shell)
               (delete "orca" "rygel")))) ;; These packages can't be built.
 
-(define-public asahi-desktop-gnome
+(define-public asahi-gnome-os
   (operating-system
     (inherit asahi-edge-os)
     (services (cons* (service gnome-desktop-service-type
                               (gnome-desktop-configuration
-                               (shell %asahi-desktop-gnome-shell)))
+                               (shell %asahi-gnome-shell)))
                      %asahi-gdm-service
                      %asahi-desktop-services))
     (packages %asahi-desktop-packages)))
 
 ;; Plasma
 
-(define-public asahi-desktop-plasma
+(define-public asahi-plasma-os
   (operating-system
     (inherit asahi-edge-os)
     (services (cons* (service plasma-desktop-service-type)
@@ -156,18 +156,18 @@
     ("XDG_SESSION_DESKTOP" . "sway")
     ("XDG_CURRENT_DESKTOP" . "sway")))
 
-(define asahi-desktop-swaylock-config
+(define asahi-swaylock-config
   (plain-file
-   "asahi-desktop-swaylock-config"
+   "asahi-swaylock-config"
    "color=000000
 daemonize
 show-failed-attempts
 ignore-empty-password"))
 
-(define asahi-desktop-swaylock-command
-  #~(string-append "/run/setuid-programs/swaylock --config=" #$asahi-desktop-swaylock-config))
+(define asahi-swaylock-command
+  #~(string-append "/run/setuid-programs/swaylock --config=" #$asahi-swaylock-config))
 
-(define %asahi-desktop-sway-config
+(define %asahi-sway-config
   (mixed-text-file
    "sway-config"
    "# Read `man 5 sway` for a complete reference.
@@ -205,10 +205,10 @@ output * bg " %asahi-desktop-background " fill
 # Example configuration:
 #
 exec swayidle -w \
-         timeout 720 '" asahi-desktop-swaylock-command "' \
+         timeout 720 '" asahi-swaylock-command "' \
          timeout 900 'swaymsg \"output * dpms off\"' \
               resume 'swaymsg \"output * dpms on\"' \
-         before-sleep '" asahi-desktop-swaylock-command "'
+         before-sleep '" asahi-swaylock-command "'
 #
 # This will lock your screen after 720 seconds of inactivity, then turn off
 # your displays after another 180 seconds, and turn your screens back on when
@@ -416,30 +416,30 @@ exec --no-startup-id pactl stat
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 # Lock the screen at login.
-#exec " asahi-desktop-swaylock-command "
+#exec " asahi-swaylock-command "
 
 include " #~(string-append #$sway "/etc/sway/config.d/*")))
 
-(define %asahi-desktop-sway-home-environment
+(define %asahi-sway-home-environment
   (home-environment
    (services
-    (cons* (simple-service 'asahi-desktop-sway-home-files home-xdg-configuration-files-service-type
-                           `(("sway/config" ,%asahi-desktop-sway-config)))
+    (cons* (simple-service 'asahi-sway-home-files home-xdg-configuration-files-service-type
+                           `(("sway/config" ,%asahi-sway-config)))
            %asahi-desktop-home-services))))
 
-(define %asahi-desktop-sway-home-service
-  (service guix-home-service-type `(("guest" ,%asahi-desktop-sway-home-environment))))
+(define %asahi-sway-home-service
+  (service guix-home-service-type `(("guest" ,%asahi-sway-home-environment))))
 
-(define %asahi-desktop-sway-packages
+(define %asahi-sway-packages
   (cons* asahi-sway emacs-pgtk foot i3status sway swaybg swayidle swaylock wofi
          (remove (lambda (package)
                    (eq? "emacs" (package-name package)))
                  %asahi-desktop-packages)))
 
-(define-public asahi-desktop-sway
+(define-public asahi-sway-os
   (operating-system
     (inherit asahi-edge-os)
-    (services (modify-services (cons* %asahi-desktop-sway-home-service
+    (services (modify-services (cons* %asahi-sway-home-service
                                       %asahi-sddm-service
                                       %asahi-desktop-services)))
-    (packages %asahi-desktop-sway-packages)))
+    (packages %asahi-sway-packages)))

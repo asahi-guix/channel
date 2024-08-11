@@ -19,13 +19,13 @@ Start a NREPL server.
 Build the Asahi Guix operating system image.
 
 #+begin_src sh :results verbatim
-  guix system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
+  guix system build --load-path=src --system=aarch64-linux share/systems/base.tmpl
 #+end_src
 
 Build the Asahi Guix operating system image using the edge kernel.
 
 #+begin_src sh :results verbatim
-  guix system build --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl
+  guix system build --load-path=src --system=aarch64-linux share/systems/edge.tmpl
 #+end_src
 
 ** Installer
@@ -154,37 +154,37 @@ Mount file systems.
 Install the Asahi Guix system.
 
 #+begin_src sh
-  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
+  sudo guix system init --load-path=src --system=aarch64-linux share/systems/base.tmpl /mnt
 #+end_src
 
 Install the Asahi Guix edge system.
 
 #+begin_src sh
-  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-edge.tmpl /mnt
+  sudo guix system init --load-path=src --system=aarch64-linux share/systems/edge.tmpl /mnt
 #+end_src
 
 Install the Asahi Guix Gnome system.
 
 #+begin_src sh
-  sudo guix system init --load-path=src --system=aarch64-linux share/systems/asahi-guix-desktop-gnome.tmpl /mnt
+  sudo guix system init --load-path=src --system=aarch64-linux share/systems/gnome.tmpl /mnt
 #+end_src
 
 Build systems with time machine.
 
 #+begin_src sh
   guix time-machine --channels=src/asahi/guix/channels.scm -- \
-       system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
+       system build --load-path=src --system=aarch64-linux share/systems/base.tmpl
   guix time-machine --channels=src/asahi/guix/channels.scm -- \
-       system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
+       system build --load-path=src --system=aarch64-linux share/systems/base.tmpl
 #+end_src
 
 Install systems with time machine.
 
 #+begin_src sh
   sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
-       system init --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl /mnt
+       system init --load-path=src --system=aarch64-linux share/systems/base.tmpl /mnt
   guix time-machine --channels=src/asahi/guix/channels.scm -- \
-       system build --load-path=src --system=aarch64-linux share/systems/asahi-guix.tmpl
+       system build --load-path=src --system=aarch64-linux share/systems/base.tmpl
 #+end_src
 
 Unmount the file systems.

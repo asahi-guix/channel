@@ -110,8 +110,11 @@ EXTRA_DIST += NOTES.org \
               .guix-channel \
               .gitignore \
               manifest.scm \
-              share/systems/asahi-guix.tmpl \
-              share/systems/asahi-guix-edge.tmpl \
+	      share/systems/gnome.tmpl \
+	      share/systems/plasma.tmpl \
+	      share/systems/sway.tmpl \
+              share/systems/base.tmpl \
+              share/systems/edge.tmpl \
               .github/workflows/aarch64-linux-gnu.yml \
               .github/workflows/x86_64-linux-gnu.yml \
               .github/FUNDING.yml \

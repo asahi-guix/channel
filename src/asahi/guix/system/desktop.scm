@@ -111,7 +111,6 @@
                           (service alsa-service-type)
                           (service asahi-firmware-service-type)
                           (service openssh-service-type)
-                          (service pipewire-service-type)
                           (service speakersafetyd-service-type)
                           (remove (lambda (service)
                                     (or (eq? (service-kind service) gdm-service-type)

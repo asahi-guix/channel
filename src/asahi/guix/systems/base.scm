@@ -30,7 +30,7 @@
   #:use-module (guix packages)
   #:use-module (ice-9 optargs)
   #:export (asahi-base-os
-            asahi-edge-operating-system))
+            asahi-edge-os))
 
 (define %kernel-arguments
   (append '("net.ifnames=0") %default-kernel-arguments))
@@ -96,7 +96,7 @@
     (services %services)
     (users %users)))
 
-(define asahi-edge-operating-system
+(define asahi-edge-os
   (operating-system
     (inherit asahi-base-os)
     (kernel asahi-linux-edge)

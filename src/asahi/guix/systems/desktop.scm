@@ -58,7 +58,7 @@
          brightnessctl
          emacs
          kitty
-         (operating-system-packages asahi-edge-operating-system)))
+         (operating-system-packages asahi-edge-os)))
 
 (define %asahi-desktop-xorg-touchpads "
   Section \"InputClass\"
@@ -127,7 +127,7 @@
 
 (define-public asahi-desktop-gnome
   (operating-system
-    (inherit asahi-edge-operating-system)
+    (inherit asahi-edge-os)
     (services (cons* (service gnome-desktop-service-type
                               (gnome-desktop-configuration
                                (shell %asahi-desktop-gnome-shell)))
@@ -139,7 +139,7 @@
 
 (define-public asahi-desktop-plasma
   (operating-system
-    (inherit asahi-edge-operating-system)
+    (inherit asahi-edge-os)
     (services (cons* (service plasma-desktop-service-type)
                      %asahi-gdm-service
                      %asahi-desktop-services))
@@ -438,7 +438,7 @@ include " #~(string-append #$sway "/etc/sway/config.d/*")))
 
 (define-public asahi-desktop-sway
   (operating-system
-    (inherit asahi-edge-operating-system)
+    (inherit asahi-edge-os)
     (services (modify-services (cons* %asahi-desktop-sway-home-service
                                       %asahi-sddm-service
                                       %asahi-desktop-services)))

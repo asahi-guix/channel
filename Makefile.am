@@ -52,7 +52,7 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	src/asahi/guix/home/config.scm \
 	src/asahi/guix/home/services/sound.scm \
 	src/asahi/guix/initrd.scm \
-	src/asahi/guix/machine/server.scm \
+	src/asahi/guix/machines/server.scm \
 	src/asahi/guix/packages/audio.scm \
 	src/asahi/guix/packages/bootloader.scm \
 	src/asahi/guix/packages/ci.scm \
@@ -65,8 +65,6 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	src/asahi/guix/packages/misc.scm \
 	src/asahi/guix/packages/music.scm \
 	src/asahi/guix/packages/pulseaudio.scm \
-	src/asahi/guix/packages/rust-apps.scm \
-	src/asahi/guix/packages/rust.scm \
 	src/asahi/guix/packages/wm.scm \
 	src/asahi/guix/packages/xorg.scm \
 	src/asahi/guix/services/channels.scm \
@@ -76,11 +74,11 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	src/asahi/guix/services/speakersafetyd.scm \
 	src/asahi/guix/services/udev.scm \
 	src/asahi/guix/substitutes.scm \
-	src/asahi/guix/system/base.scm \
-	src/asahi/guix/system/desktop.scm \
-	src/asahi/guix/system/image.scm \
-	src/asahi/guix/system/install.scm \
-	src/asahi/guix/system/server.scm \
+	src/asahi/guix/systems/base.scm \
+	src/asahi/guix/systems/desktop.scm \
+	src/asahi/guix/systems/image.scm \
+	src/asahi/guix/systems/install.scm \
+	src/asahi/guix/systems/server.scm \
 	src/asahi/guix/transformations.scm \
 	src/asahi/guix/udev.scm
 

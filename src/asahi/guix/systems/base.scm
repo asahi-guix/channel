@@ -30,6 +30,12 @@
   #:use-module (guix packages)
   #:use-module (ice-9 optargs))
 
+(define %asahi-keyboard-options
+  '("caps:ctrl_modifier" "terminate:ctrl_alt_bksp"))
+
+(define %asahi-keyboard-layout
+  (keyboard-layout "us" #:options %asahi-keyboard-options))
+
 (define %asahi-base-bootloader
   (bootloader-configuration
    (bootloader m1n1-u-boot-grub-bootloader)
@@ -45,12 +51,6 @@
 
 (define %asahi-default-kernel-arguments
   (append '("net.ifnames=0") %default-kernel-arguments))
-
-(define %asahi-keyboard-options
-  '("caps:ctrl_modifier" "terminate:ctrl_alt_bksp"))
-
-(define %asahi-keyboard-layout
-  (keyboard-layout "us" #:options %asahi-keyboard-options))
 
 (define %asahi-base-file-system-boot
   (file-system

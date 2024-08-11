@@ -36,7 +36,12 @@
                  (("cmd 'journalctl -b -1.*")
                   "")
                  (("logfile /var/log/pacman.log 500")
-                  ""))
+                  "")
+                 ((".*if \\[ -e /etc/arch-release \\]; then")
+                  (string-append "    if [ -e /run/current-system/configuration.scm ]; then\n"
+                                 "      cmd=\"guix package -I\"\n"
+                                 "      pkgs=\"\"\n"
+                                 "    elif [ -e /etc/arch-release ]; then")))
                (substitute* "asahi-fwupdate"
                  (("/usr/share/asahi-scripts/functions.sh")
                   (string-append out "/share/asahi-scripts/functions.sh"))

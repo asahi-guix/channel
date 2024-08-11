@@ -1,13 +1,13 @@
 (define-module (asahi guix packages linux)
   #:use-module ((gnu packages linux) #:prefix linux:)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (asahi guix packages rust)
-  #:use-module (asahi guix packages rust-apps)
   #:use-module (gnu packages audio)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages python)
+  #:use-module (gnu packages rust)
+  #:use-module (gnu packages rust-apps)
   #:use-module (guix build-system copy)
   #:use-module (guix download)
   #:use-module (guix gexp)
@@ -59,10 +59,8 @@
           #~(modify-phases #$phases
               (add-before 'configure 'configure-bindgen
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((bindgen (assoc-ref inputs "rust-bindgen-cli")))
-                    (when bindgen
-                      (setenv "BINDGEN"
-                              (string-append bindgen "/bin/bindgen"))))))
+                  (let ((bindgen (search-input-file inputs "bin/bindgen")))
+                    (when bindgen (setenv "BINDGEN" bindgen)))))
               (add-before 'configure 'configure-libclang
                 (lambda* (#:key inputs #:allow-other-keys)
                   (let ((clang (assoc-ref inputs "clang")))
@@ -71,16 +69,12 @@
                       (setenv "LIBCLANG_PATH" (string-append clang "/lib"))))))
               (add-before 'configure 'configure-rustc
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((rust (assoc-ref inputs "rust")))
-                    (when rust
-                      (setenv "RUSTC" (string-append rust "/bin/rustc"))))))
+                  (let ((rustc (search-input-file inputs "bin/rustc")))
+                    (when rustc (setenv "RUSTC" rustc)))))
               (add-before 'configure 'configure-rust-src
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((rust-src (assoc-ref inputs "rust-src")))
-                    (when rust-src
-                      (setenv "RUST_LIB_SRC"
-                              (string-append rust-src
-                                             "/lib/rustlib/src/rust/library"))))))))))
+                  (let ((source (search-input-directory inputs "lib/rustlib/src/rust/library")))
+                    (when source (setenv "RUST_LIB_SRC" source)))))))))
       (home-page "https://asahilinux.org")
       (synopsis "Linux on Apple Silicon")
       (description "Asahi Linux is a project and community with the goal of porting Linux
@@ -101,8 +95,9 @@ Air, and MacBook Pro."))))
                   llvm
                   python
                   rust
-                  rust-bindgen-cli-0.69
-                  rust-src
+                  `(,rust "tools")
+                  `(,rust "rust-src")
+                  rust-bindgen-cli
                   zstd))))))
 
 (define-public asahi-alsa-ucm-conf

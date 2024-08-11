@@ -1,7 +1,6 @@
 (define-module (asahi guix packages crates-io)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (asahi guix packages linux)
-  #:use-module (asahi guix packages rust)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages crates-windows)
   #:use-module (gnu packages linux)

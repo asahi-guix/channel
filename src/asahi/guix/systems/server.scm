@@ -174,7 +174,6 @@ COMMIT
            (name "guix")
            (build '(packages
                     "gnome-desktop"
-                    ;; "icecat"
                     "gtk"
                     "jemalloc"
                     "librewolf"
@@ -190,6 +189,21 @@ COMMIT
                      "59c86958338970cac132f45da37de3b00a26a8cc"
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
+           (systems '("aarch64-linux")))
+          (specification
+           (name "guix-next")
+           (build '(packages
+                    "gnome-desktop"
+                    "gtk"
+                    "jemalloc"
+                    "librewolf"
+                    "plasma-desktop"
+                    "rust"))
+           (channels
+            (list (channel
+                   (name 'guix)
+                   (url "https://github.com/asahi-guix/guix")
+                   (branch "next"))))
            (systems '("aarch64-linux")))
           (specification
            (name "channel")

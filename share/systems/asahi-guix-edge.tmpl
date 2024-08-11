@@ -8,7 +8,7 @@
              (gnu))
 
 (operating-system
-  (inherit asahi-operating-system)
+  (inherit asahi-base-os)
   (kernel asahi-linux-edge)
   (initrd-modules asahi-initrd-modules-edge)
   (file-systems (cons* (file-system

@@ -29,7 +29,7 @@
   #:use-module (guix modules)
   #:use-module (guix packages)
   #:use-module (ice-9 optargs)
-  #:export (asahi-operating-system
+  #:export (asahi-base-os
             asahi-edge-operating-system))
 
 (define %kernel-arguments
@@ -78,7 +78,7 @@
          (supplementary-groups '("audio" "netdev" "video" "wheel")))
         %base-user-accounts))
 
-(define asahi-operating-system
+(define asahi-base-os
   (operating-system
     (host-name "asahi-guix")
     (locale "en_US.utf8")
@@ -98,6 +98,6 @@
 
 (define asahi-edge-operating-system
   (operating-system
-    (inherit asahi-operating-system)
+    (inherit asahi-base-os)
     (kernel asahi-linux-edge)
     (initrd-modules asahi-initrd-modules-edge)))

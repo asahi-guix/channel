@@ -105,7 +105,7 @@ partition. In this example, the filesystem UUID is =86E8-4498=.
                (gnu))
 
   (operating-system
-    (inherit asahi-operating-system)
+    (inherit asahi-base-os)
     (file-systems (cons* (file-system
                            (device (uuid "86E8-4498" 'fat32))
                            (mount-point "/boot/efi")

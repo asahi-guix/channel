@@ -46,7 +46,7 @@
   (image
    (inherit
     (os+platform->image
-     asahi-operating-system
+     asahi-base-os
      aarch64-linux
      #:type asahi-image-type))
    (name 'asahi-base-image)))

@@ -207,7 +207,7 @@ https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
 
   (with-store %store
     (run-with-store %store
-      (lower-object asahi-operating-system)))
+      (lower-object asahi-base-os)))
 #+end_src
 ** Server
 *** Installation via Hetzner rescue system

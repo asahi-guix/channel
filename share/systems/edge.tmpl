@@ -1,0 +1,22 @@
+;; -*- mode: scheme; -*-
+
+;; Template for a Guix operating system using the Asahi Linux edge kernel.
+
+(use-modules (asahi guix systems base)
+             (asahi guix initrd)
+             (asahi guix packages linux)
+             (gnu))
+
+(operating-system
+  (inherit asahi-edge-os)
+  (file-systems (cons* (file-system
+                         (device (uuid "86E8-4498" 'fat32))
+                         (mount-point "/boot/efi")
+                         (needed-for-boot? #t)
+                         (type "vfat"))
+                       (file-system
+                         (device (file-system-label "asahi-guix-root"))
+                         (mount-point "/")
+                         (needed-for-boot? #t)
+                         (type "ext4"))
+                       %base-file-systems)))

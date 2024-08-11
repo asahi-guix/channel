@@ -23,4 +23,4 @@
   (efi-bootloader-chain
    grub-efi-removable-bootloader
    #:installer m1n1-u-boot-grub-installer
-   #:packages (list asahi-linux asahi-m1n1 u-boot-apple-m1)))
+   #:packages (list asahi-linux asahi-m1n1 asahi-u-boot)))

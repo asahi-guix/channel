@@ -56,7 +56,7 @@
                  (("/usr/lib/asahi-boot/")
                   (string-append (assoc-ref inputs "asahi-m1n1") "/libexec/"))
                  (("\\$SOURCE/u-boot-nodtb.bin")
-                  (string-append (assoc-ref inputs "u-boot-apple-m1") "/libexec/u-boot-nodtb.bin"))
+                  (string-append (assoc-ref inputs "asahi-u-boot") "/libexec/u-boot-nodtb.bin"))
                  (("/lib/modules/\\*-ARCH/dtbs/\\*.dtb")
                   (string-append (assoc-ref inputs "linux") "/lib/dtbs/apple/*.dtb"))))))
          (replace 'configure
@@ -75,7 +75,7 @@
               ("asahi-m1n1" ,asahi-m1n1)
               ("lzfse" ,lzfse)
               ("python" ,python)
-              ("u-boot-apple-m1" ,u-boot-apple-m1)
+              ("asahi-u-boot" ,asahi-u-boot)
               ("linux" ,asahi-linux)))
     (home-page "https://github.com/AsahiLinux/asahi-scripts")
     (synopsis "Asahi Linux scripts")

@@ -78,7 +78,7 @@
 the Apple (XNU) boot ecosystem to the Linux boot ecosystem.")
     (license license:expat)))
 
-(define-public u-boot-apple-m1
+(define-public asahi-u-boot
   (let ((base (make-u-boot-package "apple_m1" "aarch64-linux-gnu"))
         (commit "c134629a8bc448e979967bf0632fdd5bb42ee1d7"))
     (package/inherit base

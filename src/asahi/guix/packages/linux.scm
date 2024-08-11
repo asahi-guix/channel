@@ -93,8 +93,8 @@ Air, and MacBook Pro."))))
     (package/inherit base
       (native-inputs
        (modify-inputs (package-native-inputs base)
-         (prepend clang
-                  llvm
+         (prepend clang-18
+                  llvm-18
                   python
                   rust
                   `(,rust "tools")

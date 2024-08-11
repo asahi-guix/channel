@@ -101,7 +101,7 @@ system record, configured with the filesystem UUID of your EFI system
 partition. In this example, the filesystem UUID is =86E8-4498=.
 
 #+begin_src scheme
-  (use-modules (asahi guix system base)
+  (use-modules (asahi guix systems base)
                (gnu))
 
   (operating-system

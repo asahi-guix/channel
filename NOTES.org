@@ -202,7 +202,7 @@ https://gist.github.com/kristianlm/089a6759a74dcd2e6f702847cf919ed2
 ** REPL
 *** Build operating system
 #+begin_src scheme
-  (use-modules (asahi guix system base)
+  (use-modules (asahi guix systems base)
                (guix store))
 
   (with-store %store

@@ -1,5 +1,5 @@
 (define-module (asahi guix machine server)
-  #:use-module (asahi guix system server)
+  #:use-module (asahi guix systems server)
   #:use-module (gnu machine ssh)
   #:use-module (gnu machine)
   #:use-module (gnu)

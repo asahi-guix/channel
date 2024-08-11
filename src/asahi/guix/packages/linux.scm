@@ -59,7 +59,8 @@
           #~(modify-phases #$phases
               (add-before 'configure 'configure-bindgen
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((bindgen (search-input-file inputs "bin/bindgen")))
+                  (let ((bindgen (false-if-exception
+                                  (search-input-file inputs "bin/bindgen"))))
                     (when bindgen (setenv "BINDGEN" bindgen)))))
               (add-before 'configure 'configure-libclang
                 (lambda* (#:key inputs #:allow-other-keys)
@@ -69,11 +70,12 @@
                       (setenv "LIBCLANG_PATH" (string-append clang "/lib"))))))
               (add-before 'configure 'configure-rustc
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((rustc (search-input-file inputs "bin/rustc")))
+                  (let ((rustc (false-if-exception (search-input-file inputs "bin/rustc"))))
                     (when rustc (setenv "RUSTC" rustc)))))
               (add-before 'configure 'configure-rust-src
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((source (search-input-directory inputs "lib/rustlib/src/rust/library")))
+                  (let ((source (false-if-exception
+                                 (search-input-directory inputs "lib/rustlib/src/rust/library"))))
                     (when source (setenv "RUST_LIB_SRC" source)))))))))
       (home-page "https://asahilinux.org")
       (synopsis "Linux on Apple Silicon")

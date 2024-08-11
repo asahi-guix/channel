@@ -173,12 +173,12 @@ COMMIT
   #~(list (specification
            (name "guix")
            (build '(packages
-                    ;; "gnome-desktop"
+                    "gnome-desktop"
                     ;; "icecat"
                     "gtk"
                     "jemalloc"
                     "librewolf"
-                    ;; "plasma-desktop"
+                    "plasma-desktop"
                     "rust"))
            (channels
             (list (channel

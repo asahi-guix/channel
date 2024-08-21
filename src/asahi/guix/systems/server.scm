@@ -211,6 +211,26 @@ COMMIT
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
            (systems '("aarch64-linux")))
           (specification
+           (name "guix-core-updates")
+           (build '(packages
+                    "gnome-desktop"
+                    "gtk"
+                    "jemalloc"
+                    "librewolf"
+                    "plasma-desktop"
+                    "rust"))
+           (channels
+            (list (channel
+                   (name 'guix)
+                   (url "https://git.savannah.gnu.org/git/guix")
+                   (branch "core-updates")
+                   (introduction
+                    (make-channel-introduction
+                     "9edb3f66fd807b096b48283debdcddccfea34bad"
+                     (openpgp-fingerprint
+                      "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
+           (systems '("aarch64-linux")))
+          (specification
            (name "channel")
            (build '(channels asahi))
            (channels

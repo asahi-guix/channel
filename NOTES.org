@@ -402,3 +402,6 @@ File Type
 : Units: sectors of 1 * 512 = 512 bytes
 : Sector size (logical/physical): 512 bytes / 512 bytes
 : I/O size (minimum/optimal): 512 bytes / 512 bytes
+** Mesa
+*** Links
+- [[https://stackoverflow.com/questions/3127360/what-is-egl-and-how-can-i-use-it][What is EGL And How Can I Use It?]]

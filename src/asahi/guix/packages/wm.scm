@@ -3,11 +3,8 @@
   #:use-module (gnu packages wm)
   #:use-module (guix packages))
 
-(define replace-mesa
-  (package-input-rewriting/spec
-   `(("mesa" . ,(const asahi-mesa)))))
-
 (define-public asahi-sway
-  (package
-    (inherit (replace-mesa sway))
-    (name "asahi-sway")))
+  ((package-input-rewriting/spec
+    `(("mesa" . ,(const asahi-mesa))))
+   (package/inherit sway
+     (name "asahi-sway"))))

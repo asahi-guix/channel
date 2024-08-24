@@ -9,7 +9,8 @@
 #+OPTIONS: toc:nil
 #+PROPERTY: header-args :eval never-export
 
-Asahi Linux on GNU Guix
+Asahi Guix is a [[https://guix.gnu.org/manual/en/html_node/Channels.html][Guix channel]] to run the [[https://guix.gnu.org/][GNU Guix operating system]] with
+the [[https://asahilinux.org/][Asahi Linux]] kernel on [[https://en.wikipedia.org/wiki/Apple_silicon][Apple Silicon]].
 
 ** Status
 
@@ -224,7 +225,7 @@ the feature on the device with the following command:
 
 ** Firmware
 
-The firmware required to boot Linux on Apple silicon is proprietary
+The firmware required to boot GNU/Linux on Apple silicon is proprietary
 and cannot be packaged with Asahi Guix. Instead the =asahi-firmware=
 Guix package assumes for now that the firmware is available in the
 =/boot/efi/vendorfw/firmware.cpio= archive at build time.

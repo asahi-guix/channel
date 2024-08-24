@@ -32,15 +32,10 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
-NOCOMP_SOURCES = src/asahi/guix/files/ssh/authorized-keys/rsa/root.pub \
-	src/asahi/guix/files/ssh/authorized-keys/rsa/roman.pub \
-	src/asahi/guix/files/ssh/authorized-keys/ed25519/roman.pub \
-	src/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
-	src/asahi/guix/files/authorized-keys/apple-m1.pub \
+NOCOMP_SOURCES = src/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
 	src/asahi/guix/files/asahi-bootlogo.svg \
 	src/asahi/guix/packages/defconfig.main \
-	src/asahi/guix/packages/defconfig.edge \
-	src/asahi/guix/patches/cuirass-disable-jit.patch
+	src/asahi/guix/packages/defconfig.edge
 
 SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	src/asahi/guix/build/block-devices.scm \
@@ -52,10 +47,8 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	src/asahi/guix/home/config.scm \
 	src/asahi/guix/home/services/sound.scm \
 	src/asahi/guix/initrd.scm \
-	src/asahi/guix/machines/server.scm \
 	src/asahi/guix/packages/audio.scm \
 	src/asahi/guix/packages/bootloader.scm \
-	src/asahi/guix/packages/ci.scm \
 	src/asahi/guix/packages/crates-io.scm \
 	src/asahi/guix/packages/display-managers.scm \
 	src/asahi/guix/packages/firmware.scm \
@@ -78,7 +71,6 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	src/asahi/guix/systems/desktop.scm \
 	src/asahi/guix/systems/image.scm \
 	src/asahi/guix/systems/install.scm \
-	src/asahi/guix/systems/server.scm \
 	src/asahi/guix/transformations.scm \
 	src/asahi/guix/udev.scm
 

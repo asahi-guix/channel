@@ -1,5 +1,4 @@
 (define-module (asahi guix cuirass jobs)
-  #:use-module (asahi guix packages ci)
   #:use-module (asahi guix systems install)
   #:use-module (gnu ci)
   #:use-module (gnu packages package-management)

@@ -206,7 +206,7 @@ COMMIT
                    (branch "next")
                    (introduction
                     (make-channel-introduction
-                     "c53a6ff9865394335b3049f7009eed47da52a80d"
+                     "8743e8ba7633769b07e08a26c43d255300e75096"
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))))
            (systems '("aarch64-linux")))

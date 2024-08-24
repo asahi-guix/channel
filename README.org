@@ -9,7 +9,7 @@
 #+OPTIONS: toc:nil
 #+PROPERTY: header-args :eval never-export
 
-Asahi Guix is a [[https://guix.gnu.org/manual/en/html_node/Channels.html][Guix channel]] to run the [[https://guix.gnu.org/][GNU Guix operating system]] with
+Asahi Guix is a [[https://guix.gnu.org/manual/en/html_node/Channels.html][GNU Guix channel]] to run the [[https://guix.gnu.org/][GNU operating system]] with
 the [[https://asahilinux.org/][Asahi Linux]] kernel on [[https://en.wikipedia.org/wiki/Apple_silicon][Apple Silicon]].
 
 ** Status
@@ -18,21 +18,20 @@ the [[https://asahilinux.org/][Asahi Linux]] kernel on [[https://en.wikipedia.or
 
 ** Installation
 
-To install a Guix system on Apple Silicon we need /Asahi Linux
-Minimal/ or /Asahi Linux Desktop/ installed on your device, as well as
-an /UEFI only environment/. At the moment the Asahi Linux installation
-is needed to bootstrap the Guix system/installer with the required
-firmware. The Guix system itself will be installed into the /UEFI only
-environment/.
+To install a Guix system on Apple Silicon we need a [[https://asahilinux.org/fedora/][Fedora Asahi Remix]]
+installed on your device, as well as an /UEFI only environment/. At
+the moment the Asahi Fedora Remix installation is needed to bootstrap
+the Guix system/installer with the required firmware. The Guix system
+itself will be installed into the /UEFI only environment/.
 
 *** System Preparation
 
-Please follow the Asahi Linux [[https://asahilinux.org/2022/03/asahi-linux-alpha-release/][installation guide]] and install either
-the /Asahi Linux Minimal/ or /Asahi Linux Desktop/ system on your
-device, as well as an /UEFI only environment/.
+Please follow the Asahi Fedora Remix [[https://docs.fedoraproject.org/en-US/fedora-asahi-remix/installation/][installation guide]] and install
+one of the /Minimal/, /Sever/, /Gnome/ or /KDE Plasma/ operating
+systems on your device, as well as an /UEFI only environment/.
 
-Once Asahi Linux and the UEFI only environment are installed, your
-disk should look similar to this:
+Once the Asahi Fedora Remix and the UEFI only environment are
+installed, your disk should look similar to this:
 
 #+begin_src sh :exports both :dir /sudo:: :results verbatim
   sudo fdisk --list /dev/nvme0n1
@@ -62,8 +61,8 @@ Partition table entries are not in disk order.
 #+end_example
 
 The =/dev/nvme0n1p3= partition is the [[https://en.wikipedia.org/wiki/Apple_File_System][APFS]] container of the /Asahi
-Linux installation/, =/dev/nvme0n1p4= its EFI system partition, and
-=/dev/nvme0n1p5= the root partition.
+Fedora Remix/ installation, =/dev/nvme0n1p4= its EFI system partition,
+and =/dev/nvme0n1p5= the root partition.
 
 Next comes =/dev/nvme0n1p6=, which is the APFS container of the /UEFI
 only environment/, along with its EFI system partition
@@ -73,14 +72,14 @@ created during the manual installation or via the installer.
 Finally there is the =/dev/nvme0n1p11= partition, which contains the
 Apple recovery system, which should *not* be touched or moved around.
 
-Boot into Asahi Linux, [[https://guix.gnu.org/manual/en/html_node/Installation.html][install]] the Guix package manager and follow
-either the manual installation (recommended) or the Guix Installer
-section of this guide.
+Boot into Fedora Asahi Remix, [[https://guix.gnu.org/manual/en/html_node/Installation.html][install]] the Guix package manager and
+follow either the manual installation (recommended) or the Guix
+Installer section of this guide.
 
 *** Manual Installation
 
 The manual installation uses the =guix system init= command to install
-a Guix system from the Asahi Linux installation onto the mounted
+the Guix system from another GNU/Linux installation onto the mounted
 partitions of the /UEFI only environment/.
 
 **** System configuration
@@ -131,10 +130,10 @@ installing the operating system onto the hard drive.
 
 **** System installation
 
-Create a new Linux root partition for the Guix system with =cfdisk=,
-format it with the EXT4 filesystem and label it as
-=asahi-guix-root=. From now on we assume this new root partition is
-created as =/dev/nvme0n1p8=.
+Create a new root partition for the Guix system with =cfdisk=, format
+it with the EXT4 filesystem and label it as =asahi-guix-root=. From
+now on we assume this new root partition is created as
+=/dev/nvme0n1p8=.
 
 #+begin_src sh :results none
   sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p8
@@ -183,7 +182,7 @@ select the container you want to boot from.
 The Guix installation image can be build with Guix installed on a
 foreign system that has the firmware available at
 =/boot/efi/vendorfw/firmware.cpio=. The firmware is typically
-installed on the EFI system partition by the Asahi Linux installer.
+installed on the EFI system partition by the /Asahi Linux installer/.
 
 **** Installation via USB stick
 
@@ -230,9 +229,10 @@ and cannot be packaged with Asahi Guix. Instead the =asahi-firmware=
 Guix package assumes for now that the firmware is available in the
 =/boot/efi/vendorfw/firmware.cpio= archive at build time.
 
-When installing Asahi Linux or an UEFI stand-alone system with the
-Asahi Linux installer, the Apple silicon firmware will be saved in the
-=asahi/all_firmware.tar.gz= archive on the EFI system partition.
+When installing Asahi Fedora Remix or an UEFI stand-alone system with
+the /Asahi Linux installer/, the Apple silicon firmware will be saved
+in the =asahi/all_firmware.tar.gz= archive on the EFI system
+partition.
 
 The [[https://github.com/AsahiLinux/asahi-scripts/blob/main/asahi-fwextract][asahi-fwextract]] script reads the firmware from the
 =asahi/all_firmware.tar.gz= archive and writes it to the =vendorfw=
@@ -240,9 +240,9 @@ directory of the EFI system partition as a ~CPIO~ and ~TAR~
 archive. The EFI system partition should be mounted on =/boot/efi= to
 make these firmware files available.
 
-On an Asahi Linux system this should already be the case, on an Asahi
-Guix system the EFI system partition can be mounted by adding the
-following file system to the =file-systems= field of your
+On an Asahi Fedora Remix system this should already be the case, on an
+Asahi Guix system the EFI system partition can be mounted by adding
+the following file system to the =file-systems= field of your
 =operating-system= record. Please change the UUID to the one of your
 system.
 

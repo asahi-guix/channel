@@ -1,7 +1,7 @@
 (use-modules (asahi guix initrd)
              (asahi guix packages linux)
-             (asahi guix system base)
-             (asahi guix system install)
+             (asahi guix systems base)
+             (asahi guix systems install)
              (gnu packages base)
              (gnu system)
              (guix gexp)
@@ -11,26 +11,26 @@
 
 (define %asahi-guix-version "0.1")
 
-(define %asahi-guix-system
+(define %asahi-guix-base
   (manifest-entry
-    (name "asahi-guix-system")
+    (name "asahi-guix-base")
     (version %asahi-guix-version)
-    (item asahi-operating-system)))
+    (item asahi-base-os)))
 
-(define %asahi-guix-system-edge
+(define %asahi-guix-edge
   (manifest-entry
-    (name "asahi-guix-system-edge")
+    (name "asahi-guix-edge")
     (version %asahi-guix-version)
-    (item asahi-edge-operating-system)))
+    (item asahi-edge-os)))
 
 (define %asahi-guix-installer
   (manifest-entry
     (name "asahi-guix-installer")
     (version %asahi-guix-version)
-    (item asahi-installation-operating-system)))
+    (item asahi-installation-os)))
 
 (concatenate-manifests
  (list (manifest
-        (list %asahi-guix-system
-              %asahi-guix-system-edge
+        (list %asahi-guix-base
+              %asahi-guix-edge
               %asahi-guix-installer))))

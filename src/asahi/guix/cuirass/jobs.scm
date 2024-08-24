@@ -36,7 +36,7 @@
         (image->job store
                     (image-with-os
                      iso9660-image
-                     asahi-installation-operating-system)
+                     asahi-installation-os)
                     #:name "asahi-guix-iso9660-image"
                     #:system system)))
      systems)))

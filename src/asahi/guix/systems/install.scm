@@ -13,7 +13,7 @@
   #:use-module (gnu services)
   #:use-module (gnu system install)
   #:use-module (gnu system)
-  #:export (asahi-installation-operating-system))
+  #:export (asahi-installation-os))
 
 (define %services
   (modify-services (append (operating-system-user-services installation-os)
@@ -22,7 +22,7 @@
     (console-font-service-type config => (console-font-terminus config))
     (guix-service-type config => (append-substitutes config))))
 
-(define asahi-installation-operating-system
+(define asahi-installation-os
   (operating-system
     (inherit installation-os)
     (kernel asahi-linux)
@@ -33,4 +33,4 @@
     (initrd-modules asahi-initrd-modules)
     (services %services)))
 
-asahi-installation-operating-system
+asahi-installation-os

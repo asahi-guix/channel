@@ -27,6 +27,13 @@ Build the Asahi Guix operating system image using the edge kernel.
 #+begin_src sh :results verbatim
   guix system build --load-path=src --system=aarch64-linux share/systems/edge.tmpl
 #+end_src
+** Manifests
+
+Build the operating systems in the =.guix/manifest.scm= manifest.
+
+#+begin_src sh
+  guix build -m .guix/manifest.scm
+#+end_src
 
 ** Installer
 

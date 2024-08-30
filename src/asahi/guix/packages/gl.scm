@@ -66,7 +66,8 @@
        (modify-inputs (package-inputs mesa)
          (prepend `(,lm-sensors "lib") asahi-libclc clang-18 libressl valgrind)
          (replace "llvm" llvm-18)
-         (replace "llvm-for-mesa" llvm-18))))))
+         (replace "llvm-for-mesa" llvm-18)
+         (replace "wayland-protocols" wayland-protocols-next))))))
 
 (define-public asahi-mesa-headers
   (package/inherit mesa-headers
@@ -74,7 +75,7 @@
     (version (package-version asahi-mesa))
     (source (package-source asahi-mesa))))
 
-(define replace-mesa
+(define-public replace-mesa
   (package-input-rewriting/spec
    `(("mesa" . ,(const asahi-mesa)))))
 

@@ -10,7 +10,7 @@
 #+PROPERTY: header-args :eval never-export
 
 Asahi Guix is a [[https://guix.gnu.org/manual/en/html_node/Channels.html][GNU Guix channel]] to run the [[https://guix.gnu.org/][GNU operating system]] with
-the [[https://asahilinux.org/][Asahi Linux]] kernel on [[https://en.wikipedia.org/wiki/Apple_silicon][Apple Silicon]].
+the [[https://asahilinux.org/][Asahi GNU/Linux]] kernel on [[https://en.wikipedia.org/wiki/Apple_silicon][Apple Silicon]].
 
 ** Status
 
@@ -182,11 +182,11 @@ select the container you want to boot from.
 The Guix installation image can be build with Guix installed on a
 foreign system that has the firmware available at
 =/boot/efi/vendorfw/firmware.cpio=. The firmware is typically
-installed on the EFI system partition by the /Asahi Linux installer/.
+installed on the EFI system partition by the /Asahi GNU/Linux installer/.
 
 **** Installation via USB stick
 
-Build the Guix installer disk image with the Asahi Linux kernel.
+Build the Guix installer disk image with the Asahi GNU/Linux kernel.
 
 #+begin_src sh :results verbatim
   guix time-machine --channels=src/asahi/guix/channels.scm -- \
@@ -230,7 +230,7 @@ Guix package assumes for now that the firmware is available in the
 =/boot/efi/vendorfw/firmware.cpio= archive at build time.
 
 When installing Asahi Fedora Remix or an UEFI stand-alone system with
-the /Asahi Linux installer/, the Apple silicon firmware will be saved
+the /Asahi GNU/Linux installer/, the Apple silicon firmware will be saved
 in the =asahi/all_firmware.tar.gz= archive on the EFI system
 partition.
 
@@ -276,6 +276,6 @@ Overview of packages provided by Asahi Guix and other distributions.
 
 Some code and inspirations were taken from:
 
-- [[https://asahilinux.org/][Asahi Linux]]
+- [[https://asahilinux.org/][Asahi GNU/Linux]]
 - [[https://github.com/daviwil][David Wilson]]
 - [[https://guix.gnu.org/][GNU Guix]]

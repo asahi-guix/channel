@@ -24,7 +24,7 @@
     (append
      (guix-configuration-authorized-keys config)
      authorized-keys))
-   (guix (guix-for-channels (list asahi-channel guix-channel)))
+   ;; (guix (guix-for-channels (list asahi-channel guix-channel)))
    (substitute-urls
     (append
      (guix-configuration-substitute-urls config)

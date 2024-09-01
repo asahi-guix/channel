@@ -10,13 +10,13 @@
              (guix profiles)
              (guix transformations))
 
-;; (define %asahi-guix-version "0.1")
+(define %asahi-guix-version "0.1.0")
 
-;; (define %asahi-guix-base
-;;   (manifest-entry
-;;     (name "asahi-guix-base")
-;;     (version %asahi-guix-version)
-;;     (item asahi-base-os)))
+(define %asahi-guix-base
+  (manifest-entry
+    (name "asahi-guix-base")
+    (version %asahi-guix-version)
+    (item asahi-base-os)))
 
 ;; (define %asahi-guix-edge
 ;;   (manifest-entry
@@ -36,4 +36,8 @@
 ;;               %asahi-guix-edge
 ;;               %asahi-guix-installer))))
 
-(packages->manifest (specifications->packages '("hello")))
+;; (packages->manifest (specifications->packages '("hello")))
+
+(concatenate-manifests
+ (list (packages->manifest (list asahi-guix-maintenance hello which))
+       (manifest (list %asahi-guix-server))))

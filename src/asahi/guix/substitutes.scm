@@ -24,6 +24,9 @@
     (append
      (guix-configuration-authorized-keys config)
      authorized-keys))
+   ;; Using guix-for-channels causes Cuirass to fail with the following error:
+   ;; #<&inferior-exception arguments: (git-error #<inferior-object
+   ;; #<<git-error> code: -3 message: "could not find repository at
    ;; (guix (guix-for-channels (list asahi-channel guix-channel)))
    (substitute-urls
     (append

@@ -1,11 +1,10 @@
-(use-modules ;; (asahi guix initrd)
-             ;; (asahi guix packages linux)
-             (asahi guix systems base)
-             ;; (asahi guix systems install)
+(use-modules (asahi guix systems base)
+             (asahi guix systems desktop)
+             (asahi guix systems install)
+             (gnu packages base)
              (gnu packages base)
              (gnu system)
              (guix gexp)
-             (gnu packages base)
              (guix packages)
              (guix profiles)
              (guix transformations))
@@ -24,20 +23,39 @@
     (version %asahi-guix-version)
     (item asahi-edge-os)))
 
-;; (define %asahi-guix-installer
-;;   (manifest-entry
-;;     (name "asahi-guix-installer")
-;;     (version %asahi-guix-version)
-;;     (item asahi-installation-os)))
+(define %asahi-guix-gnome
+  (manifest-entry
+    (name "asahi-guix-gnome")
+    (version %asahi-guix-version)
+    (item asahi-gnome-os)))
 
-;; (concatenate-manifests
-;;  (list (manifest
-;;         (list %asahi-guix-base
-;;               %asahi-guix-edge
-;;               %asahi-guix-installer))))
+(define %asahi-guix-installer
+  (manifest-entry
+    (name "asahi-guix-installer")
+    (version %asahi-guix-version)
+    (item asahi-installation-os)))
 
-;; (packages->manifest (specifications->packages '("hello")))
+(define %asahi-guix-plasma
+  (manifest-entry
+    (name "asahi-guix-plasma")
+    (version %asahi-guix-version)
+    (item asahi-plasma-os)))
 
-(concatenate-manifests
- (list (packages->manifest (list hello which))
-       (manifest (list %asahi-guix-base %asahi-guix-edge))))
+(define %asahi-guix-sway
+  (manifest-entry
+    (name "asahi-guix-sway")
+    (version %asahi-guix-version)
+    (item asahi-sway-os)))
+
+(define %asahi-packages
+  (packages->manifest (list hello which)))
+
+(define %asahi-systems
+  (manifest
+   (list %asahi-guix-base
+         %asahi-guix-edge
+         %asahi-guix-gnome
+         %asahi-guix-installer
+         %asahi-guix-plasma)))
+
+(concatenate-manifests (list %asahi-packages %asahi-systems))

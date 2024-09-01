@@ -1,6 +1,6 @@
 (use-modules (asahi guix systems base)
              (asahi guix systems desktop)
-             (asahi guix systems install)
+             ;; (asahi guix systems install)
              (gnu packages base)
              (gnu system)
              (guix gexp)
@@ -28,11 +28,11 @@
     (version %asahi-guix-version)
     (item asahi-gnome-os)))
 
-(define %asahi-guix-installer
-  (manifest-entry
-    (name "asahi-guix-installer")
-    (version %asahi-guix-version)
-    (item asahi-installation-os)))
+;; (define %asahi-guix-installer
+;;   (manifest-entry
+;;     (name "asahi-guix-installer")
+;;     (version %asahi-guix-version)
+;;     (item asahi-installation-os)))
 
 (define %asahi-guix-plasma
   (manifest-entry
@@ -53,7 +53,7 @@
   (manifest (list %asahi-guix-base
                   %asahi-guix-edge
                   %asahi-guix-gnome
-                  %asahi-guix-installer
+                  ;; %asahi-guix-installer
                   %asahi-guix-plasma
                   %asahi-guix-sway)))
 

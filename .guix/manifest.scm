@@ -39,5 +39,5 @@
 ;; (packages->manifest (specifications->packages '("hello")))
 
 (concatenate-manifests
- (list (packages->manifest (list asahi-guix-maintenance hello which))
+ (list (packages->manifest (list hello which))
        (manifest (list %asahi-guix-server))))

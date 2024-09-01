@@ -1,5 +1,5 @@
 (use-modules (asahi guix systems base)
-             ;; (asahi guix systems desktop)
+             (asahi guix systems desktop)
              ;; (asahi guix systems install)
              (gnu packages base)
              (gnu system)
@@ -40,11 +40,11 @@
 ;;     (version %asahi-guix-version)
 ;;     (item asahi-plasma-os)))
 
-;; (define %asahi-guix-sway
-;;   (manifest-entry
-;;     (name "asahi-guix-sway")
-;;     (version %asahi-guix-version)
-;;     (item asahi-sway-os)))
+(define %asahi-guix-sway
+  (manifest-entry
+    (name "asahi-guix-sway")
+    (version %asahi-guix-version)
+    (item asahi-sway-os)))
 
 (define %asahi-packages
   (packages->manifest (list hello which)))
@@ -52,6 +52,7 @@
 (define %asahi-systems
   (manifest (list %asahi-guix-base
                   %asahi-guix-edge
+                  %asahi-guix-sway
                   ;; %asahi-guix-gnome
                   ;; %asahi-guix-installer
                   ;; %asahi-guix-plasma

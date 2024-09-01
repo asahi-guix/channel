@@ -43,7 +43,6 @@ SOURCES = src/asahi/guix/bootloader/m1n1.scm \
 	src/asahi/guix/build/firmware.scm \
 	src/asahi/guix/build/modules.scm \
 	src/asahi/guix/channels.scm \
-	src/asahi/guix/cuirass/jobs.scm \
 	src/asahi/guix/home/config.scm \
 	src/asahi/guix/home/services/sound.scm \
 	src/asahi/guix/initrd.scm \

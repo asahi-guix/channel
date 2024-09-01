@@ -33,8 +33,7 @@
                   (list ".git" ".dir-locals.el" "guix.scm"))))))
     (build-system gnu-build-system)
     (native-inputs
-     (list (current-guix)
-           autoconf
+     (list autoconf
            automake
            gettext
            guile-ares-rs
@@ -44,6 +43,7 @@
            guile-json-4
            guile-next
            guile-ssh
+           guix
            parted
            pkg-config
            texinfo))

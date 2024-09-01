@@ -18,11 +18,11 @@
     (version %asahi-guix-version)
     (item asahi-base-os)))
 
-;; (define %asahi-guix-edge
-;;   (manifest-entry
-;;     (name "asahi-guix-edge")
-;;     (version %asahi-guix-version)
-;;     (item asahi-edge-os)))
+(define %asahi-guix-edge
+  (manifest-entry
+    (name "asahi-guix-edge")
+    (version %asahi-guix-version)
+    (item asahi-edge-os)))
 
 ;; (define %asahi-guix-installer
 ;;   (manifest-entry
@@ -40,4 +40,4 @@
 
 (concatenate-manifests
  (list (packages->manifest (list hello which))
-       (manifest (list %asahi-guix-server))))
+       (manifest (list %asahi-guix-base %asahi-guix-edge))))

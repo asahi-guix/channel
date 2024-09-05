@@ -190,7 +190,7 @@ Build the Guix installer disk image with the Asahi GNU/Linux kernel.
 
 #+begin_src sh :results verbatim
   guix time-machine --channels=src/asahi/guix/channels.scm -- \
-       system image --load-path=src --image-type=efi-raw --image-size=7.2GiB src/asahi/guix/system/install.scm
+       system image --load-path=src --image-type=efi-raw --image-size=7.2GiB src/asahi/guix/systems/install.scm
 #+end_src
 
 Write the installer disk image to the USB stick at =/dev/sda=.

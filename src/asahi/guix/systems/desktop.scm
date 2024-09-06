@@ -48,6 +48,12 @@
   (list (service home-dbus-service-type)
         (service home-pipewire-service-type)))
 
+(define %asahi-desktop-home-environment
+  (home-environment (services %asahi-desktop-home-services)))
+
+(define %asahi-desktop-home-service
+  (service guix-home-service-type `(("guest" ,%asahi-desktop-home-environment))))
+
 (define %asahi-desktop-kernel-modules
   (service kernel-module-loader-service-type '("asahi" "appledrm")))
 
@@ -141,6 +147,7 @@
   (operating-system
     (inherit asahi-edge-os)
     (services (cons* (service plasma-desktop-service-type)
+                     %asahi-desktop-home-service
                      %asahi-gdm-service
                      %asahi-desktop-services))
     (packages %asahi-desktop-packages)))

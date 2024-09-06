@@ -1,9 +1,15 @@
 (define-module (asahi guix packages rust)
   #:use-module ((gnu packages rust) #:prefix rust:)
+  #:use-module (gnu packages llvm)
   #:use-module (guix build-system copy)
   #:use-module (guix packages))
 
-(define-public rust rust:rust-1.78)
+(define-public rust
+  (let ((base-rust rust:rust-1.78))
+    (package
+      (inherit base-rust)
+      (inputs (modify-inputs (package-inputs base-rust)
+                (replace "llvm" llvm-18))))))
 
 (define-public rust-src
   (package

@@ -54,17 +54,15 @@
                  "-Dosmesa=true"
                  "-Dplatforms=x11,wayland"
                  "-Dshared-glapi=enabled"
-                 "-Dvalgrind=enabled"
+                 "-Dvalgrind=disabled"
                  "-Dvideo-codecs=all"
                  "-Dvulkan-drivers=swrast"
                  "-Dvulkan-layers=device-select,overlay"
-                 "-Dzstd=enabled"))
-         ((#:phases phases '%standard-phases)
-          #~(modify-phases #$phases
-              (delete 'set-layer-path-in-manifests)))))
+                 "-Dzstd=enabled"))))
       (inputs
        (modify-inputs (package-inputs mesa)
-         (prepend `(,lm-sensors "lib") valgrind)
+         (prepend `(,lm-sensors "lib") clang-18 libclc)
+         (replace "llvm-for-mesa" llvm-18)
          (replace "wayland-protocols" wayland-protocols-next))))))
 
 (define-public asahi-mesa-headers

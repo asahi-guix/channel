@@ -72,7 +72,7 @@
                 (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin")))))
           ;; There are no tests
           (delete 'check))))
-    (native-inputs (list asahi-bootlogo imagemagick))
+    (native-inputs (list imagemagick))
     (home-page "https://github.com/AsahiLinux/m1n1")
     (synopsis "Boot loader and experimentation playground for Apple Silicon")
     (description "m1n1 is the bootloader developed by the Asahi Linux project to bridge

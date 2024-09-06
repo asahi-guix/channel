@@ -20,6 +20,7 @@
   #:use-module (gnu packages admin)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages gnome)
+  #:use-module (gnu packages librewolf)
   #:use-module (gnu packages libusb)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages terminals)
@@ -64,6 +65,7 @@
          brightnessctl
          emacs
          kitty
+         librewolf
          (operating-system-packages asahi-edge-os)))
 
 (define %asahi-desktop-xorg-touchpads "
@@ -137,6 +139,7 @@
     (services (cons* (service gnome-desktop-service-type
                               (gnome-desktop-configuration
                                (shell %asahi-gnome-shell)))
+                     %asahi-desktop-home-service
                      %asahi-gdm-service
                      %asahi-desktop-services))
     (packages %asahi-desktop-packages)))

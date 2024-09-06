@@ -64,9 +64,7 @@
               (delete 'set-layer-path-in-manifests)))))
       (inputs
        (modify-inputs (package-inputs mesa)
-         (prepend `(,lm-sensors "lib") asahi-libclc clang-18 libressl valgrind)
-         (replace "llvm" llvm-18)
-         (replace "llvm-for-mesa" llvm-18)
+         (prepend `(,lm-sensors "lib") valgrind)
          (replace "wayland-protocols" wayland-protocols-next))))))
 
 (define-public asahi-mesa-headers

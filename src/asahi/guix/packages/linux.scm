@@ -1,12 +1,12 @@
 (define-module (asahi guix packages linux)
   #:use-module ((gnu packages linux) #:prefix linux:)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (asahi guix packages rust)
   #:use-module (gnu packages audio)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages python)
-  #:use-module (gnu packages rust)
   #:use-module (gnu packages rust-apps)
   #:use-module (guix build-system copy)
   #:use-module (guix download)
@@ -30,9 +30,9 @@
     (patches patches)
     (sha256 (base32 hash))))
 
-(define asahi-linux-source-6.9.12-1
+(define asahi-linux-source-6.10.6-1
   (make-asahi-linux-source
-   "asahi-6.9.12-1" "13xvsp0mcny19bpqgp6m0kydhnv9648q3wlbg2zx4f2mwhdjn8rc"
+   "asahi-6.10.6-1" "05q5z2g6lpxsdms1x7g9bdpn281ws9s043gk7y31v1fyh5hv8vxa"
    (list)))
 
 (define* (make-asahi-linux name
@@ -41,8 +41,8 @@
                            (extra-options '())
                            (extra-version #f)
                            (linux linux-libre-arm64-generic)
-                           (source asahi-linux-source-6.9.12-1)
-                           (version "6.9.12-asahi"))
+                           (source asahi-linux-source-6.10.6-1)
+                           (version "6.10.6-asahi"))
   (let ((base (customize-linux
                #:configs (config->string (or extra-options '()))
                #:defconfig defconfig
@@ -93,12 +93,9 @@ Air, and MacBook Pro."))))
     (package/inherit base
       (native-inputs
        (modify-inputs (package-native-inputs base)
-         (prepend clang-18
-                  llvm-18
-                  python
+         (prepend python
                   rust
-                  `(,rust "tools")
-                  `(,rust "rust-src")
+                  rust-src
                   rust-bindgen-cli
                   zstd))))))
 

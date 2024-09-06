@@ -1,7 +1,7 @@
 (use-modules (asahi guix systems base)
              (asahi guix systems desktop)
              ;; (asahi guix systems install)
-             (gnu packages base)
+             (gnu packages librewolf)
              (gnu system)
              (guix gexp)
              (guix packages)
@@ -47,7 +47,7 @@
     (item asahi-sway-os)))
 
 (define %asahi-packages
-  (packages->manifest (list hello which)))
+  (packages->manifest (list)))
 
 (define %asahi-systems
   (manifest (list %asahi-guix-base

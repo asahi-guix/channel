@@ -20,6 +20,7 @@
   #:use-module (gnu packages admin)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages gnome)
+  #:use-module (gnu packages kde-plasma)
   #:use-module (gnu packages librewolf)
   #:use-module (gnu packages libusb)
   #:use-module (gnu packages linux)
@@ -60,14 +61,15 @@
   (service kernel-module-loader-service-type '("asahi" "appledrm")))
 
 (define %asahi-desktop-packages
-  (cons* asahi-alsa-utils
-         asahi-mesa-utils
-         asahi-pulseaudio
-         brightnessctl
-         emacs
-         kitty
-         librewolf
-         (operating-system-packages asahi-edge-os)))
+  (map replace-mesa
+       (cons* asahi-alsa-utils
+              asahi-mesa-utils
+              asahi-pulseaudio
+              brightnessctl
+              emacs
+              kitty
+              librewolf
+              (operating-system-packages asahi-edge-os))))
 
 (define %asahi-desktop-xorg-touchpads "
   Section \"InputClass\"
@@ -150,7 +152,9 @@
 (define-public asahi-plasma-os
   (operating-system
     (inherit asahi-edge-os)
-    (services (cons* (service plasma-desktop-service-type)
+    (services (cons* (service plasma-desktop-service-type
+                              (plasma-desktop-configuration
+                               (plasma-package (replace-mesa plasma))))
                      %asahi-desktop-home-service
                      %asahi-sddm-service
                      %asahi-desktop-services))
@@ -173,10 +177,10 @@
                         (services %asahi-desktop-home-services))))))
 
 (define %asahi-sway-packages
-  (cons* asahi-sway emacs-pgtk dmenu foot sway wofi
-         (remove (lambda (package)
-                   (eq? "emacs" (package-name package)))
-                 %asahi-desktop-packages)))
+  (append (map replace-mesa (list asahi-sway emacs-pgtk dmenu foot sway wofi))
+          (remove (lambda (package)
+                    (eq? "emacs" (package-name package)))
+                  %asahi-desktop-packages)))
 
 (define-public asahi-sway-os
   (operating-system

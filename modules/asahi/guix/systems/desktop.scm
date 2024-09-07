@@ -61,15 +61,32 @@
   (service kernel-module-loader-service-type '("asahi" "appledrm")))
 
 (define %asahi-desktop-packages
-  (map replace-mesa
-       (cons* asahi-alsa-utils
-              asahi-mesa-utils
-              asahi-pulseaudio
-              brightnessctl
-              emacs
-              kitty
-              librewolf
-              (operating-system-packages asahi-edge-os))))
+  (cons* asahi-alsa-utils
+         asahi-mesa-utils
+         asahi-pulseaudio
+         brightnessctl
+         emacs
+         kitty
+         librewolf
+         network-manager
+         (remove (lambda (package)
+                   (equal? "network-manager" (package-name package)))
+                 (map replace-mesa (operating-system-packages asahi-edge-os)))))
+
+(define %asahi-desktop-packages
+  (cons* asahi-alsa-utils
+         asahi-mesa-utils
+         asahi-pulseaudio
+         brightnessctl
+         ;; TODO: Why does network-manager appear twice?
+         network-manager
+         (remove (lambda (package)
+                   (equal? "network-manager" (package-name package)))
+                 (map replace-mesa
+                      (cons* emacs
+                             kitty
+                             librewolf
+                             (operating-system-packages asahi-edge-os))))))
 
 (define %asahi-desktop-xorg-touchpads "
   Section \"InputClass\"
@@ -177,7 +194,7 @@
                         (services %asahi-desktop-home-services))))))
 
 (define %asahi-sway-packages
-  (append (map replace-mesa (list asahi-sway emacs-pgtk dmenu foot sway wofi))
+  (append (list asahi-sway emacs-pgtk dmenu foot sway wofi)
           (remove (lambda (package)
                     (eq? "emacs" (package-name package)))
                   %asahi-desktop-packages)))

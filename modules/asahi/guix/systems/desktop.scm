@@ -194,7 +194,7 @@
                         (services %asahi-desktop-home-services))))))
 
 (define %asahi-sway-packages
-  (append (list asahi-sway emacs-pgtk dmenu foot sway wofi)
+  (append (map replace-mesa (list emacs-pgtk dmenu foot sway wofi))
           (remove (lambda (package)
                     (eq? "emacs" (package-name package)))
                   %asahi-desktop-packages)))

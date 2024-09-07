@@ -37,7 +37,7 @@ source "$GUIX_PROFILE/etc/profile"
 
 echo "*** Initializing Guix system with $GUIX_COMMIT..."
 guix time-machine --commit=$GUIX_COMMIT -- \
-     system init --load-path=src --system=aarch64-linux src/asahi/guix/system/server.scm /mnt
+     system init --load-path=src --system=aarch64-linux modules/asahi/guix/system/server.scm /mnt
 
 echo "*** Unmounting partitions..."
 umount /mnt/boot/efi

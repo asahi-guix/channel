@@ -32,46 +32,46 @@ SUFFIXES = .scm .go
 .scm.go:
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
-NOCOMP_SOURCES = src/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
-	src/asahi/guix/files/asahi-bootlogo.svg \
-	src/asahi/guix/packages/defconfig.main \
-	src/asahi/guix/packages/defconfig.edge
+NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
+	modules/asahi/guix/files/asahi-bootlogo.svg \
+	modules/asahi/guix/packages/defconfig.main \
+	modules/asahi/guix/packages/defconfig.edge
 
-SOURCES = src/asahi/guix/bootloader/m1n1.scm \
-	src/asahi/guix/build/block-devices.scm \
-	src/asahi/guix/build/bootloader/m1n1.scm \
-	src/asahi/guix/build/firmware.scm \
-	src/asahi/guix/build/modules.scm \
-	src/asahi/guix/channels.scm \
-	src/asahi/guix/home/config.scm \
-	src/asahi/guix/home/services/sound.scm \
-	src/asahi/guix/initrd.scm \
-	src/asahi/guix/packages/audio.scm \
-	src/asahi/guix/packages/bootloader.scm \
-	src/asahi/guix/packages/crates-io.scm \
-	src/asahi/guix/packages/display-managers.scm \
-	src/asahi/guix/packages/firmware.scm \
-	src/asahi/guix/packages/gl.scm \
-	src/asahi/guix/packages/linux.scm \
-	src/asahi/guix/packages/llvm.scm \
-	src/asahi/guix/packages/misc.scm \
-	src/asahi/guix/packages/music.scm \
-	src/asahi/guix/packages/pulseaudio.scm \
-	src/asahi/guix/packages/wm.scm \
-	src/asahi/guix/packages/xorg.scm \
-	src/asahi/guix/services/channels.scm \
-	src/asahi/guix/services/console-font.scm \
-	src/asahi/guix/services/firmware.scm \
-	src/asahi/guix/services/sound.scm \
-	src/asahi/guix/services/speakersafetyd.scm \
-	src/asahi/guix/services/udev.scm \
-	src/asahi/guix/substitutes.scm \
-	src/asahi/guix/systems/base.scm \
-	src/asahi/guix/systems/desktop.scm \
-	src/asahi/guix/systems/image.scm \
-	src/asahi/guix/systems/install.scm \
-	src/asahi/guix/transformations.scm \
-	src/asahi/guix/udev.scm
+SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
+	modules/asahi/guix/build/block-devices.scm \
+	modules/asahi/guix/build/bootloader/m1n1.scm \
+	modules/asahi/guix/build/firmware.scm \
+	modules/asahi/guix/build/modules.scm \
+	modules/asahi/guix/channels.scm \
+	modules/asahi/guix/home/config.scm \
+	modules/asahi/guix/home/services/sound.scm \
+	modules/asahi/guix/initrd.scm \
+	modules/asahi/guix/packages/audio.scm \
+	modules/asahi/guix/packages/bootloader.scm \
+	modules/asahi/guix/packages/crates-io.scm \
+	modules/asahi/guix/packages/display-managers.scm \
+	modules/asahi/guix/packages/firmware.scm \
+	modules/asahi/guix/packages/gl.scm \
+	modules/asahi/guix/packages/linux.scm \
+	modules/asahi/guix/packages/llvm.scm \
+	modules/asahi/guix/packages/misc.scm \
+	modules/asahi/guix/packages/music.scm \
+	modules/asahi/guix/packages/pulseaudio.scm \
+	modules/asahi/guix/packages/wm.scm \
+	modules/asahi/guix/packages/xorg.scm \
+	modules/asahi/guix/services/channels.scm \
+	modules/asahi/guix/services/console-font.scm \
+	modules/asahi/guix/services/firmware.scm \
+	modules/asahi/guix/services/sound.scm \
+	modules/asahi/guix/services/speakersafetyd.scm \
+	modules/asahi/guix/services/udev.scm \
+	modules/asahi/guix/substitutes.scm \
+	modules/asahi/guix/systems/base.scm \
+	modules/asahi/guix/systems/desktop.scm \
+	modules/asahi/guix/systems/image.scm \
+	modules/asahi/guix/systems/install.scm \
+	modules/asahi/guix/transformations.scm \
+	modules/asahi/guix/udev.scm
 
 TESTS = tests/asahi/guix/build/block-devices.scm
 

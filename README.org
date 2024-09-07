@@ -159,7 +159,7 @@ EFI system partition =/dev/nvme0n1p7= under =/mnt/boot/efi=.
 Install the Guix system onto =/mnt=.
 
 #+begin_src sh :results none
-  sudo guix time-machine --channels=src/asahi/guix/channels.scm -- \
+  sudo guix time-machine --channels=modules/asahi/guix/channels.scm -- \
        system init --load-path=src --system=aarch64-linux asahi-guix.scm /mnt
 #+end_src
 
@@ -189,8 +189,8 @@ installed on the EFI system partition by the /Asahi GNU/Linux installer/.
 Build the Guix installer disk image with the Asahi GNU/Linux kernel.
 
 #+begin_src sh :results verbatim
-  guix time-machine --channels=src/asahi/guix/channels.scm -- \
-       system image --load-path=src --image-type=efi-raw --image-size=7.2GiB src/asahi/guix/systems/install.scm
+  guix time-machine --channels=modules/asahi/guix/channels.scm -- \
+       system image --load-path=src --image-type=efi-raw --image-size=7.2GiB modules/asahi/guix/systems/install.scm
 #+end_src
 
 Write the installer disk image to the USB stick at =/dev/sda=.
@@ -259,18 +259,18 @@ Overview of packages provided by Asahi Guix and other distributions.
 
 | Asahi Guix          | Arch Linux ARM      | Asahi Remix Fedora | NixOS Apple Silicon |
 |---------------------+---------------------+--------------------+---------------------|
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/linux.scm#L105][asahi-alsa-ucm-conf]] | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/alsa-ucm-conf-asahi][alsa-ucm-conf-asahi]] | [[https://src.fedoraproject.org/rpms/alsa-ucm-asahi][alsa-ucm-asahi]]     | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/alsa-ucm-conf-asahi][alsa-ucm-conf-asahi]] |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/audio.scm#L9][asahi-audio]]         | [[https://github.com/AsahiLinux/asahi-audio][asahi-audio]]         | [[https://src.fedoraproject.org/rpms/asahi-audio][asahi-audio]]        | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/asahi-audio][asahi-audio]]         |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/firmware.scm#L11][asahi-firmware]]      | -                   | -                  | -                   |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/firmware.scm#L54][asahi-fwextract]]     | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/asahi-fwextract][asahi-fwextract]]     | -                  | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/asahi-fwextract][asahi-fwextract]]     |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/linux.scm#L86][asahi-linux]]         | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/linux-asahi][linux-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/kernel][@asahi/kernel]]      | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/linux-asahi][linux-asahi]]         |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/linux.scm#L89][asahi-linux-edge]]    | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/linux-asahi][linux-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/kernel-edge][@asahi/kernel-edge]] | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/linux-asahi][linux-asahi]]         |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/bootloader.scm#L24][asahi-m1n1]]          | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/m1n1][m1n1]]                | [[https://src.fedoraproject.org/rpms/m1n1][m1n1]]               | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/m1n1][m1n1]]                |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/gl.scm#L17][asahi-mesa]]          | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/mesa-asahi-edge][mesa-asahi-edge]]     | [[https://copr.fedorainfracloud.org/coprs/g/asahi/mesa][@asahi/mesa]]        | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/mesa-asahi-edge][mesa-asahi-edge]]     |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/gl.scm#L71][asahi-mesa-headers]]  | -                   | -                  | -                   |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/gl.scm#L81][asahi-mesa-utils]]    | -                   | -                  | -                   |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/misc.scm#L12][asahi-scripts]]       | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/asahi-scripts][asahi-scripts]]       | [[https://src.fedoraproject.org/rpms/asahi-scripts][asahi-scripts]]      | -                   |
-| [[https://github.com/asahi-guix/channel/blob/main/src/asahi/guix/packages/bootloader.scm#L24][asahi-u-boot]]        | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/uboot-asahi][uboot-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/u-boot/][@asahi/u-boot]]      | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/uboot-asahi][uboot-asahi]]         |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/linux.scm#L105][asahi-alsa-ucm-conf]] | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/alsa-ucm-conf-asahi][alsa-ucm-conf-asahi]] | [[https://src.fedoraproject.org/rpms/alsa-ucm-asahi][alsa-ucm-asahi]]     | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/alsa-ucm-conf-asahi][alsa-ucm-conf-asahi]] |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/audio.scm#L9][asahi-audio]]         | [[https://github.com/AsahiLinux/asahi-audio][asahi-audio]]         | [[https://src.fedoraproject.org/rpms/asahi-audio][asahi-audio]]        | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/asahi-audio][asahi-audio]]         |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/firmware.scm#L11][asahi-firmware]]      | -                   | -                  | -                   |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/firmware.scm#L54][asahi-fwextract]]     | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/asahi-fwextract][asahi-fwextract]]     | -                  | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/asahi-fwextract][asahi-fwextract]]     |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/linux.scm#L86][asahi-linux]]         | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/linux-asahi][linux-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/kernel][@asahi/kernel]]      | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/linux-asahi][linux-asahi]]         |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/linux.scm#L89][asahi-linux-edge]]    | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/linux-asahi][linux-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/kernel-edge][@asahi/kernel-edge]] | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/linux-asahi][linux-asahi]]         |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/bootloader.scm#L24][asahi-m1n1]]          | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/m1n1][m1n1]]                | [[https://src.fedoraproject.org/rpms/m1n1][m1n1]]               | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/m1n1][m1n1]]                |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/gl.scm#L17][asahi-mesa]]          | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/mesa-asahi-edge][mesa-asahi-edge]]     | [[https://copr.fedorainfracloud.org/coprs/g/asahi/mesa][@asahi/mesa]]        | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/mesa-asahi-edge][mesa-asahi-edge]]     |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/gl.scm#L71][asahi-mesa-headers]]  | -                   | -                  | -                   |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/gl.scm#L81][asahi-mesa-utils]]    | -                   | -                  | -                   |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/misc.scm#L12][asahi-scripts]]       | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/asahi-scripts][asahi-scripts]]       | [[https://src.fedoraproject.org/rpms/asahi-scripts][asahi-scripts]]      | -                   |
+| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/bootloader.scm#L24][asahi-u-boot]]        | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/uboot-asahi][uboot-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/u-boot/][@asahi/u-boot]]      | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/uboot-asahi][uboot-asahi]]         |
 
 ** Thanks
 

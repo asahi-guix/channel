@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
-./pre-inst-env guix time-machine -q -- deploy src/asahi/guix/machine/server.scm
-./pre-inst-env guix time-machine -q -- deploy src/asahi/guix/machine/server.scm -x -- herd restart cuirass
+./pre-inst-env guix time-machine -q -- deploy modules/asahi/guix/machine/server.scm
+./pre-inst-env guix time-machine -q -- deploy modules/asahi/guix/machine/server.scm -x -- herd restart cuirass

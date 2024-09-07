@@ -19,18 +19,17 @@ jobs:
           channels: |
             (list (channel
                    (name 'asahi)
-                   (url "https://github.com/r0man/asahi-guix.git")
+                   (url "https://github.com/asahi-guix/channel")
                    (branch "main")
                    (introduction
                     (make-channel-introduction
-                     "d8f93a8a57be3e38f13916b4e5f3e1ad5ccee9de"
+                     "3eeb493b037bea44f225c4314c5556aa25aff36c"
                      (openpgp-fingerprint
                       "D226 A339 D8DF 4481 5DDE  0CA0 3DDA 5252 7D2A C199"))))
                   (channel
                    (name 'guix)
                    (url "https://git.savannah.gnu.org/git/guix.git")
                    (branch "master")
-                   (commit "c6480edbe3260a3bfb48361ca73e666b6d473f42")
                    (introduction
                     (make-channel-introduction
                      "9edb3f66fd807b096b48283debdcddccfea34bad"
@@ -39,25 +38,25 @@ jobs:
       - name: Ensure no locale warning
         run: test -z "$(guix --version 2>&1 >/dev/null)"
       - name: Build alsa-ucm-conf-asahi
-        run: guix build -L . -v 5 --target=aarch64-linux-gnu alsa-ucm-conf-asahi
+        run: guix build -L modules -v 5 --target=aarch64-linux-gnu alsa-ucm-conf-asahi
       - name: Build asahi-audio
-        run: guix build -L . -v 5 --target=aarch64-linux-gnu asahi-audio
+        run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-audio
       - name: Build asahi-firmware
-        run: guix build -L . -v 5 --target=aarch64-linux-gnu asahi-firmware
+        run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-firmware
       # TODO: Python does not support cross builds
       # - name: Build asahi-fwextract
-      #   run: guix build -L . -v 5 --target=aarch64-linux-gnu asahi-fwextract
+      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-fwextract
       # - name: Build asahi-scripts
-      #   run: guix build -L . -v 5 --target=aarch64-linux-gnu asahi-scripts
+      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-scripts
       - name: Build asahi-m1n1
-        run: guix build -L . -v 5 --target=aarch64-linux-gnu asahi-m1n1
+        run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-m1n1
       # - name: Build u-boot-apple-m1
-      #   run: guix build -L . -v 5 --target=aarch64-linux-gnu u-boot-apple-m1
+      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu u-boot-apple-m1
       # - name: Build mesa-asahi-edge
-      #   run: guix build -L . -v 5 --target=aarch64-linux-gnu mesa-asahi-edge
+      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu mesa-asahi-edge
       # - name: Build asahi-linux
-      #   run: guix build -L . -v 5 --target=aarch64-linux-gnu asahi-linux
+      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-linux
       # - name: Build asahi-linux-edge
-      #   run: guix build -L . -v 5 --target=aarch64-linux-gnu asahi-linux-edge
+      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-linux-edge
       # - name: Build installer
-      #   run: guix system image -L . --image-type=efi-raw -v 5 --target=aarch64-linux-gnu asahi/guix/installer.scm
+      #   run: guix system image -L modules --image-type=efi-raw -v 5 --target=aarch64-linux-gnu asahi/guix/installer.scm

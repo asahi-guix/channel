@@ -1,5 +1,5 @@
 ;; -*- mode: scheme; -*-
 (channel
  (version 0)
- (directory "src")
+ (directory "modules")
  (url "https://github.com/asahi-guix/channel"))

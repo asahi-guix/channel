@@ -152,7 +152,7 @@
     (inherit asahi-edge-os)
     (services (cons* (service plasma-desktop-service-type)
                      %asahi-desktop-home-service
-                     %asahi-gdm-service
+                     %asahi-sddm-service
                      %asahi-desktop-services))
     (packages %asahi-desktop-packages)))
 

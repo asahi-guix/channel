@@ -9,7 +9,8 @@
             asahi-initrd-modules-edge))
 
 (define initrd-modules
-  (list "dm-crypt"
+  (list "cirrus" ;; for guix system vm
+        "dm-crypt"
         "hid-apple"
         "nls_iso8859-1"
         "serpent_generic"

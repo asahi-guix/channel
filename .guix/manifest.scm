@@ -1,4 +1,5 @@
-(use-modules (asahi guix systems base)
+(use-modules (asahi guix images installer)
+             (asahi guix systems base)
              (asahi guix systems desktop)
              (asahi guix systems install)
              (gnu packages librewolf)
@@ -9,6 +10,19 @@
              (guix transformations))
 
 (define %asahi-guix-version "0.1.0")
+
+;; Images
+
+(define %asahi-installer-image
+  (manifest-entry
+    (name "asahi-installer-image")
+    (version %asahi-guix-version)
+    (item asahi-installer-image)))
+
+(define %asahi-images
+  (manifest (list %asahi-installer-image)))
+
+;; Systems
 
 (define %asahi-guix-base
   (manifest-entry
@@ -46,9 +60,6 @@
     (version %asahi-guix-version)
     (item asahi-sway-os)))
 
-(define %asahi-packages
-  (packages->manifest (list)))
-
 (define %asahi-systems
   (manifest (list %asahi-guix-base
                   %asahi-guix-edge
@@ -57,4 +68,12 @@
                   %asahi-guix-plasma
                   %asahi-guix-sway)))
 
-(concatenate-manifests (list %asahi-packages %asahi-systems))
+;; Packages
+
+(define %asahi-packages
+  (packages->manifest (list)))
+
+(concatenate-manifests
+ (list %asahi-images
+       %asahi-packages
+       %asahi-systems))

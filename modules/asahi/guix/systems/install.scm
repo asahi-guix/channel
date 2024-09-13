@@ -27,7 +27,7 @@
                 (authorized-keys
                  (append (guix-configuration-authorized-keys config)
                          %authorized-keys))
-                (guix guix)
+                ;; (guix guix)
                 (substitute-urls
                  (append (guix-configuration-substitute-urls config)
                          %substitute-urls))))))

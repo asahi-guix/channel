@@ -9,20 +9,30 @@
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
   #:use-module (gnu packages bootloaders)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu services base)
   #:use-module (gnu services)
   #:use-module (gnu system install)
-  #:use-module (gnu system)
-  #:export (asahi-installation-os))
+  #:use-module (gnu system))
 
 (define %services
   (modify-services (append (operating-system-user-services installation-os)
                            (list %asahi-channels-service
                                  (service asahi-firmware-service-type)))
-    (console-font-service-type config => (console-font-terminus config))
-    (guix-service-type config => (append-substitutes config))))
+    (console-font-service-type
+     config => (console-font-terminus config))
+    (guix-service-type
+     config => (guix-configuration
+                (inherit config)
+                (authorized-keys
+                 (append (guix-configuration-authorized-keys config)
+                         %authorized-keys))
+                (guix guix)
+                (substitute-urls
+                 (append (guix-configuration-substitute-urls config)
+                         %substitute-urls))))))
 
-(define asahi-installation-os
+(define-public asahi-installation-os
   (operating-system
     (inherit installation-os)
     (kernel asahi-linux)

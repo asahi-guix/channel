@@ -7,10 +7,10 @@
   #:use-module (ice-9 optargs)
   #:export (append-substitutes))
 
-(define %authorized-keys
+(define-public %authorized-keys
   (list (local-file "files/authorized-keys/substitutes.asahi-guix.org.pub")))
 
-(define %substitute-urls
+(define-public %substitute-urls
   (list "https://substitutes.asahi-guix.org"))
 
 (define* (append-substitutes

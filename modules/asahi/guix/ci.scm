@@ -30,8 +30,23 @@
             images))
      systems)))
 
-(define package->job
-  (@@ (gnu ci) package->job))
+(define* (package->job store package system #:key cross? target (suffix ""))
+  (let ((job-name (string-append job-name "." system suffix)))
+    (parameterize ((%graft? #f))
+      (let* ((drv (if cross?
+                      (package-cross-derivation store package target system
+                                                #:graft? #f)
+                      (package-derivation store package system
+                                          #:graft? #f)))
+             (max-silent-time (or (assoc-ref (package-properties package)
+                                             'max-silent-time)
+                                  3600))
+             (timeout (or (assoc-ref (package-properties package)
+                                     'timeout)
+                          72000)))
+        (derivation->job job-name drv
+                         #:max-silent-time max-silent-time
+                         #:timeout timeout)))))
 
 (define (package-jobs store systems packages)
   (let ((packages (asahi-packages)))

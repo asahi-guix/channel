@@ -30,6 +30,10 @@
                  '()
                  #:select? (const #t)))
 
+(define (arguments->channels arguments)
+  (let ((channels (assq-ref arguments 'channels)))
+    (map sexp->channel channels)))
+
 (define (image-jobs store systems images)
   (append-map (lambda (system)
                 (map (lambda (image)
@@ -68,8 +72,7 @@
     (arguments->systems arguments))
 
   (define channels
-    (let ((channels (assq-ref arguments 'channels)))
-      (map sexp->channel channels)))
+    (arguments->channels arguments))
 
   (define guix
     (find guix-channel? channels))

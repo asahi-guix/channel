@@ -30,12 +30,15 @@
             images))
      systems)))
 
+(define package->job
+  (@@ (gnu ci) package->job))
+
 (define (package-jobs systems packages)
   (let ((packages (asahi-packages)))
     (append-map
      (lambda (system)
        (map (lambda (package)
-              (pacakge->job store package system))
+              (package->job store package system))
             packages))
      systems)))
 

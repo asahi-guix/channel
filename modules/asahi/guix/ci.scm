@@ -21,28 +21,27 @@
                  '()
                  #:select? (const #t)))
 
-(define (cuirass-jobs store arguments)
-  (display "Asahi Guix Curiass Jobs\n")
-
-  (define systems
-    (arguments->systems arguments))
-
-  (format #t "Systems ~a\n" systems)
-
-  ;; (append-map
-  ;;  (lambda (system)
-  ;;    (list
-  ;;     (image->job store
-  ;;                 asahi-installer-image
-  ;;                 #:name "asahi-installer-image"
-  ;;                 #:system system)))
-  ;;  systems)
-
+(define (image-jobs systems images)
   (let ((packages (asahi-packages)))
-    (format #t "Packages ~a\n" packages)
+    (append-map
+     (lambda (system)
+       (map (lambda (image)
+              (image->job store image #:system system))
+            images))
+     systems)))
+
+(define (package-jobs systems packages)
+  (let ((packages (asahi-packages)))
     (append-map
      (lambda (system)
        (map (lambda (package)
               (pacakge->job store package system))
             packages))
      systems)))
+
+(define (cuirass-jobs store arguments)
+  (define systems
+    (arguments->systems arguments))
+
+  (let ((packages (asahi-packages)))
+    (package-jobs systems packages)))

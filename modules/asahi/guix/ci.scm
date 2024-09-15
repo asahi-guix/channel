@@ -28,13 +28,21 @@
     (arguments->systems arguments))
 
   (format #t "Systems ~a\n" systems)
-  (format #t "Packages ~a\n" (asahi-packages))
 
-  (append-map
-   (lambda (system)
-     (list
-      (image->job store
-                  asahi-installer-image
-                  #:name "asahi-installer-image"
-                  #:system system)))
-   systems))
+  ;; (append-map
+  ;;  (lambda (system)
+  ;;    (list
+  ;;     (image->job store
+  ;;                 asahi-installer-image
+  ;;                 #:name "asahi-installer-image"
+  ;;                 #:system system)))
+  ;;  systems)
+
+  (let ((packages (asahi-packages)))
+    (format #t "Packages ~a\n" packages)
+    (append-map
+     (lambda (system)
+       (map (lambda (package)
+              (pacakge->job store package system))
+            packages))
+     systems)))

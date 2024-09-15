@@ -8,6 +8,7 @@
   #:use-module (gnu ci)
   #:use-module (gnu packages)
   #:use-module (gnu system image)
+  #:use-module (guix channels)
   #:use-module (guix diagnostics)
   #:use-module (guix discovery)
   #:use-module (guix packages)
@@ -63,8 +64,22 @@
               systems))
 
 (define (cuirass-jobs store arguments)
+
   (define systems
     (arguments->systems arguments))
+
+  (define channels
+    (let ((channels (assq-ref arguments 'channels)))
+      (map sexp->channel channels)))
+
+  (define guix
+    (find guix-channel? channels))
+
+  (define commit
+    (channel-commit guix))
+
+  (define source
+    (channel-url guix))
 
   (append
    (image-jobs store systems (asahi-images))

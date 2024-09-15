@@ -31,12 +31,11 @@
                  #:select? (const #t)))
 
 (define (image-jobs store systems images)
-  (append-map
-   (lambda (system)
-     (map (lambda (image)
-            (image->job store image #:system system))
-          images))
-   systems))
+  (append-map (lambda (system)
+                (map (lambda (image)
+                       (image->job store image #:system system))
+                     images))
+              systems))
 
 (define* (package-job store package system #:key cross? target (suffix ""))
   (let ((job-name (string-append (package-name package) "." system suffix)))
@@ -57,13 +56,11 @@
                          #:timeout timeout)))))
 
 (define (package-jobs store systems packages)
-  (let ((packages (asahi-packages)))
-    (append-map
-     (lambda (system)
-       (map (lambda (package)
-              (package-job store package system))
-            packages))
-     systems)))
+  (append-map (lambda (system)
+                (map (lambda (package)
+                       (package-job store package system))
+                     packages))
+              systems))
 
 (define (cuirass-jobs store arguments)
   (define systems

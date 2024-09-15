@@ -31,7 +31,7 @@
      systems)))
 
 (define* (package->job store package system #:key cross? target (suffix ""))
-  (let ((job-name (string-append job-name "." system suffix)))
+  (let ((job-name (string-append (package-name package) "." system suffix)))
     (parameterize ((%graft? #f))
       (let* ((drv (if cross?
                       (package-cross-derivation store package target system

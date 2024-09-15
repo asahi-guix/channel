@@ -13,6 +13,7 @@
   #:use-module (asahi guix services speakersafetyd)
   #:use-module (asahi guix substitutes)
   #:use-module (asahi guix systems base)
+  #:use-module (asahi guix transformations)
   #:use-module (gnu artwork)
   #:use-module (gnu home services desktop)
   #:use-module (gnu home services)
@@ -71,7 +72,7 @@
          network-manager
          (remove (lambda (package)
                    (equal? "network-manager" (package-name package)))
-                 (map replace-mesa (operating-system-packages asahi-edge-os)))))
+                 (map replace-asahi (operating-system-packages asahi-edge-os)))))
 
 (define %asahi-desktop-packages
   (cons* asahi-alsa-utils
@@ -82,7 +83,7 @@
          network-manager
          (remove (lambda (package)
                    (equal? "network-manager" (package-name package)))
-                 (map replace-mesa
+                 (map replace-asahi
                       (cons* emacs
                              kitty
                              librewolf
@@ -171,7 +172,7 @@
     (inherit asahi-edge-os)
     (services (cons* (service plasma-desktop-service-type
                               (plasma-desktop-configuration
-                               (plasma-package (replace-mesa plasma))))
+                               (plasma-package (replace-asahi plasma))))
                      %asahi-desktop-home-service
                      %asahi-sddm-service
                      %asahi-desktop-services))
@@ -194,7 +195,7 @@
                         (services %asahi-desktop-home-services))))))
 
 (define %asahi-sway-packages
-  (append (map replace-mesa (list emacs-pgtk dmenu foot sway wofi))
+  (append (map replace-asahi (list emacs-pgtk dmenu foot sway wofi))
           (remove (lambda (package)
                     (eq? "emacs" (package-name package)))
                   %asahi-desktop-packages)))

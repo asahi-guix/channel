@@ -43,7 +43,7 @@
            guile-json-4
            guile-next
            guile-ssh
-           guix
+           (current-guix)
            parted
            pkg-config
            texinfo))

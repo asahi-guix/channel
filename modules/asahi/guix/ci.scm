@@ -1,5 +1,10 @@
 (define-module (asahi guix ci)
+  #:use-module (asahi guix images base)
   #:use-module (asahi guix images installer)
+  #:use-module (asahi guix manifest)
+  #:use-module (asahi guix systems base)
+  #:use-module (asahi guix systems desktop)
+  #:use-module (asahi guix systems install)
   #:use-module (gnu ci)
   #:use-module (gnu packages)
   #:use-module (gnu system image)
@@ -9,6 +14,9 @@
   #:use-module (guix store)
   #:use-module (srfi srfi-1)
   #:export (cuirass-jobs))
+
+(define (asahi-images)
+  (list asahi-base-image))
 
 (define (asahi-package? package)
   (let ((filename (location-file (package-location package))))
@@ -23,13 +31,12 @@
                  #:select? (const #t)))
 
 (define (image-jobs store systems images)
-  (let ((packages (asahi-packages)))
-    (append-map
-     (lambda (system)
-       (map (lambda (image)
-              (image->job store image #:system system))
-            images))
-     systems)))
+  (append-map
+   (lambda (system)
+     (map (lambda (image)
+            (image->job store image #:system system))
+          images))
+   systems))
 
 (define* (package-job store package system #:key cross? target (suffix ""))
   (let ((job-name (string-append (package-name package) "." system suffix)))
@@ -62,5 +69,6 @@
   (define systems
     (arguments->systems arguments))
 
-  (let ((packages (asahi-packages)))
-    (package-jobs store systems packages)))
+  (append
+   (image-jobs store systems (asahi-images))
+   (package-jobs store systems (asahi-packages))))

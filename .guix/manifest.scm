@@ -74,6 +74,6 @@
   (packages->manifest (list)))
 
 (concatenate-manifests
- (list %asahi-images
+ (list ;; %asahi-images
        %asahi-packages
        %asahi-systems))

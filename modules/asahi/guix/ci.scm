@@ -21,7 +21,7 @@
                  '()
                  #:select? (const #t)))
 
-(define (image-jobs systems images)
+(define (image-jobs store systems images)
   (let ((packages (asahi-packages)))
     (append-map
      (lambda (system)
@@ -33,7 +33,7 @@
 (define package->job
   (@@ (gnu ci) package->job))
 
-(define (package-jobs systems packages)
+(define (package-jobs store systems packages)
   (let ((packages (asahi-packages)))
     (append-map
      (lambda (system)
@@ -47,4 +47,4 @@
     (arguments->systems arguments))
 
   (let ((packages (asahi-packages)))
-    (package-jobs systems packages)))
+    (package-jobs store systems packages)))

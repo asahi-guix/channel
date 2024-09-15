@@ -4,7 +4,9 @@
   #:use-module (gnu image)
   #:use-module (gnu system image)
   #:use-module (guix gexp)
-  #:use-module (guix platforms arm))
+  #:use-module (guix platforms arm)
+  #:export (asahi-installer-image
+            asahi-installer-image-type))
 
 (define asahi-installer-esp-partition
   (partition
@@ -25,7 +27,7 @@
    (uuid "fef23143-fe46-4f7f-bbb9-efc46a2a5e48")
    (initializer (gexp initialize-root-partition))))
 
-(define-public asahi-installer-image-type
+(define asahi-installer-image-type
   (image-type
    (name 'asahi-base-raw)
    (constructor
@@ -37,7 +39,7 @@
        (partitions (list asahi-installer-esp-partition
                          asahi-installer-root-partition)))))))
 
-(define-public asahi-installer-image
+(define asahi-installer-image
   (image
    (inherit
     (os+platform->image

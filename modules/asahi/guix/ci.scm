@@ -1,10 +1,10 @@
 (define-module (asahi guix ci)
   #:use-module (asahi guix images base)
   #:use-module (asahi guix images edge)
+  #:use-module (asahi guix images gnome)
   #:use-module (asahi guix images installer)
-  #:use-module (asahi guix systems base)
-  #:use-module (asahi guix systems desktop)
-  #:use-module (asahi guix systems install)
+  #:use-module (asahi guix images plasma)
+  #:use-module (asahi guix images sway)
   #:use-module (gnu ci)
   #:use-module (gnu packages)
   #:use-module (gnu system image)
@@ -18,7 +18,10 @@
 
 (define (asahi-images)
   (list asahi-base-image
-        asahi-edge-image))
+        asahi-edge-image
+        asahi-gnome-image
+        asahi-plasma-image
+        asahi-sway-image))
 
 (define (asahi-package? package)
   (let ((filename (location-file (package-location package))))

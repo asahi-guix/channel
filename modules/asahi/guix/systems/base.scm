@@ -28,7 +28,8 @@
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix packages)
-  #:use-module (ice-9 optargs))
+  #:use-module (ice-9 optargs)
+  #:export (asahi-base-os))
 
 (define %asahi-keyboard-options
   '("caps:ctrl_modifier" "terminate:ctrl_alt_bksp"))
@@ -89,7 +90,7 @@
 (define %asahi-base-user-accounts
   (cons %asahi-guest-user %base-user-accounts))
 
-(define-public asahi-base-os
+(define asahi-base-os
   (operating-system
     (host-name "asahi-guix")
     (locale "en_US.utf8")
@@ -104,8 +105,4 @@
     (services %asahi-base-services)
     (users %asahi-base-user-accounts)))
 
-(define-public asahi-edge-os
-  (operating-system
-    (inherit asahi-base-os)
-    (kernel asahi-linux-edge)
-    (initrd-modules asahi-initrd-modules-edge)))
+asahi-base-os

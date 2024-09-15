@@ -46,7 +46,11 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/home/config.scm \
 	modules/asahi/guix/home/services/sound.scm \
 	modules/asahi/guix/images/base.scm \
+	modules/asahi/guix/images/edge.scm \
+	modules/asahi/guix/images/gnome.scm \
 	modules/asahi/guix/images/installer.scm \
+	modules/asahi/guix/images/plasma.scm \
+	modules/asahi/guix/images/sway.scm \
 	modules/asahi/guix/initrd.scm \
 	modules/asahi/guix/packages/audio.scm \
 	modules/asahi/guix/packages/bootloader.scm \
@@ -70,7 +74,11 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/substitutes.scm \
 	modules/asahi/guix/systems/base.scm \
 	modules/asahi/guix/systems/desktop.scm \
+	modules/asahi/guix/systems/edge.scm \
+	modules/asahi/guix/systems/gnome.scm \
 	modules/asahi/guix/systems/install.scm \
+	modules/asahi/guix/systems/plasma.scm \
+	modules/asahi/guix/systems/sway.scm \
 	modules/asahi/guix/transformations.scm \
 	modules/asahi/guix/udev.scm
 

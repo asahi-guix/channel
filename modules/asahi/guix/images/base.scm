@@ -2,24 +2,31 @@
   #:use-module (asahi guix systems base)
   #:use-module (gnu image)
   #:use-module (gnu system image)
-  #:use-module (guix platforms arm))
+  #:use-module (guix platforms arm)
+  #:export (asahi-base-image
+            asahi-image-type
+            make-image))
 
-(define-public asahi-image-type
+(define (constructor os)
+  (image
+   (inherit efi-disk-image)
+   (operating-system os)
+   (platform aarch64-linux)))
+
+(define asahi-image-type
   (image-type
    (name 'asahi-base-raw)
-   (constructor (lambda (os)
-                  (image
-                   (inherit efi-disk-image)
-                   (operating-system os)
-                   (platform aarch64-linux))))))
+   (constructor constructor)))
 
-(define-public asahi-base-image
+(define (make-image os name)
   (image
    (inherit
     (os+platform->image
-     asahi-base-os
-     aarch64-linux
+     os aarch64-linux
      #:type asahi-image-type))
-   (name 'asahi-base-image)))
+   (name name)))
+
+(define asahi-base-image
+  (make-image asahi-base-os 'asahi-base-image))
 
 asahi-base-image

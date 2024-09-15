@@ -1,5 +1,6 @@
 (define-module (asahi guix ci)
   #:use-module (asahi guix images base)
+  #:use-module (asahi guix images edge)
   #:use-module (asahi guix images installer)
   #:use-module (asahi guix systems base)
   #:use-module (asahi guix systems desktop)
@@ -16,7 +17,8 @@
   #:export (cuirass-jobs))
 
 (define (asahi-images)
-  (list asahi-base-image))
+  (list asahi-base-image
+        asahi-edge-image))
 
 (define (asahi-package? package)
   (let ((filename (location-file (package-location package))))

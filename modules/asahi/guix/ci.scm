@@ -2,11 +2,11 @@
   #:use-module (asahi guix images installer)
   #:use-module (gnu ci)
   #:use-module (gnu packages)
-  #:use-module (gnu store)
   #:use-module (gnu system image)
   #:use-module (guix diagnostics)
   #:use-module (guix discovery)
   #:use-module (guix packages)
+  #:use-module (guix store)
   #:use-module (srfi srfi-1)
   #:export (cuirass-jobs))
 

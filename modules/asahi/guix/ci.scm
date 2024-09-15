@@ -1,7 +1,6 @@
 (define-module (asahi guix ci)
   #:use-module (asahi guix images base)
   #:use-module (asahi guix images installer)
-  #:use-module (asahi guix manifest)
   #:use-module (asahi guix systems base)
   #:use-module (asahi guix systems desktop)
   #:use-module (asahi guix systems install)

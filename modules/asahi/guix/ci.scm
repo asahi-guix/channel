@@ -31,7 +31,7 @@
             images))
      systems)))
 
-(define* (package->job store package system #:key cross? target (suffix ""))
+(define* (package-job store package system #:key cross? target (suffix ""))
   (let ((job-name (string-append (package-name package) "." system suffix)))
     (parameterize ((%graft? #f))
       (let* ((drv (if cross?
@@ -54,7 +54,7 @@
     (append-map
      (lambda (system)
        (map (lambda (package)
-              (package->job store package system))
+              (package-job store package system))
             packages))
      systems)))
 

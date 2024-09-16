@@ -60,19 +60,6 @@
          asahi-mesa-utils
          asahi-pulseaudio
          brightnessctl
-         emacs
-         kitty
-         librewolf
-         network-manager
-         (remove (lambda (package)
-                   (equal? "network-manager" (package-name package)))
-                 (map replace-asahi (operating-system-packages asahi-edge-os)))))
-
-(define %asahi-desktop-packages
-  (cons* asahi-alsa-utils
-         asahi-mesa-utils
-         asahi-pulseaudio
-         brightnessctl
          ;; TODO: Why does network-manager appear twice?
          network-manager
          (remove (lambda (package)

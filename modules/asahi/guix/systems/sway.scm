@@ -2,6 +2,7 @@
   #:use-module (asahi guix systems desktop)
   #:use-module (asahi guix systems edge)
   #:use-module (asahi guix transformations)
+  #:use-module (gnu home)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages suckless)
   #:use-module (gnu packages terminals)

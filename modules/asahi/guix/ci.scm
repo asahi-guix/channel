@@ -21,6 +21,7 @@
   (list asahi-base-image
         asahi-edge-image
         asahi-gnome-image
+        asahi-installer-image
         asahi-plasma-image
         asahi-sway-image))
 
@@ -73,7 +74,6 @@
               systems))
 
 (define (cuirass-jobs store arguments)
-
   (define systems
     (arguments->systems arguments))
 

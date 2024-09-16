@@ -1,6 +1,6 @@
 (define-module (asahi guix images edge)
   #:use-module (asahi guix images base)
-  #:use-module (asahi guix systems base)
+  #:use-module (asahi guix systems edge)
   #:export (asahi-edge-image))
 
 (define asahi-edge-image

@@ -88,6 +88,9 @@
   (define source
     (channel-url guix))
 
-  (append
-   (image-jobs store systems (asahi-images))
-   (package-jobs store systems (asahi-packages))))
+  (define package
+    (channel-source->package source #:commit commit))
+
+  (parameterize ((current-guix-package package))
+    (append (image-jobs store systems (asahi-images))
+            (package-jobs store systems (asahi-packages)))))

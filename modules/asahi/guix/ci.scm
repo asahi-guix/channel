@@ -6,6 +6,7 @@
   #:use-module (asahi guix images plasma)
   #:use-module (asahi guix images sway)
   #:use-module (gnu ci)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu packages)
   #:use-module (gnu system image)
   #:use-module (guix channels)

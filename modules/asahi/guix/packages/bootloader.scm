@@ -16,9 +16,9 @@
     (version "0.0.1")
     (source (local-file "../files/asahi-bootlogo.svg"))
     (build-system copy-build-system)
-    (home-page "https://www.gnu.org/graphics/heckert_gnu.html")
-    (synopsis "Asahi Guix boot logo")
-    (description "A modified version of the famous GNU logo for the U-Boot.")
+    (home-page "https://guix.gnu.org/")
+    (synopsis "Guix boot logo")
+    (description "The GNU/Guix boot logo.")
     (license license:expat)))
 
 (define-public asahi-m1n1
@@ -72,7 +72,7 @@
                 (copy-file "build/m1n1.bin" (string-append dir "m1n1.bin")))))
           ;; There are no tests
           (delete 'check))))
-    (native-inputs (list imagemagick))
+    (native-inputs (list asahi-bootlogo imagemagick))
     (home-page "https://github.com/AsahiLinux/m1n1")
     (synopsis "Boot loader and experimentation playground for Apple Silicon")
     (description "m1n1 is the bootloader developed by the Asahi Linux project to bridge

@@ -34,6 +34,7 @@
   #:use-module (srfi srfi-1)
   #:export (%asahi-gdm-service
             %asahi-sddm-service
+            %asahi-desktop-home-service
             %asahi-desktop-home-services
             %asahi-desktop-packages
             %asahi-desktop-services))

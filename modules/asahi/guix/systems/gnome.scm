@@ -2,6 +2,8 @@
   #:use-module (asahi guix systems desktop)
   #:use-module (asahi guix systems edge)
   #:use-module (gnu packages gnome)
+  #:use-module (gnu services desktop)
+  #:use-module (gnu services)
   #:use-module (gnu system)
   #:use-module (guix packages)
   #:export (asahi-gnome-os))

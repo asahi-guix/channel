@@ -37,8 +37,8 @@ jobs:
                       "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
       - name: Ensure no locale warning
         run: test -z "$(guix --version 2>&1 >/dev/null)"
-      - name: Build alsa-ucm-conf-asahi
-        run: guix build -L modules -v 5 alsa-ucm-conf-asahi
+      - name: Build asahi-alsa-ucm-conf
+        run: guix build -L modules -v 5 asahi-alsa-ucm-conf
       - name: Build asahi-audio
         run: guix build -L modules -v 5 asahi-audio
       - name: Build asahi-firmware

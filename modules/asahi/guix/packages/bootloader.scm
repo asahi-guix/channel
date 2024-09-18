@@ -24,7 +24,7 @@
 (define-public asahi-m1n1
   (package
     (name "asahi-m1n1")
-    (version "1.4.14")
+    (version "1.4.15")
     (source
      (origin
        (method git-fetch)
@@ -33,7 +33,7 @@
              (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "07jwyb3a1x2dg6xz46vl8dxwg3v88cwhdzzav4mjhvhf2w3lzqxl"))))
+        (base32 "1f1xrydz7wl7mi8cvdqsmxm8k3gyvb7fn5aykgx46bssg4yh1gmj"))))
     (build-system gnu-build-system)
     (supported-systems (list "aarch64-linux"))
     (arguments

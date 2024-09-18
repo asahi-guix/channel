@@ -14,7 +14,7 @@
   (package
     (name "asahi-bootlogo")
     (version "0.0.1")
-    (source (local-file "../files/asahi-bootlogo.svg"))
+    (source (local-file "../files/bootlogo.svg"))
     (build-system copy-build-system)
     (home-page "https://guix.gnu.org/")
     (synopsis "Guix boot logo")
@@ -45,7 +45,9 @@
               (let* ((out (assoc-ref outputs "out"))
                      (bootlogo (assoc-ref inputs "asahi-bootlogo")))
                 (when bootlogo
-                  (let ((bootlogo-input (string-append bootlogo "/share/asahi-bootlogo.svg")))
+                  (let ((bootlogo-input (string-append bootlogo "/bootlogo.svg")))
+                    (format #t "BOOT ~a\n" (file-exists? bootlogo-input))
+                    (format #t "BOOT LOGO ~a\n: " (file-exists? bootlogo-input))
                     (when (file-exists? bootlogo-input)
                       (chdir "data")
                       (delete-file "bootlogo_128.png")

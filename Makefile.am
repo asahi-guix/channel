@@ -33,7 +33,7 @@ SUFFIXES = .scm .go
 	$(AM_V_GEN)$(top_builddir)/pre-inst-env $(GUILE_TOOLS) compile $(GUILE_WARNINGS) -L src -o "$@" "$<"
 
 NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
-	modules/asahi/guix/files/asahi-bootlogo.svg \
+	modules/asahi/guix/files/bootlogo.svg \
 	modules/asahi/guix/packages/defconfig.main \
 	modules/asahi/guix/packages/defconfig.edge
 

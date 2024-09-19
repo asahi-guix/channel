@@ -52,6 +52,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/images/plasma.scm \
 	modules/asahi/guix/images/sway.scm \
 	modules/asahi/guix/initrd.scm \
+	modules/asahi/guix/packages.scm \
 	modules/asahi/guix/packages/audio.scm \
 	modules/asahi/guix/packages/bootloader.scm \
 	modules/asahi/guix/packages/crates-io.scm \

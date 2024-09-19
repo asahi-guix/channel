@@ -122,18 +122,5 @@ names, for each one of SYSTEMS."
   (parameterize ((current-guix-package package))
     (append
      ;; (image-jobs store (asahi-images) systems)
-     (package-jobs store (asahi-packages) systems)
+     ;; (package-jobs store (asahi-packages) systems)
      (manifests->jobs store (asahi-manifests) systems))))
-
-
-;; (use-modules (guix store)
-;;              (guix gexp))
-
-;; (with-store %store
-;;   (package-jobs %store (asahi-packages) (list "aarch64-linux")))
-
-;; (with-store %store
-;;   (image-jobs %store (asahi-images) (list "aarch64-linux")))
-
-;; (with-store %store
-;;   (manifests->jobs %store (asahi-manifests) (list "aarch64-linux")))

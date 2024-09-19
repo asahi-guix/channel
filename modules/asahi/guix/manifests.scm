@@ -69,12 +69,11 @@
 
 (define %asahi-system-manifest
   (manifest (list %asahi-guix-base
-                  ;; %asahi-guix-edge
-                  ;; %asahi-guix-gnome
-                  ;; %asahi-guix-installer
-                  ;; %asahi-guix-plasma
-                  ;; %asahi-guix-sway
-                  )))
+                  %asahi-guix-edge
+                  %asahi-guix-gnome
+                  %asahi-guix-installer
+                  %asahi-guix-plasma
+                  %asahi-guix-sway)))
 
 ;; Packages
 

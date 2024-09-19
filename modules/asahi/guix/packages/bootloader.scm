@@ -1,6 +1,8 @@
 (define-module (asahi guix packages bootloader)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages bootloaders)
+  #:use-module (gnu packages inkscape)
   #:use-module (gnu packages imagemagick)
   #:use-module (gnu packages tls)
   #:use-module (guix build-system copy)
@@ -16,9 +18,26 @@
     (version "0.0.1")
     (source (local-file "../files/bootlogo.svg"))
     (build-system copy-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (replace 'install
+            (lambda* (#:key inputs #:allow-other-keys)
+              (let ((source (assoc-ref inputs "source"))
+                    (target (string-append #$output "/share/asahi-m1n1")))
+                (mkdir-p target)
+                (for-each (lambda (width)
+                            (invoke "convert"
+                                    "-background" "none"
+                                    "-resize" (format #f "~ax~a!" width width)
+                                    source
+                                    (format #f "~a/bootlogo_~a.png" target width)))
+                          (list 128 256))))))))
     (home-page "https://guix.gnu.org/")
-    (synopsis "Guix boot logo")
-    (description "The GNU/Guix boot logo.")
+    (native-inputs (list imagemagick inkscape))
+    (synopsis "Asahi Guix boot logo pacakge")
+    (description "The package providing the Asahi Guix boot logo.")
     (license license:expat)))
 
 (define-public asahi-m1n1
@@ -45,25 +64,18 @@
               (let* ((out (assoc-ref outputs "out"))
                      (bootlogo (assoc-ref inputs "asahi-bootlogo")))
                 (when bootlogo
-                  (let ((bootlogo-input (string-append bootlogo "/bootlogo.svg")))
-                    (format #t "BOOT ~a\n" (file-exists? bootlogo-input))
-                    (format #t "BOOT LOGO ~a\n: " (file-exists? bootlogo-input))
-                    (when (file-exists? bootlogo-input)
-                      (chdir "data")
-                      (delete-file "bootlogo_128.png")
-                      (invoke "convert"
-                              "-background" "none"
-                              "-resize" "128x128!"
-                              bootlogo-input
-                              "bootlogo_128.png")
-                      (delete-file "bootlogo_256.png")
-                      (invoke "convert"
-                              "-background" "none"
-                              "-resize" "256x256!"
-                              bootlogo-input
-                              "bootlogo_256.png")
-                      (invoke "sh" "makelogo.sh")
-                      (chdir "..")))))))
+                  (let ((source (string-append bootlogo "/share/asahi-m1n1")))
+                    (chdir "data")
+                    (for-each
+                     (lambda (width)
+                       (let ((source (format #f "~a/bootlogo_~a.png" source width))
+                             (target (format #f "bootlogo_~a.png" width)))
+                         (when (file-exists? source)
+                           (delete-file target)
+                           (copy-file source target))))
+                     (list 128 256))
+                    (invoke "sh" "makelogo.sh")
+                    (chdir ".."))))))
           (replace 'configure
             (lambda _
               (setenv "RELEASE" "1")))

@@ -29,7 +29,8 @@
   (list asahi-installer-image))
 
 (define (asahi-manifests)
-  (list %asahi-system-manifest))
+  (list %asahi-package-manifest
+        %asahi-system-manifest))
 
 (define (arguments->channels arguments)
   (let ((channels (assq-ref arguments 'channels)))
@@ -120,7 +121,6 @@ names, for each one of SYSTEMS."
     (channel-source->package source #:commit commit))
 
   (parameterize ((current-guix-package package))
-    (append
-     ;; (image-jobs store (asahi-images) systems)
-     ;; (package-jobs store (asahi-packages) systems)
-     (manifests->jobs store (asahi-manifests) systems))))
+    (append (image-jobs store (asahi-images) systems)
+            ;; (package-jobs store (asahi-packages) systems)
+            (manifests->jobs store (asahi-manifests) systems))))

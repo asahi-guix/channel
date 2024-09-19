@@ -63,11 +63,6 @@
 (define (manifests->jobs store manifests systems)
   "Return the list of jobs for the entries in MANIFESTS, a list of file
 names, for each one of SYSTEMS."
-  (define (load-manifest manifest)
-    (save-module-excursion
-     (lambda ()
-       (set-current-module (make-user-module '((guix profiles) (gnu))))
-       (primitive-load manifest))))
 
   (define (manifest-entry-job-name entry)
     (string-append (manifest-entry-name entry) "-"
@@ -91,7 +86,7 @@ names, for each one of SYSTEMS."
                        #:timeout timeout)))
 
   (let ((entries (delete-duplicates
-                  (append-map (compose manifest-entries load-manifest)
+                  (append-map manifest-entries
                               manifests)
                   manifest-entry=?)))
     (append-map (lambda (system)
@@ -128,5 +123,17 @@ names, for each one of SYSTEMS."
     (append
      ;; (image-jobs store (asahi-images) systems)
      (package-jobs store (asahi-packages) systems)
-     ;; (manifests->jobs store (asahi-manifests) systems)
-     )))
+     (manifests->jobs store (asahi-manifests) systems))))
+
+
+;; (use-modules (guix store)
+;;              (guix gexp))
+
+;; (with-store %store
+;;   (package-jobs %store (asahi-packages) (list "aarch64-linux")))
+
+;; (with-store %store
+;;   (image-jobs %store (asahi-images) (list "aarch64-linux")))
+
+;; (with-store %store
+;;   (manifests->jobs %store (asahi-manifests) (list "aarch64-linux")))

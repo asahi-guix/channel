@@ -125,6 +125,8 @@ names, for each one of SYSTEMS."
     (channel-source->package source #:commit commit))
 
   (parameterize ((current-guix-package package))
-    (append ;; (image-jobs store (asahi-images) systems)
-            ;; (package-jobs store (asahi-packages) systems)
-            (manifests->jobs store (asahi-manifests) systems))))
+    (append
+     ;; (image-jobs store (asahi-images) systems)
+     (package-jobs store (asahi-packages) systems)
+     ;; (manifests->jobs store (asahi-manifests) systems)
+     )))

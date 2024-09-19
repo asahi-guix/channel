@@ -12,9 +12,9 @@
   #:use-module (guix packages)
   #:use-module (guix profiles)
   #:use-module (guix transformations)
-  #:export (%asahi-images
-            %asahi-packages
-            %asahi-systems))
+  #:export (%asahi-image-manifest
+            %asahi-package-manifest
+            %asahi-system-manifest))
 
 (define %version "0.1.0")
 
@@ -26,7 +26,7 @@
     (version %version)
     (item asahi-installer-image)))
 
-(define %asahi-images
+(define %asahi-image-manifest
   (manifest (list %asahi-installer-image)))
 
 ;; Systems
@@ -67,7 +67,7 @@
     (version %version)
     (item asahi-sway-os)))
 
-(define %asahi-systems
+(define %asahi-system-manifest
   (manifest (list %asahi-guix-base
                   %asahi-guix-edge
                   %asahi-guix-gnome
@@ -77,10 +77,10 @@
 
 ;; Packages
 
-(define %asahi-packages
+(define %asahi-package-manifest
   (packages->manifest (asahi-packages)))
 
 (concatenate-manifests
- (list %asahi-images
-       %asahi-packages
-       %asahi-systems))
+ (list %asahi-image-manifest
+       %asahi-package-manifest
+       %asahi-system-manifest))

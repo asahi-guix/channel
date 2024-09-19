@@ -1,47 +1,42 @@
 (define-module (asahi guix ci)
-  #:use-module (asahi guix images base)
-  #:use-module (asahi guix images edge)
-  #:use-module (asahi guix images gnome)
   #:use-module (asahi guix images installer)
-  #:use-module (asahi guix images plasma)
-  #:use-module (asahi guix images sway)
+  #:use-module (asahi guix manifests)
+  #:use-module (asahi guix packages)
+  #:use-module (asahi guix systems base)
+  #:use-module (asahi guix systems edge)
+  #:use-module (asahi guix systems gnome)
+  #:use-module (asahi guix systems plasma)
+  #:use-module (asahi guix systems sway)
   #:use-module (gnu ci)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages)
   #:use-module (gnu system image)
+  #:use-module (gnu system)
   #:use-module (guix channels)
   #:use-module (guix diagnostics)
   #:use-module (guix discovery)
+  #:use-module (guix gexp)
   #:use-module (guix packages)
+  #:use-module (guix profiles)
   #:use-module (guix store)
+  #:use-module (guix ui)
+  #:use-module (ice-9 match)
   #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-26)
   #:export (cuirass-jobs))
 
 (define (asahi-images)
-  (list asahi-base-image
-        asahi-edge-image
-        asahi-gnome-image
-        asahi-installer-image
-        asahi-plasma-image
-        asahi-sway-image))
+  (list asahi-installer-image))
 
-(define (asahi-package? package)
-  (let ((filename (location-file (package-location package))))
-    (string-prefix? "asahi/guix/packages" filename)))
-
-(define (asahi-packages)
-  (fold-packages (lambda (package result)
-                   (if (asahi-package? package)
-                       (cons package result)
-                       result))
-                 '()
-                 #:select? (const #t)))
+(define (asahi-manifests)
+  (list %asahi-system-manifest))
 
 (define (arguments->channels arguments)
   (let ((channels (assq-ref arguments 'channels)))
     (map sexp->channel channels)))
 
-(define (image-jobs store systems images)
+(define (image-jobs store images systems)
   (append-map (lambda (system)
                 (map (lambda (image)
                        (image->job store image #:system system))
@@ -66,7 +61,45 @@
                          #:max-silent-time max-silent-time
                          #:timeout timeout)))))
 
-(define (package-jobs store systems packages)
+(define (manifests->jobs store manifests systems)
+  "Return the list of jobs for the entries in MANIFESTS, a list of file
+names, for each one of SYSTEMS."
+  (define (load-manifest manifest)
+    (save-module-excursion
+     (lambda ()
+       (set-current-module (make-user-module '((guix profiles) (gnu))))
+       (primitive-load manifest))))
+
+  (define (manifest-entry-job-name entry)
+    (string-append (manifest-entry-name entry) "-"
+                   (manifest-entry-version entry)))
+
+  (define (manifest-entry->job entry system)
+    (let* ((obj (manifest-entry-item entry))
+           (drv (parameterize ((%graft? #f))
+                  (run-with-store store
+                    (lower-object obj system)
+                    #:system system)))
+           (max-silent-time (or (and (package? obj)
+                                     (assoc-ref (package-properties obj)
+                                                'max-silent-time))
+                                3600))
+           (timeout (or (and (package? obj)
+                             (assoc-ref (package-properties obj) 'timeout))
+                        (* 5 3600))))
+      (derivation->job (manifest-entry-job-name entry) drv
+                       #:max-silent-time max-silent-time
+                       #:timeout timeout)))
+
+  (let ((entries (delete-duplicates
+                  (append-map (compose manifest-entries load-manifest)
+                              manifests)
+                  manifest-entry=?)))
+    (append-map (lambda (system)
+                  (map (cut manifest-entry->job <> system) entries))
+                systems)))
+
+(define (package-jobs store packages systems)
   (append-map (lambda (system)
                 (map (lambda (package)
                        (package-job store package system))
@@ -93,5 +126,6 @@
     (channel-source->package source #:commit commit))
 
   (parameterize ((current-guix-package package))
-    (append (image-jobs store systems (asahi-images))
-            (package-jobs store systems (asahi-packages)))))
+    (append (image-jobs store (asahi-images) systems)
+            (package-jobs store (asahi-packages) systems)
+            (manifests->jobs store (asahi-manifests) systems))))

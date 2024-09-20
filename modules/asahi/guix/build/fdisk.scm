@@ -4,7 +4,7 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
-  #:export (fdisk
+  #:export (fdisk-list
             fdisk-parse
             fdisk-partition
             fdisk-partition-boot?
@@ -98,7 +98,7 @@
 (define (fdisk-command filename)
   (list "fdisk" "-Lnever" "-lu" "-b" "4096" filename))
 
-(define (fdisk filename)
+(define (fdisk-list filename)
   (fdisk-parse (apply command-output (fdisk-command filename))))
 
-;; (fdisk "/gnu/store/06564cby4w29g1m5d273fa7zy6i62g9v-disk-image")
+;; (fdisk-list "/gnu/store/06564cby4w29g1m5d273fa7zy6i62g9v-disk-image")

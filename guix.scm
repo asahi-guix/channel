@@ -43,11 +43,11 @@
            guile-json-4
            guile-next
            guile-ssh
-           (current-guix)
+           guix
            parted
            pkg-config
            texinfo))
-    (inputs (list guile-3.0 util-linux))
+    (inputs (list guile-next util-linux))
     (synopsis "Asahi Guix")
     (description "Asahi Linux on GNU Guix")
     (home-page "https://github.com/asahi-guix/channel")

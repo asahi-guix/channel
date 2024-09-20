@@ -75,22 +75,22 @@
 (define (fdisk-parse-partition-type fields)
   (match:substring fields 8))
 
-(define (fdisk-parse-partition-line line)
+(define (fdisk-parse-partition line)
   (let ((fields (string-match fdisk-partition-regex line)))
     (when (regexp-match? fields)
       (fdisk-partition
-       (device (fdisk-parse-partition-device fields))
        (boot? (fdisk-parse-partition-boot? fields))
-       (start (fdisk-parse-partition-start fields))
+       (device (fdisk-parse-partition-device fields))
        (end (fdisk-parse-partition-end fields))
+       (id (fdisk-parse-partition-id fields))
        (sectors (fdisk-parse-partition-sectors fields))
        (size (fdisk-parse-partition-size fields))
-       (id (fdisk-parse-partition-id fields))
+       (start (fdisk-parse-partition-start fields))
        (type (fdisk-parse-partition-type fields))))))
 
 (define (fdisk-parse-partitions output)
   (let ((lines (string-split output #\newline)))
-    (filter fdisk-partition? (map fdisk-parse-partition-line lines))))
+    (filter fdisk-partition? (map fdisk-parse-partition lines))))
 
 (define (fdisk-parse output)
   (fdisk-disk (partitions (fdisk-parse-partitions output))))

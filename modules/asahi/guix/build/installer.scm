@@ -40,7 +40,7 @@
 
 (define (make-asahi-installer-package disk-image)
   (format #t "Fdisk: ~a\n" disk-image)
-  (pretty-print (fdisk disk-image))
+  (pretty-print (fdisk-list disk-image))
   (newline))
 
 (define (show-usage)

@@ -1,0 +1,50 @@
+(define-module (asahi guix packages installer)
+  #:use-module ((gnu packages linux) #:prefix linux:)
+  #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (asahi guix build installer)
+  #:use-module (asahi guix build modules)
+  #:use-module (asahi guix images base)
+  #:use-module (gnu packages gnupg)
+  #:use-module (gnu packages gtk)
+  #:use-module (gnu packages linux)
+  #:use-module (gnu system image)
+  #:use-module (guix build utils)
+  #:use-module (guix build-system copy)
+  #:use-module (guix gexp)
+  #:use-module (guix modules)
+  #:use-module (guix packages)
+  #:use-module (ice-9 match))
+
+(define-public asahi-installer
+  (package
+    (name "asahi-installer")
+    (version "0.0.1")
+    (source #f)
+    (build-system copy-build-system)
+    (arguments
+     (list
+      #:modules '((asahi guix build installer)
+                  (guix build copy-build-system)
+                  (guix build utils))
+      #:phases
+      ;; with-extensions (list guile-cairo guile-gcrypt)
+      (with-imported-modules (source-module-closure
+                              '((asahi guix build installer))
+                              #:select? import-asahi-module?)
+        #~(modify-phases %standard-phases
+            (delete 'build)
+            (delete 'check)
+            (delete 'configure)
+            (delete 'unpack)
+            (replace 'install
+              (lambda* (#:key inputs outputs #:allow-other-keys)
+                (let ((target (string-append #$output "/share/asahi-m1n1"))
+                      (disk-image (assoc-ref inputs "_")))
+                  (mkdir-p target)
+                  (make-asahi-installer-package disk-image))))))))
+    (home-page "https://github.com/asahi-guix/channel")
+    (native-inputs (list (system-image asahi-base-image)
+                         util-linux))
+    (synopsis "Asahi Guix boot logo pacakge")
+    (description "The package providing the Asahi Guix boot logo.")
+    (license license:expat)))

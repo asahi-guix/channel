@@ -7,7 +7,9 @@ do_subst = $(SED)					\
   -e 's,[@]guileobjectdir[@],$(guileobjectdir),g'	\
   -e 's,[@]localedir[@],$(localedir),g'
 
-nodist_noinst_SCRIPTS = pre-inst-env
+nodist_noinst_SCRIPTS = \
+  pre-inst-env \
+  scripts/make-asahi-installer-package
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
 
@@ -40,7 +42,9 @@ NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix
 SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/build/bootloader/m1n1.scm \
+	modules/asahi/guix/build/fdisk.scm \
 	modules/asahi/guix/build/firmware.scm \
+	modules/asahi/guix/build/installer.scm \
 	modules/asahi/guix/build/modules.scm \
 	modules/asahi/guix/channels.scm \
 	modules/asahi/guix/home/config.scm \
@@ -80,11 +84,14 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/systems/gnome.scm \
 	modules/asahi/guix/systems/install.scm \
 	modules/asahi/guix/systems/plasma.scm \
+        modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/systems/sway.scm \
 	modules/asahi/guix/transformations.scm \
 	modules/asahi/guix/udev.scm
 
-TESTS = tests/asahi/guix/build/block-devices.scm
+TESTS = \
+ tests/asahi/guix/build/block-devices.scm \
+ tests/asahi/guix/build/fdisk.scm
 
 TEST_EXTENSIONS = .scm
 SCM_LOG_DRIVER =                                \

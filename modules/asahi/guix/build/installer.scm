@@ -1,9 +1,7 @@
 (define-module (asahi guix build installer)
   #:use-module (asahi guix build sfdisk)
   #:use-module (asahi guix build utils)
-  #:use-module (gnu packages package-management)
   #:use-module (guix build utils)
-  #:use-module (guix packages)
   #:use-module (guix records)
   #:use-module (ice-9 getopt-long)
   #:use-module (ice-9 popen)
@@ -15,11 +13,12 @@
   #:export (make-asahi-installer-package
             make-asahi-installer-package-main))
 
+(define %output-dir "/tmp/asahi-guix/installer/out")
+(define %package-version "1.4.0")
+(define %work-dir "/tmp/asahi-guix/installer/work")
+
 (define %supported-firmwares
   (list "12.3" "12.3.1" "13.5"))
-
-(define %work-dir
-  "/tmp/asahi-guix/installer")
 
 (define %os-names
   '(("asahi-base-image" . "Asahi Guix Base")
@@ -28,11 +27,14 @@
     ("asahi-plasma-image" . "Asahi Guix with KDE Plasma")
     ("asahi-sway-image" . "Asahi Guix with Sway")))
 
-(define-record-type* <asahi-installer-package-configuration>
-  asahi-installer-package-configuration
-  make-asahi-installer-package-configuration
-  asahi-installer-package-configuration?
-  (source-image asahi-installer-package-configuration-source-image))
+(define-record-type* <installer>
+  installer
+  make-installer
+  installer?
+  (disk-images installer-disk-images)
+  (output-dir installer-output-dir (default %output-dir))
+  (package-version installer-package-version (default %package-version))
+  (work-dir installer-work-dir (default %work-dir)))
 
 (define-record-type* <installer-data>
   installer-data
@@ -84,11 +86,11 @@
 (define (os-short-name disk-image)
   (assoc-ref %os-names (disk-image-name disk-image)))
 
-(define (os-long-name disk-image)
+(define (os-long-name installer disk-image)
   (string-replace-substring
    (os-short-name disk-image)
    "Asahi Guix"
-   (format #f "Asahi Guix ~a" (package-version guix))))
+   (format #f "Asahi Guix ~a" (installer-package-version installer))))
 
 (define (efi-partition? partition)
   (equal? "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
@@ -97,23 +99,24 @@
 (define (other-partition? partition)
   (not (efi-partition? partition)))
 
-(define (partition-filename table partition work-dir)
-  (format #f "~a/~a" work-dir
+(define (partition-filename installer table partition)
+  (format #f "~a/~a" (installer-work-dir installer)
           (list-index (lambda (p)
                         (equal? partition p))
                       (sfdisk-table-partitions table))))
 
-(define (extract-command table partition work-dir)
-  (list "dd"
-        (format #f "if=~a" (sfdisk-table-device table))
-        (format #f "of=~a" (partition-filename table partition work-dir))
-        (format #f "skip=~a" (sfdisk-partition-start partition))
-        (format #f "count=~a" (sfdisk-partition-size partition))
-        (format #f "bs=~a" (sfdisk-table-sector-size table))))
+(define (extract-command installer table partition)
+  (let ((work-dir (installer-work-dir installer)))
+    (list "dd"
+          (format #f "if=~a" (sfdisk-table-device table))
+          (format #f "of=~a" (partition-filename installer table partition))
+          (format #f "skip=~a" (sfdisk-partition-start partition))
+          (format #f "count=~a" (sfdisk-partition-size partition))
+          (format #f "bs=~a" (sfdisk-table-sector-size table)))))
 
-(define (extract-partition table partition work-dir)
-  (let ((command (extract-command table partition work-dir))
-        (filename (partition-filename table partition work-dir)))
+(define (extract-partition installer table partition)
+  (let ((command (extract-command installer table partition))
+        (filename (partition-filename installer table partition)))
     (mkdir-p (dirname filename))
     (apply system* command)
     filename))
@@ -121,8 +124,8 @@
 (define (partition-size filename)
   (format #f "~aB" (stat:size (stat filename))))
 
-(define (build-efi-partition table partition work-dir)
-  (let ((filename (extract-partition table partition work-dir)))
+(define (build-efi-partition installer table partition)
+  (let ((filename (extract-partition installer table partition)))
     (installer-partition
      (copy-firmware-installer-data? #t)
      (copy-firmware? #t)
@@ -132,8 +135,8 @@
      (type "EFI")
      (volume-id "TODO"))))
 
-(define (build-other-partition table partition work-dir)
-  (let ((filename (extract-partition table partition work-dir)))
+(define (build-other-partition installer table partition)
+  (let ((filename (extract-partition installer table partition)))
     (installer-partition
      (image filename)
      (name (sfdisk-partition-name partition))
@@ -141,33 +144,45 @@
      (type "Linux")
      (volume-id "TODO"))))
 
-(define (build-partition table partition work-dir)
+(define (build-partition installer table partition)
   (cond ((efi-partition? partition)
-         (build-efi-partition table partition work-dir))
+         (build-efi-partition installer table partition))
         ((other-partition? partition)
-         (build-other-partition table partition work-dir))))
+         (build-other-partition installer table partition))))
 
-(define (build-partitions table work-dir)
+(define (build-partitions installer table)
   (map (lambda (partition)
-         (build-partition table partition work-dir))
+         (build-partition installer table partition))
        (sfdisk-table-partitions table)))
 
-(define* (build-os disk-image #:key (work-dir %work-dir))
-  (let ((table (sfdisk-list disk-image)))
+(define* (build-os installer disk-image)
+  (let ((table (sfdisk-list disk-image))
+        (name (os-long-name installer disk-image)))
+    (format #t "Building ~a ...\n" name)
     (installer-os
      (default-os-name (os-short-name disk-image))
      (icon "TODO")
-     (name (os-long-name disk-image))
+     (name name)
      (package "TODO")
-     (partitions (build-partitions table work-dir)))))
+     (partitions (build-partitions installer table)))))
 
-(define* (make-asahi-installer-package disk-images #:key (work-dir %work-dir))
-  (display "YO\n")
-  ;; (installer-data
-  ;;  (os-list (map (lambda (disk-image)
-  ;;                  (build-os disk-image #:work-dir work-dir))
-  ;;                disk-images)))
-  )
+(define (build-installer-data installer)
+  (installer-data
+   (os-list (map (lambda (disk-image)
+                   (build-os installer disk-image))
+                 (installer-disk-images installer)))))
+
+(define* (make-asahi-installer-package
+          disk-images #:key
+          (output-dir %output-dir)
+          (package-version %package-version)
+          (work-dir %work-dir))
+  (format #t "Building Asahi Guix installer packages ...\n")
+  (build-installer-data
+   (installer
+    (disk-images disk-images)
+    (output-dir output-dir)
+    (package-version package-version))))
 
 (define (show-usage)
   (display "Usage: make-asahi-installer-package [options] DISK-IMAGE")

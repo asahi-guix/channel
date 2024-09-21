@@ -42,10 +42,11 @@ NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix
 SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/build/bootloader/m1n1.scm \
-	modules/asahi/guix/build/fdisk.scm \
 	modules/asahi/guix/build/firmware.scm \
 	modules/asahi/guix/build/installer.scm \
 	modules/asahi/guix/build/modules.scm \
+	modules/asahi/guix/build/sfdisk.scm \
+	modules/asahi/guix/build/utils.scm \
 	modules/asahi/guix/channels.scm \
 	modules/asahi/guix/home/config.scm \
 	modules/asahi/guix/home/services/sound.scm \
@@ -91,7 +92,8 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 
 TESTS = \
  tests/asahi/guix/build/block-devices.scm \
- tests/asahi/guix/build/fdisk.scm
+ tests/asahi/guix/build/sfdisk.scm \
+ tests/asahi/guix/build/utils.scm
 
 TEST_EXTENSIONS = .scm
 SCM_LOG_DRIVER =                                \

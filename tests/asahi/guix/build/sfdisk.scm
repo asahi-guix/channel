@@ -7,64 +7,58 @@
 
 (define sfdisk-output
   "{\"partitiontable\": {
+      \"device\": \"/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image\",
+      \"firstlba\": 2048,
+      \"id\": \"C46BD3E2-E70E-40BD-8912-0A1A42BAF5BF\",
       \"label\": \"gpt\",
-      \"id\": \"32B576CC-45BD-4760-A057-46DDEED2845F\",
-      \"device\": \"/dev/nvme0n1\",
-      \"unit\": \"sectors\",
-      \"firstlba\": 34,
-      \"lastlba\": 1000215182,
+      \"lastlba\": 4192814,
       \"sectorsize\": 512,
+      \"unit\": \"sectors\",
       \"partitions\": [
          {
-            \"node\": \"/dev/nvme0n1p1\",
+            \"node\": \"/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image1\",
             \"start\": 2048,
-            \"size\": 2201600,
+            \"size\": 81920,
             \"type\": \"C12A7328-F81F-11D2-BA4B-00A0C93EC93B\",
-            \"uuid\": \"72908D0A-9117-4348-89CF-17093307A778\"
+            \"uuid\": \"1718E4C8-6FEF-4641-83E5-5BAAB3EF75F0\",
+            \"name\": \"GNU-ESP\"
          },{
-            \"node\": \"/dev/nvme0n1p2\",
-            \"start\": 2203648,
-            \"size\": 4194304,
+            \"node\": \"/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image2\",
+            \"start\": 83968,
+            \"size\": 4108840,
             \"type\": \"0FC63DAF-8483-4772-8E79-3D69D8477DE4\",
-            \"uuid\": \"BC7DCEC7-D9D5-43B6-AD8F-374E4A99A5EC\"
-         },{
-            \"node\": \"/dev/nvme0n1p3\",
-            \"start\": 6397952,
-            \"size\": 993814528,
-            \"type\": \"0FC63DAF-8483-4772-8E79-3D69D8477DE4\",
-            \"uuid\": \"1376A27E-A080-4F78-A2F8-ED7F5D59EB7E\"}]}}")
+            \"uuid\": \"BA6928AB-09B7-4AE6-9870-4FAFB5612F49\",
+            \"name\": \"Guix_image\",
+            \"attrs\": \"LegacyBIOSBootable\"}]}}")
 
 (test-begin suite)
 
 (test-equal "list block devices"
   (sfdisk-table
-   (device "/dev/nvme0n1")
-   (first-lba 34)
-   (id "32B576CC-45BD-4760-A057-46DDEED2845F")
+   (device "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image")
+   (first-lba 2048)
+   (id "C46BD3E2-E70E-40BD-8912-0A1A42BAF5BF")
    (label "gpt")
-   (last-lba 1000215182)
+   (last-lba 4192814)
    (sector-size 512)
    (unit "sectors")
    (partitions
     (list
      (sfdisk-partition
-      (node "/dev/nvme0n1p1")
+      (node "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image1")
       (start 2048)
-      (size 2201600)
+      (size 81920)
       (type "C12A7328-F81F-11D2-BA4B-00A0C93EC93B")
-      (uuid "72908D0A-9117-4348-89CF-17093307A778"))
+      (uuid "1718E4C8-6FEF-4641-83E5-5BAAB3EF75F0")
+      (name "GNU-ESP"))
      (sfdisk-partition
-      (node "/dev/nvme0n1p2")
-      (start 2203648)
-      (size 4194304)
+      (node "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image2")
+      (start 83968)
+      (size 4108840)
       (type "0FC63DAF-8483-4772-8E79-3D69D8477DE4")
-      (uuid "BC7DCEC7-D9D5-43B6-AD8F-374E4A99A5EC"))
-     (sfdisk-partition
-      (node "/dev/nvme0n1p3")
-      (start 6397952)
-      (size 993814528)
-      (type "0FC63DAF-8483-4772-8E79-3D69D8477DE4")
-      (uuid "1376A27E-A080-4F78-A2F8-ED7F5D59EB7E")))))
+      (uuid "BA6928AB-09B7-4AE6-9870-4FAFB5612F49")
+      (name "Guix_image")
+      (attrs "LegacyBIOSBootable")))))
   (sfdisk-parse sfdisk-output))
 
 (test-end suite)

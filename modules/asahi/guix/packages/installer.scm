@@ -36,15 +36,12 @@
                                 '((asahi guix build installer))
                                 #:select? import-asahi-module?)
           #~(modify-phases %standard-phases
-              (delete 'build)
-              (delete 'check)
-              (delete 'configure)
               (delete 'unpack)
               (replace 'install
                 (lambda* (#:key inputs outputs #:allow-other-keys)
                   (let ((target (string-append #$output "/share/asahi-m1n1"))
                         (disk-image (assoc-ref inputs "_")))
-                    (pretty-print inputs)
+                    ;; (pretty-print inputs)
                     (mkdir-p target)
                     (make-asahi-installer-package disk-image)))))))))
     (home-page "https://github.com/asahi-guix/channel")

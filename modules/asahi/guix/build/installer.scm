@@ -1,6 +1,5 @@
 (define-module (asahi guix build installer)
-  #:use-module (asahi guix build fdisk)
-  #:use-module (guix build json)
+  #:use-module (asahi guix build sfdisk)
   #:use-module (guix build utils)
   #:use-module (guix records)
   #:use-module (ice-9 getopt-long)
@@ -8,7 +7,6 @@
   #:use-module (ice-9 pretty-print)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
-  #:use-module (json)
   #:use-module (srfi srfi-1)
   #:export (make-asahi-installer-package
             make-asahi-installer-package-main))
@@ -40,9 +38,8 @@
     (string-trim-right output #\newline)))
 
 (define (make-asahi-installer-package disk-image)
-  (format #t "Fdisk: ~a\n" disk-image)
-  (pretty-print (fdisk-list disk-image))
-  (scm->json-string "hello world")
+  (format #t "Sfdisk: ~a\n" disk-image)
+  (pretty-print (sfdisk-list disk-image))
   (newline))
 
 (define (show-usage)

@@ -75,10 +75,7 @@
   (sfdisk-json->table (json-string->scm output)))
 
 (define (sfdisk-command filename)
-  (list "sfdisk"
-        "--color" "never"
-        "--dump" filename
-        "--json"))
+  (list "sfdisk" "--color=never" "--json" "--dump" filename))
 
 (define (sfdisk-list filename)
   (sfdisk-parse (apply command-output (sfdisk-command filename))))

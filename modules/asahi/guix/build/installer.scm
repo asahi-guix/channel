@@ -76,13 +76,13 @@
   `(("copy_firmware" . ,(installer-partition-copy-firmware? partition))
     ("copy_installer_data" . ,(installer-partition-copy-installer-data?? partition))
     ("expand" . ,(installer-partition-expand? partition))
-    ("format" . ,(installer-partition-format partition))
+    ("format" . ,(or (installer-partition-format partition) 'null))
     ("image" . ,(installer-partition-image partition))
     ("name" . ,(installer-partition-name partition))
     ("size" . ,(installer-partition-size partition))
-    ("source" . ,(installer-partition-source partition))
+    ("source" . ,(or (installer-partition-source partition) 'null))
     ("type" . ,(installer-partition-type partition))
-    ("volume_id" . ,(installer-partition-volume-id partition))))
+    ("volume_id" . ,(or (installer-partition-volume-id partition) 'null))))
 
 (define (installer-os->alist os)
   (define partitions
@@ -110,7 +110,9 @@
 
 (define option-spec
   '((help (single-char #\h) (value #f))
-    (version (single-char #\v) (value #f))
+    (output-dir (single-char #\o) (value #t))
+    (package-version (single-char #\p) (value #t))
+    ;; (version (single-char #\v) (value #f))
     (work-dir (single-char #\w) (value #t))))
 
 (define (string-blank? s)
@@ -266,15 +268,33 @@
     data))
 
 (define (show-usage)
-  (display "Usage: make-asahi-installer-package [options] DISK-IMAGE")
+  (display "Usage: make-asahi-installer-package [options] DISK-IMAGE\n\n")
+  (display "Options:\n")
+  (display "  -h, --help                      show this help\n")
+  (display "  -o, --output-dir=DIR            the output directory\n")
+  (display "  -p, --package-version=VERSION   the package version to use\n")
+  (display "  -w, --work-dir=DIR              the working directory\n")
   (newline))
+
+(define (output-dir-option options)
+  (option-ref options 'output-dir %output-dir))
+
+(define (package-version-option options)
+  (option-ref options 'package-version %package-version))
+
+(define (work-dir-option options)
+  (option-ref options 'work-dir %work-dir))
 
 (define* (make-asahi-installer-package-main args)
   (let* ((options (getopt-long args option-spec))
-         (work-dir (option-ref options 'work-dir %work-dir))
-         (args (option-ref options '() #f)))
-    (if (null? args)
+         (disk-images (option-ref options '() #f)))
+    (if (or (option-ref options 'help #f)
+            (null? args))
         (show-usage)
-        (make-asahi-installer-package (list (car args)) #:work-dir work-dir))))
+        (make-asahi-installer-package
+         disk-images
+         #:output-dir (output-dir-option options)
+         #:package-version (package-version-option options)
+         #:work-dir (work-dir-option options)))))
 
 ;; (define my-data (make-asahi-installer-package (list "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image")))

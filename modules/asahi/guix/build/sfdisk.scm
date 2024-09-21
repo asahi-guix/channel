@@ -7,10 +7,12 @@
             sfdisk-list
             sfdisk-parse
             sfdisk-partition
+            sfdisk-partition-attrs
             sfdisk-partition-boot?
             sfdisk-partition-device
             sfdisk-partition-end
             sfdisk-partition-id
+            sfdisk-partition-name
             sfdisk-partition-sectors
             sfdisk-partition-size
             sfdisk-partition-start
@@ -44,6 +46,8 @@
   sfdisk-partition
   make-sfdisk-partition
   sfdisk-partition?
+  (attrs sfdisk-partition-attrs (default #f))
+  (name sfdisk-partition-name)
   (node sfdisk-partition-node)
   (size sfdisk-partition-size)
   (start sfdisk-partition-start)
@@ -52,6 +56,8 @@
 
 (define (sfdisk-json->partition partition)
   (sfdisk-partition
+   (attrs (assoc-ref partition "attrs"))
+   (name (assoc-ref partition "name"))
    (node (assoc-ref partition "node"))
    (size (assoc-ref partition "size"))
    (start (assoc-ref partition "start"))
@@ -80,4 +86,4 @@
 (define (sfdisk-list filename)
   (sfdisk-parse (apply command-output (sfdisk-command filename))))
 
-;; (sfdisk-list "/gnu/store/06564cby4w29g1m5d273fa7zy6i62g9v-disk-image")
+;; (sfdisk-list "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image")

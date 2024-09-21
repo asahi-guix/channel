@@ -42,13 +42,11 @@
                 (lambda* (#:key inputs #:allow-other-keys)
                   (mkdir-p #$output)
                   (make-asahi-installer-package
-                   (list (assoc-ref inputs "asahi-base-image")
-                         (assoc-ref inputs "asahi-edge-image"))
+                   (list (assoc-ref inputs "image"))
                    #:output-dir #$output
                    #:package-version #$(package-version guix)))))))))
     (home-page "https://github.com/asahi-guix/channel")
-    (native-inputs `(("asahi-base-image" ,(system-image asahi-base-image))
-                     ("asahi-edge-image" ,(system-image asahi-edge-image))
+    (native-inputs `(("image" ,(system-image asahi-base-image))
                      ("util-linux" ,util-linux)
                      ("p7zip" ,p7zip)))
     (synopsis "Asahi Guix boot logo pacakge")

@@ -9,6 +9,7 @@
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
   #:use-module (ice-9 string-fun)
+  #:use-module (json)
   #:use-module (srfi srfi-1)
   #:export (make-asahi-installer-package
             make-asahi-installer-package-main))
@@ -60,7 +61,7 @@
   installer-partition
   make-installer-partition
   installer-partition?
-  (copy-firmware-installer-data? installer-partition-copy-firmware-installer-data? (default #f))
+  (copy-installer-data?? installer-partition-copy-installer-data?? (default #f))
   (copy-firmware? installer-partition-copy-firmware? (default #f))
   (expand? installer-partition-expand? (default #f))
   (format installer-partition-format (default #f))
@@ -70,6 +71,42 @@
   (source installer-partition-source (default #f))
   (type installer-partition-type)
   (volume-id installer-partition-volume-id))
+
+(define (installer-partition->alist partition)
+  `(("copy_firmware" . ,(installer-partition-copy-firmware? partition))
+    ("copy_installer_data" . ,(installer-partition-copy-installer-data?? partition))
+    ("expand" . ,(installer-partition-expand? partition))
+    ("format" . ,(installer-partition-format partition))
+    ("image" . ,(installer-partition-image partition))
+    ("name" . ,(installer-partition-name partition))
+    ("size" . ,(installer-partition-size partition))
+    ("source" . ,(installer-partition-source partition))
+    ("type" . ,(installer-partition-type partition))
+    ("volume_id" . ,(installer-partition-volume-id partition))))
+
+(define (installer-os->alist os)
+  (define partitions
+    (map (lambda (partition)
+           (installer-partition->alist partition))
+         (installer-os-partitions os)))
+  `(("boot_object" . ,(installer-os-boot-object os))
+    ("default_os_name" . ,(installer-os-default-os-name os))
+    ("extras" . ,(apply vector (installer-os-extras os)))
+    ("icon" . ,(installer-os-icon os))
+    ("name" . ,(installer-os-name os))
+    ("next_object" . ,(installer-os-next-object os))
+    ("package" . ,(installer-os-package os))
+    ("partitions" . ,(apply vector partitions))
+    ("supported_fw" . ,(apply vector (installer-os-supported-fw os)))))
+
+(define (installer-data->alist data)
+  (define os-list
+    (map (lambda (os)
+           (installer-os->alist os))
+         (installer-data-os-list data)))
+  `(("os_list" . ,(apply vector os-list))))
+
+;; (scm->json-string (installer-data->alist my-data))
 
 (define option-spec
   '((help (single-char #\h) (value #f))
@@ -99,6 +136,11 @@
 (define (other-partition? partition)
   (not (efi-partition? partition)))
 
+(define (partition-index table partition)
+  (list-index (lambda (p)
+                (equal? partition p))
+              (sfdisk-table-partitions table)))
+
 (define (partition-filename installer table partition)
   (format #f "~a/~a" (installer-work-dir installer)
           (list-index (lambda (p)
@@ -109,14 +151,14 @@
   (let ((work-dir (installer-work-dir installer)))
     (list "dd"
           (format #f "if=~a" (sfdisk-table-device table))
-          (format #f "of=~a" (partition-filename installer table partition))
+          (format #f "of=~a" (installer-partition-filename installer partition))
           (format #f "skip=~a" (sfdisk-partition-start partition))
           (format #f "count=~a" (sfdisk-partition-size partition))
           (format #f "bs=~a" (sfdisk-table-sector-size table)))))
 
 (define (extract-partition installer table partition)
   (let ((command (extract-command installer table partition))
-        (filename (partition-filename installer table partition)))
+        (filename (installer-partition-filename installer partition)))
     (mkdir-p (dirname filename))
     (apply system* command)
     filename))
@@ -124,10 +166,19 @@
 (define (partition-size filename)
   (format #f "~aB" (stat:size (stat filename))))
 
+(define (unpack-efi-partition installer partition)
+  (let ((directory (installer-esp-dir installer))
+        (filename (installer-partition-filename installer partition)))
+    (mkdir-p directory)
+    (invoke "7z" "-aoa" "x" (format #f "-o~a" directory) filename)))
+
 (define (build-efi-partition installer table partition)
-  (let ((filename (extract-partition installer table partition)))
+  (let ((filename (extract-partition installer table partition))
+        (work-dir (installer-work-dir installer)))
+    (format #t "  Partition #~a: ~a\n" (partition-index table partition) filename)
+    (unpack-efi-partition installer partition)
     (installer-partition
-     (copy-firmware-installer-data? #t)
+     (copy-installer-data?? #t)
      (copy-firmware? #t)
      (image filename)
      (name (sfdisk-partition-name partition))
@@ -137,6 +188,7 @@
 
 (define (build-other-partition installer table partition)
   (let ((filename (extract-partition installer table partition)))
+    (format #t "  Partition #~a: ~a\n" (partition-index table partition) filename)
     (installer-partition
      (image filename)
      (name (sfdisk-partition-name partition))
@@ -149,6 +201,17 @@
          (build-efi-partition installer table partition))
         ((other-partition? partition)
          (build-other-partition installer table partition))))
+
+(define (installer-esp-dir installer)
+  (format #f "~a/package/esp" (installer-work-dir installer)))
+
+(define (installer-data-filename installer)
+  (format #f "~a/installer_data.json" (installer-output-dir installer)))
+
+(define (installer-partition-filename installer partition)
+  (format #f "~a/package/~a.img"
+          (installer-work-dir installer)
+          (sfdisk-partition-name partition)))
 
 (define (build-partitions installer table)
   (map (lambda (partition)
@@ -178,11 +241,19 @@
           (package-version %package-version)
           (work-dir %work-dir))
   (format #t "Building Asahi Guix installer packages ...\n")
-  (build-installer-data
-   (installer
-    (disk-images disk-images)
-    (output-dir output-dir)
-    (package-version package-version))))
+  (let* ((installer (installer
+                     (disk-images disk-images)
+                     (output-dir output-dir)
+                     (package-version package-version)))
+         (data (build-installer-data installer))
+         (json-file (installer-data-filename installer))
+         (json-doc (scm->json-string (installer-data->alist data))))
+    (mkdir-p (dirname json-file))
+    (call-with-output-file json-file
+      (lambda (port)
+        (set-port-encoding! port "UTF-8")
+        (format port "~a\n" json-doc)))
+    data))
 
 (define (show-usage)
   (display "Usage: make-asahi-installer-package [options] DISK-IMAGE")
@@ -194,6 +265,6 @@
          (args (option-ref options '() #f)))
     (if (null? args)
         (show-usage)
-        (make-asahi-installer-package (car args) #:work-dir work-dir))))
+        (make-asahi-installer-package (list (car args)) #:work-dir work-dir))))
 
-;; (make-asahi-installer-package (list "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image"))
+;; (define my-data (make-asahi-installer-package (list "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image")))

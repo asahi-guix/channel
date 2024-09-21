@@ -72,7 +72,7 @@
   (type installer-partition-type)
   (volume-id installer-partition-volume-id (default #f)))
 
-(define (installer-partition->alist partition)
+(define (installer-partition->json partition)
   `(("copy_firmware" . ,(installer-partition-copy-firmware? partition))
     ("copy_installer_data" . ,(installer-partition-copy-installer-data?? partition))
     ("expand" . ,(installer-partition-expand? partition))
@@ -84,10 +84,10 @@
     ("type" . ,(installer-partition-type partition))
     ("volume_id" . ,(or (installer-partition-volume-id partition) 'null))))
 
-(define (installer-os->alist os)
+(define (installer-os->json os)
   (define partitions
     (map (lambda (partition)
-           (installer-partition->alist partition))
+           (installer-partition->json partition))
          (installer-os-partitions os)))
   `(("boot_object" . ,(installer-os-boot-object os))
     ("default_os_name" . ,(installer-os-default-os-name os))
@@ -99,21 +99,12 @@
     ("partitions" . ,(apply vector partitions))
     ("supported_fw" . ,(apply vector (installer-os-supported-fw os)))))
 
-(define (installer-data->alist data)
+(define (installer-data->json data)
   (define os-list
     (map (lambda (os)
-           (installer-os->alist os))
+           (installer-os->json os))
          (installer-data-os-list data)))
   `(("os_list" . ,(apply vector os-list))))
-
-;; (scm->json-string (installer-data->alist my-data))
-
-(define option-spec
-  '((help (single-char #\h) (value #f))
-    (output-dir (single-char #\o) (value #t))
-    (package-version (single-char #\p) (value #t))
-    ;; (version (single-char #\v) (value #f))
-    (work-dir (single-char #\w) (value #t))))
 
 (define (string-blank? s)
   (string-match "^\\s*$" s))
@@ -259,7 +250,7 @@
                      (package-version package-version)))
          (data (build-installer-data installer))
          (json-file (installer-data-filename installer))
-         (json-doc (scm->json-string (installer-data->alist data))))
+         (json-doc (scm->json-string (installer-data->json data))))
     (mkdir-p (dirname json-file))
     (call-with-output-file json-file
       (lambda (port)
@@ -267,14 +258,14 @@
         (format port "~a\n" json-doc)))
     data))
 
-(define (show-usage)
-  (display "Usage: make-asahi-installer-package [options] DISK-IMAGE\n\n")
-  (display "Options:\n")
-  (display "  -h, --help                      show this help\n")
-  (display "  -o, --output-dir=DIR            the output directory\n")
-  (display "  -p, --package-version=VERSION   the package version to use\n")
-  (display "  -w, --work-dir=DIR              the working directory\n")
-  (newline))
+;; Getopt
+
+(define option-spec
+  '((help (single-char #\h) (value #f))
+    (output-dir (single-char #\o) (value #t))
+    (package-version (single-char #\p) (value #t))
+    ;; (version (single-char #\v) (value #f))
+    (work-dir (single-char #\w) (value #t))))
 
 (define (output-dir-option options)
   (option-ref options 'output-dir %output-dir))
@@ -284,6 +275,14 @@
 
 (define (work-dir-option options)
   (option-ref options 'work-dir %work-dir))
+
+(define (show-usage)
+  (display "Usage: make-asahi-installer-package [options] DISK-IMAGE\n\n")
+  (display "Options:\n")
+  (display "  -h, --help                      show this help\n")
+  (display "  -o, --output-dir=DIR            the output directory\n")
+  (display "  -p, --package-version=VERSION   the package version to use\n")
+  (display "  -w, --work-dir=DIR              the working directory\n"))
 
 (define* (make-asahi-installer-package-main args)
   (let* ((options (getopt-long args option-spec))

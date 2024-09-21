@@ -8,6 +8,7 @@
   #:use-module (ice-9 pretty-print)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
+  #:use-module (json)
   #:use-module (srfi srfi-1)
   #:export (make-asahi-installer-package
             make-asahi-installer-package-main))
@@ -41,6 +42,7 @@
 (define (make-asahi-installer-package disk-image)
   (format #t "Fdisk: ~a\n" disk-image)
   (pretty-print (fdisk-list disk-image))
+  (scm->json-string "hello world")
   (newline))
 
 (define (show-usage)

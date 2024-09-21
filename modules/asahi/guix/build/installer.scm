@@ -129,6 +129,24 @@
    "Asahi Guix"
    (format #f "Asahi Guix ~a" (installer-package-version installer))))
 
+(define (installer-esp-dir installer)
+  (format #f "~a/package/esp" (installer-work-dir installer)))
+
+(define (installer-esp-volume-id installer partition)
+  (let ((filename (installer-partition-filename installer partition)))
+    (when (file-exists? filename)
+      (command-output
+       "/bin/sh" "-lc"
+       (format #f "file ~a | awk -v 'RS=,' '/serial number/ { print $3 }'" filename)))))
+
+(define (installer-data-filename installer)
+  (format #f "~a/installer_data.json" (installer-output-dir installer)))
+
+(define (installer-partition-filename installer partition)
+  (format #f "~a/package/~a.img"
+          (installer-work-dir installer)
+          (sfdisk-partition-name partition)))
+
 (define (efi-partition? partition)
   (equal? "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
           (sfdisk-partition-type partition)))
@@ -184,7 +202,7 @@
      (name (sfdisk-partition-name partition))
      (size (partition-size filename))
      (type "EFI")
-     (volume-id "TODO"))))
+     (volume-id (installer-esp-volume-id installer partition)))))
 
 (define (build-other-partition installer table partition)
   (let ((filename (extract-partition installer table partition)))
@@ -201,17 +219,6 @@
          (build-efi-partition installer table partition))
         ((other-partition? partition)
          (build-other-partition installer table partition))))
-
-(define (installer-esp-dir installer)
-  (format #f "~a/package/esp" (installer-work-dir installer)))
-
-(define (installer-data-filename installer)
-  (format #f "~a/installer_data.json" (installer-output-dir installer)))
-
-(define (installer-partition-filename installer partition)
-  (format #f "~a/package/~a.img"
-          (installer-work-dir installer)
-          (sfdisk-partition-name partition)))
 
 (define (build-partitions installer table)
   (map (lambda (partition)

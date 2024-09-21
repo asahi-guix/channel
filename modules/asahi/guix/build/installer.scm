@@ -70,7 +70,7 @@
   (size installer-partition-size)
   (source installer-partition-source (default #f))
   (type installer-partition-type)
-  (volume-id installer-partition-volume-id))
+  (volume-id installer-partition-volume-id (default #f)))
 
 (define (installer-partition->alist partition)
   `(("copy_firmware" . ,(installer-partition-copy-firmware? partition))
@@ -151,8 +151,9 @@
   (equal? "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
           (sfdisk-partition-type partition)))
 
-(define (other-partition? partition)
-  (not (efi-partition? partition)))
+(define (linux-partition? partition)
+  (equal? "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
+          (sfdisk-partition-type partition)))
 
 (define (partition-index table partition)
   (list-index (lambda (p)
@@ -196,29 +197,31 @@
     (format #t "  Partition #~a: ~a\n" (partition-index table partition) filename)
     (unpack-efi-partition installer partition)
     (installer-partition
-     (copy-installer-data?? #t)
      (copy-firmware? #t)
+     (copy-installer-data?? #t)
+     (format "fat")
      (image filename)
      (name (sfdisk-partition-name partition))
      (size (partition-size filename))
+     (source "esp")
      (type "EFI")
      (volume-id (installer-esp-volume-id installer partition)))))
 
-(define (build-other-partition installer table partition)
+(define (build-linux-partition installer table partition)
   (let ((filename (extract-partition installer table partition)))
     (format #t "  Partition #~a: ~a\n" (partition-index table partition) filename)
     (installer-partition
-     (image filename)
+     (expand? #t)
+     (image (basename filename))
      (name (sfdisk-partition-name partition))
      (size (partition-size filename))
-     (type "Linux")
-     (volume-id "TODO"))))
+     (type "Linux"))))
 
 (define (build-partition installer table partition)
   (cond ((efi-partition? partition)
          (build-efi-partition installer table partition))
-        ((other-partition? partition)
-         (build-other-partition installer table partition))))
+        ((linux-partition? partition)
+         (build-linux-partition installer table partition))))
 
 (define (build-partitions installer table)
   (map (lambda (partition)

@@ -7,6 +7,8 @@
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages tls)
   #:use-module (gnu packages valgrind)
+  #:use-module (gnu packages xdisorg)
+  #:use-module (gnu packages xorg)
   #:use-module (guix build-system meson)
   #:use-module (guix download)
   #:use-module (guix gexp)
@@ -76,22 +78,24 @@
    `(("mesa" . ,(const asahi-mesa)))))
 
 (define-public asahi-mesa-utils
-  ;; TODO: glxinfo and friends are not compiled
-  (package
-    (inherit (replace-mesa mesa-utils))
-    (name "asahi-mesa-utils")
-    (version "9.0.0")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (string-append "https://archive.mesa3d.org/demos"
-                           "/mesa-demos-" version ".tar.xz"))
-       (sha256 (base32 "0ss9xpqykwfzkhr55nbfml61dsxz4dgpl9fxxgvil1bvdb9a6iih"))))
-    (build-system meson-build-system)
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-          (replace 'install
-            (lambda* (#:key outputs #:allow-other-keys)
-              (invoke "ninja" "install"))))))))
+  (let ((base (replace-mesa mesa-utils)))
+    (package
+      (inherit base)
+      (name "asahi-mesa-utils")
+      (version "9.0.0")
+      (source
+       (origin
+         (method url-fetch)
+         (uri (string-append "https://archive.mesa3d.org/demos"
+                             "/mesa-demos-" version ".tar.xz"))
+         (sha256 (base32 "0ss9xpqykwfzkhr55nbfml61dsxz4dgpl9fxxgvil1bvdb9a6iih"))))
+      (build-system meson-build-system)
+      (inputs
+       (modify-inputs (package-inputs base)
+         (prepend libdecor
+                  libglvnd
+                  libx11
+                  libxext
+                  libxkbcommon
+                  wayland
+                  wayland-protocols))))))

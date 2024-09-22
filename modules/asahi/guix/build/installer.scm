@@ -244,7 +244,7 @@
                (default-os-name (os-short-name disk-image))
                (icon "TODO")
                (name name)
-               (package "TODO")
+               (package (installer-package-name installer disk-image))
                (partitions (build-partitions installer table)))))
       (build-package-archive installer disk-image)
       os)))

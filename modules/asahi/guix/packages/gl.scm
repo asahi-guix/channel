@@ -74,27 +74,14 @@
 
 (define-public replace-mesa
   (package-input-rewriting/spec
-   `(("mesa" . ,(const asahi-mesa)))))
+   `(("mesa" . ,(const asahi-mesa))
+     ("mesa-headers" . ,(const asahi-mesa-headers)))))
 
 (define-public asahi-mesa-utils
-  (let ((base (replace-mesa mesa-utils)))
-    (package
-      (inherit base)
-      (name "asahi-mesa-utils")
-      (version "9.0.0")
-      (source
-       (origin
-         (method url-fetch)
-         (uri (string-append "https://archive.mesa3d.org/demos"
-                             "/mesa-demos-" version ".tar.xz"))
-         (sha256 (base32 "0ss9xpqykwfzkhr55nbfml61dsxz4dgpl9fxxgvil1bvdb9a6iih"))))
-      (build-system meson-build-system)
-      (inputs
-       (modify-inputs (package-inputs base)
-         (prepend libdecor
-                  libglvnd
-                  libx11
-                  libxext
-                  libxkbcommon
-                  wayland
-                  wayland-protocols))))))
+  (package
+    (inherit mesa-utils)
+    (name "asahi-mesa-utils")
+    (inputs
+     (list asahi-mesa
+           (replace-mesa freeglut)
+           (replace-mesa glew)))))

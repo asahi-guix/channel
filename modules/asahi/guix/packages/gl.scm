@@ -63,8 +63,7 @@
                  "-Dzstd=enabled"))))
       (inputs
        (modify-inputs (package-inputs mesa)
-         (prepend `(,lm-sensors "lib") clang-18 libclc)
-         (replace "llvm-for-mesa" llvm-18)
+         (prepend `(,lm-sensors "lib"))
          (replace "wayland-protocols" wayland-protocols-next))))))
 
 (define-public asahi-mesa-headers

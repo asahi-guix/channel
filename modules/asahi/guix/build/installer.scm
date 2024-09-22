@@ -118,7 +118,10 @@
   (assoc-ref %os-names (disk-image-name disk-image)))
 
 (define (os-long-name installer disk-image)
-  (string-append (os-short-name disk-image) " v" (installer-package-version installer)))
+  (string-replace-substring
+   (os-short-name disk-image)
+   "Asahi Guix"
+   (format #f "Asahi Guix ~a" (installer-package-version installer))))
 
 (define (installer-esp-dir installer)
   (format #f "~a/package/esp" (installer-work-dir installer)))
@@ -323,4 +326,3 @@
          #:work-dir (work-dir-option options)))))
 
 ;; (define my-data (make-asahi-installer-package (list "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image")))
-;; (define my-data (make-asahi-installer-package (list "/gnu/store/grpqbr958pkpalp17anwppbj3xszv96s-disk-image")))

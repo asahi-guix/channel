@@ -33,6 +33,7 @@
   make-installer
   installer?
   (disk-images installer-disk-images)
+  (icon installer-icon (default #f))
   (output-dir installer-output-dir (default %output-dir))
   (package-version installer-package-version (default %package-version))
   (work-dir installer-work-dir (default %work-dir)))
@@ -92,7 +93,7 @@
   `(("boot_object" . ,(installer-os-boot-object os))
     ("default_os_name" . ,(installer-os-default-os-name os))
     ("extras" . ,(apply vector (installer-os-extras os)))
-    ("icon" . ,(installer-os-icon os))
+    ("icon" . ,(or (installer-os-icon os) 'null))
     ("name" . ,(installer-os-name os))
     ("next_object" . ,(installer-os-next-object os))
     ("package" . ,(installer-os-package os))
@@ -242,7 +243,7 @@
     (format #t "Building ~a ...\n" name)
     (let ((os (installer-os
                (default-os-name (os-short-name disk-image))
-               (icon "TODO")
+               (icon (installer-icon installer))
                (name name)
                (package (installer-package-name installer disk-image))
                (partitions (build-partitions installer table)))))
@@ -267,12 +268,14 @@
 
 (define* (make-asahi-installer-package
           disk-images #:key
+          (icon #f)
           (output-dir %output-dir)
           (package-version %package-version)
           (work-dir %work-dir))
   (format #t "Building Asahi Guix installer packages ...\n")
   (let* ((installer (installer
                      (disk-images disk-images)
+                     (icon icon)
                      (output-dir output-dir)
                      (package-version package-version)))
          (data (build-installer-data installer)))
@@ -283,10 +286,13 @@
 
 (define option-spec
   '((help (single-char #\h) (value #f))
+    (icon (single-char #\i) (value #t))
     (output-dir (single-char #\o) (value #t))
     (package-version (single-char #\p) (value #t))
-    ;; (version (single-char #\v) (value #f))
     (work-dir (single-char #\w) (value #t))))
+
+(define (icon-option options)
+  (option-ref options 'icon #f))
 
 (define (output-dir-option options)
   (option-ref options 'output-dir %output-dir))
@@ -301,6 +307,7 @@
   (display "Usage: make-asahi-installer-package [options] DISK-IMAGE\n\n")
   (display "Options:\n")
   (display "  -h, --help                      show this help\n")
+  (display "  -i, --icon=ICON                 the icon to use\n")
   (display "  -o, --output-dir=DIR            the output directory\n")
   (display "  -p, --package-version=VERSION   the package version to use\n")
   (display "  -w, --work-dir=DIR              the working directory\n"))
@@ -313,6 +320,7 @@
         (show-usage)
         (make-asahi-installer-package
          disk-images
+         #:icon (icon-option options)
          #:output-dir (output-dir-option options)
          #:package-version (package-version-option options)
          #:work-dir (work-dir-option options)))))

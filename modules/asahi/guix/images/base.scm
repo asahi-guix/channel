@@ -1,4 +1,5 @@
 (define-module (asahi guix images base)
+  #:use-module (asahi guix images installer)
   #:use-module (asahi guix systems base)
   #:use-module (gnu image)
   #:use-module (gnu system image)
@@ -23,7 +24,8 @@
    (inherit
     (os+platform->image
      os aarch64-linux
-     #:type asahi-image-type))
+     ;; TODO: Which image?
+     #:type asahi-installer-image-type))
    (name name)))
 
 (define asahi-base-image

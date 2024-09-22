@@ -130,12 +130,16 @@
           (installer-output-dir installer)
           (disk-image-name disk-image)))
 
+(define (parse-serial-number text)
+  (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
+    (if (regexp-match? match)
+        (match:substring match 1)
+        #f)))
+
 (define (installer-esp-volume-id installer partition)
   (let ((filename (installer-partition-filename installer partition)))
     (when (file-exists? filename)
-      (command-output
-       "/bin/sh" "-lc"
-       (format #f "file ~a | awk -v 'RS=,' '/serial number/ { print $3 }'" filename)))))
+      (parse-serial-number (command-output "file" filename)))))
 
 (define (installer-data-filename installer)
   (format #f "~a/installer_data.json" (installer-output-dir installer)))
@@ -228,23 +232,22 @@
 
 (define (build-package-archive installer disk-image)
   (let* ((archive-name (installer-package-name installer disk-image))
-         (package-dir (format #f "~a/package" (installer-work-dir installer)))
-         (command (list "7z" "a" "-tzip" "-r" archive-name)))
+         (package-dir (format #f "~a/package" (installer-work-dir installer))))
     (with-directory-excursion package-dir
-      (format #t "YO: ~a\n" command)
-      (apply invoke command))))
+      (invoke "7z" "a" "-tzip" "-r" archive-name))))
 
 (define* (build-os installer disk-image)
   (let ((table (sfdisk-list disk-image))
         (name (os-long-name installer disk-image)))
     (format #t "Building ~a ...\n" name)
-    (build-package-archive installer disk-image)
-    (installer-os
-     (default-os-name (os-short-name disk-image))
-     (icon "TODO")
-     (name name)
-     (package "TODO")
-     (partitions (build-partitions installer table)))))
+    (let ((os (installer-os
+               (default-os-name (os-short-name disk-image))
+               (icon "TODO")
+               (name name)
+               (package "TODO")
+               (partitions (build-partitions installer table)))))
+      (build-package-archive installer disk-image)
+      os)))
 
 (define (build-installer-data installer)
   (installer-data
@@ -254,7 +257,7 @@
 
 (define (save-installer-data installer data)
   (let* ((filename (installer-data-filename installer))
-         (content (scm->json-string (installer-data->json data))))
+         (content (scm->json-string (installer-data->json data) #:pretty #t)))
     (mkdir-p (dirname filename))
     (call-with-output-file filename
       (lambda (port)

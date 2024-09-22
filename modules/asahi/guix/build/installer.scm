@@ -238,6 +238,16 @@
                    (build-os installer disk-image))
                  (installer-disk-images installer)))))
 
+(define (save-installer-data installer data)
+  (let* ((filename (installer-data-filename installer))
+         (content (scm->json-string (installer-data->json data))))
+    (mkdir-p (dirname filename))
+    (call-with-output-file filename
+      (lambda (port)
+        (set-port-encoding! port "UTF-8")
+        (format port "~a\n" content)))
+    data))
+
 (define* (make-asahi-installer-package
           disk-images #:key
           (output-dir %output-dir)
@@ -248,14 +258,8 @@
                      (disk-images disk-images)
                      (output-dir output-dir)
                      (package-version package-version)))
-         (data (build-installer-data installer))
-         (json-file (installer-data-filename installer))
-         (json-doc (scm->json-string (installer-data->json data))))
-    (mkdir-p (dirname json-file))
-    (call-with-output-file json-file
-      (lambda (port)
-        (set-port-encoding! port "UTF-8")
-        (format port "~a\n" json-doc)))
+         (data (build-installer-data installer)))
+    (save-installer-data installer data)
     data))
 
 ;; Getopt

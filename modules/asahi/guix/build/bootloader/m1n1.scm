@@ -1,8 +1,10 @@
 (define-module (asahi guix build bootloader m1n1)
+  #:use-module (gnu build image)
   #:use-module (guix build utils)
   #:use-module (guix utils)
   #:use-module (ice-9 binary-ports)
-  #:export (install-m1n1-u-boot-grub))
+  #:export (install-m1n1-u-boot-grub
+            m1n1-initialize-efi-partition))
 
 (define (copy-bytes from to)
   (let ((result (get-u8 from)))
@@ -36,6 +38,16 @@
     (when (file-exists? target)
       (rename-file target old-file))
     (rename-file new-file target)))
+
+;; TODO: Use in install-m1n1-u-boot
+(define* (m1n1-install-bootloader bootloader esp)
+  (let* ((install-dir (string-append esp "/m1n1"))
+         (target-bin (string-append install-dir "/boot.bin"))
+         (dtbs (find-files (string-append bootloader "/lib/dtbs") "\\.*.dtb$"
+                           #:stat stat #:directories? #t))
+         (m1n1 (string-append bootloader "/libexec/m1n1.bin"))
+         (u-boot (string-append bootloader "/libexec/u-boot-nodtb.bin")))
+    (update-m1n1 m1n1 target-bin #:dtbs dtbs #:u-boot u-boot)))
 
 ;; TODO: Howto re-use this function from the grub bootloader module?
 (define (install-grub-efi-removable bootloader efi-dir mount-point)
@@ -86,3 +98,11 @@
 (define (install-m1n1-u-boot-grub bootloader efi-dir mount-point)
   (install-m1n1-u-boot bootloader efi-dir mount-point)
   (install-grub-efi-removable bootloader efi-dir mount-point))
+
+(define* (m1n1-initialize-efi-partition
+          root
+          #:key bootloader-package grub-efi
+          #:allow-other-keys)
+  (format #t "Installing m1n1 to ~a ...\n" root)
+  (initialize-efi-partition root #:grub-efi grub-efi)
+  (m1n1-install-bootloader bootloader-package root))

@@ -1,9 +1,13 @@
 (define-module (asahi guix images installer)
+  #:use-module (asahi guix build bootloader m1n1)
+  #:use-module (asahi guix build modules)
   #:use-module (asahi guix systems base)
   #:use-module (gnu build image)
   #:use-module (gnu image)
+  #:use-module (gnu packages guile)
   #:use-module (gnu system image)
   #:use-module (guix gexp)
+  #:use-module (guix modules)
   #:use-module (guix platforms arm)
   #:export (asahi-installer-image
             asahi-installer-image-type))
@@ -15,7 +19,13 @@
    (label "BOOT")
    (file-system "vfat")
    (flags '(esp))
-   (initializer (gexp initialize-efi-partition))))
+   (initializer (with-extensions (list guile-zlib)
+                  (with-imported-modules (source-module-closure
+                                          '((asahi guix build bootloader m1n1))
+                                          #:select? import-asahi-module?)
+                    #~(lambda* (root . args)
+                        (use-modules (asahi guix build bootloader m1n1))
+                        (apply m1n1-initialize-efi-partition root args)))))))
 
 (define asahi-installer-root-partition
   (partition

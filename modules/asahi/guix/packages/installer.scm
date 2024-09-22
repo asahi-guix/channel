@@ -5,6 +5,9 @@
   #:use-module (asahi guix build modules)
   #:use-module (asahi guix images base)
   #:use-module (asahi guix images edge)
+  #:use-module (asahi guix images gnome)
+  #:use-module (asahi guix images plasma)
+  #:use-module (asahi guix images sway)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages gtk)
@@ -12,6 +15,7 @@
   #:use-module (gnu packages guile)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages package-management)
+  #:use-module (gnu image)
   #:use-module (gnu system image)
   #:use-module (guix build-system copy)
   #:use-module (guix gexp)
@@ -19,9 +23,9 @@
   #:use-module (guix packages)
   #:use-module (ice-9 match))
 
-(define-public asahi-installer
+(define (make-asahi-installer name image)
   (package
-    (name "asahi-installer")
+    (name (format #f "asahi-installer-~a" name))
     (version "0.0.1")
     (source #f)
     (build-system copy-build-system)
@@ -46,9 +50,24 @@
                    #:output-dir #$output
                    #:package-version #$(package-version guix)))))))))
     (home-page "https://github.com/asahi-guix/channel")
-    (native-inputs `(("image" ,(system-image asahi-base-image))
+    (native-inputs `(("image" ,(system-image image))
                      ("util-linux" ,util-linux)
                      ("p7zip" ,p7zip)))
-    (synopsis "Asahi Guix boot logo pacakge")
-    (description "The package providing the Asahi Guix boot logo.")
+    (synopsis (format #f "Asahi Installer ~a package" name))
+    (description (format #f "Asahi Installer ~a package." name))
     (license license:expat)))
+
+(define-public asahi-installer-base
+  (make-asahi-installer "base" asahi-base-image))
+
+(define-public asahi-installer-edge
+  (make-asahi-installer "edge" asahi-edge-image))
+
+(define-public asahi-installer-gnome
+  (make-asahi-installer "gnome" asahi-gnome-image))
+
+(define-public asahi-installer-plasma
+  (make-asahi-installer "plasma" asahi-plasma-image))
+
+(define-public asahi-installer-sway
+  (make-asahi-installer "sway" asahi-sway-image))

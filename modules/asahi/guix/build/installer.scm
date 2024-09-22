@@ -125,6 +125,11 @@
 (define (installer-esp-dir installer)
   (format #f "~a/package/esp" (installer-work-dir installer)))
 
+(define (installer-package-name installer disk-image)
+  (format #f "~a/~a.zip"
+          (installer-output-dir installer)
+          (disk-image-name disk-image)))
+
 (define (installer-esp-volume-id installer partition)
   (let ((filename (installer-partition-filename installer partition)))
     (when (file-exists? filename)
@@ -193,7 +198,7 @@
      (copy-firmware? #t)
      (copy-installer-data?? #t)
      (format "fat")
-     (image filename)
+     (image (basename filename))
      (name (sfdisk-partition-name partition))
      (size (partition-size filename))
      (source "esp")
@@ -221,10 +226,19 @@
          (build-partition installer table partition))
        (sfdisk-table-partitions table)))
 
+(define (build-package-archive installer disk-image)
+  (let* ((archive-name (installer-package-name installer disk-image))
+         (package-dir (format #f "~a/package" (installer-work-dir installer)))
+         (command (list "7z" "a" "-tzip" "-r" archive-name)))
+    (with-directory-excursion package-dir
+      (format #t "YO: ~a\n" command)
+      (apply invoke command))))
+
 (define* (build-os installer disk-image)
   (let ((table (sfdisk-list disk-image))
         (name (os-long-name installer disk-image)))
     (format #t "Building ~a ...\n" name)
+    (build-package-archive installer disk-image)
     (installer-os
      (default-os-name (os-short-name disk-image))
      (icon "TODO")

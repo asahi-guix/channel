@@ -4,7 +4,7 @@
   #:use-module (asahi guix build installer)
   #:use-module (asahi guix build modules)
   #:use-module (asahi guix images base)
-  #:use-module (asahi guix images base)
+  #:use-module (asahi guix images edge)
   #:use-module (asahi guix images gnome)
   #:use-module (asahi guix images plasma)
   #:use-module (asahi guix images sway)
@@ -59,7 +59,7 @@
     (description "This package provides the Asahi Guix installer icon.")
     (license license:expat)))
 
-(define (make-asahi-installer name image)
+(define (make-installer-package name image)
   (package
     (name (format #f "asahi-installer-~a" name))
     (version "0.0.1")
@@ -80,18 +80,16 @@
               (delete 'unpack)
               (replace 'install
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((icon (string-append
-                               (assoc-ref inputs "asahi-installer-icon")
-                               "/share/asahi-installer-icon/asahi-guix.icns")))
-                    (format #t "ICON: ~a\n" icon)
-                    (make-asahi-installer-package
-                     (list (assoc-ref inputs "asahi-image"))
-                     #:icon icon
-                     #:output-dir #$output
-                     #:package-version #$(package-version guix))))))))))
+                  (make-asahi-installer-package
+                   (list (assoc-ref inputs "asahi-installer-image"))
+                   #:icon (string-append
+                           (assoc-ref inputs "asahi-installer-icon")
+                           "/share/asahi-installer-icon/asahi-guix.icns")
+                   #:output-dir #$output
+                   #:package-version #$(package-version guix)))))))))
     (home-page "https://github.com/asahi-guix/channel")
     (native-inputs `(("asahi-installer-icon" ,asahi-installer-icon)
-                     ("asahi-image" ,(system-image image))
+                     ("asahi-installer-image" ,(system-image image))
                      ("util-linux" ,util-linux)
                      ("p7zip" ,p7zip)))
     (synopsis (format #f "Asahi Installer ~a package" name))
@@ -99,16 +97,16 @@
     (license license:expat)))
 
 (define-public asahi-installer-base
-  (make-asahi-installer "base" asahi-base-image))
+  (make-installer-package "base" asahi-base-image))
 
 (define-public asahi-installer-edge
-  (make-asahi-installer "edge" asahi-edge-image))
+  (make-installer-package "edge" asahi-edge-image))
 
 (define-public asahi-installer-gnome
-  (make-asahi-installer "gnome" asahi-gnome-image))
+  (make-installer-package "gnome" asahi-gnome-image))
 
 (define-public asahi-installer-plasma
-  (make-asahi-installer "plasma" asahi-plasma-image))
+  (make-installer-package "plasma" asahi-plasma-image))
 
 (define-public asahi-installer-sway
-  (make-asahi-installer "sway" asahi-sway-image))
+  (make-installer-package "sway" asahi-sway-image))

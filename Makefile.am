@@ -88,7 +88,8 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
         modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/systems/sway.scm \
 	modules/asahi/guix/transformations.scm \
-	modules/asahi/guix/udev.scm
+	modules/asahi/guix/udev.scm \
+        modules/gnu/system/images/asahi.scm
 
 TESTS = \
  tests/asahi/guix/build/block-devices.scm \

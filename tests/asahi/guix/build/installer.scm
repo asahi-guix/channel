@@ -62,15 +62,22 @@
 
 (test-begin suite)
 
-(test-equal "write installer data"
+(test-equal "merge installer data"
+  (installer-data
+   (os-list
+    (list base-os edge-os)))
+  (merge-installer-data
+   (installer-data
+    (os-list
+     (list base-os)))
+   (installer-data
+    (os-list
+     (list edge-os)))))
+
+(test-equal "write and read installer data"
   test-installer-data
   (let ((filename "/tmp/asahi-guix/write/installer/data"))
     (write-installer-data test-installer-data filename)
     (read-installer-data filename)))
 
 (test-end suite)
-
-(equal? test-installer-data
-        (read-installer-data "/tmp/asahi-guix/write/installer/data"))
-
-;; (write-installer-data test-installer-data "/tmp/asahi-guix/write/installer/data")

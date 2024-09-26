@@ -50,6 +50,7 @@
             make-installer-data
             make-installer-os
             make-installer-partition
+            merge-installer-data
             write-installer-data
             read-installer-data))
 
@@ -329,6 +330,11 @@
    (os-list (map (lambda (disk-image)
                    (build-os installer disk-image))
                  (installer-disk-images installer)))))
+
+(define (merge-installer-data data-1 data-2)
+  (installer-data
+   (os-list (append (installer-data-os-list data-1)
+                    (installer-data-os-list data-2)))))
 
 (define (read-installer-data filename)
   (call-with-input-file filename

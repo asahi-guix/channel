@@ -11,8 +11,47 @@
   #:use-module (ice-9 string-fun)
   #:use-module (json)
   #:use-module (srfi srfi-1)
-  #:export (make-asahi-installer-package
-            make-asahi-installer-package-main))
+  #:export (installer
+            installer-disk-images
+            installer-icon
+            installer-os
+            installer-os-boot-object
+            installer-os-default-os-name
+            installer-os-extras
+            installer-os-icon
+            installer-os-name
+            installer-os-next-object
+            installer-os-package
+            installer-os-partitions
+            installer-os-supported-fw
+            installer-os?
+            installer-output-dir
+            installer-package-version
+            installer-data
+            installer-data-os-list
+            installer-data?
+            installer-partition
+            installer-partition-copy-firmware?
+            installer-partition-copy-installer-data?
+            installer-partition-expand?
+            installer-partition-format
+            installer-partition-image
+            installer-partition-name
+            installer-partition-size
+            installer-partition-source
+            installer-partition-type
+            installer-partition-volume-id
+            installer-partition?
+            installer-work-dir
+            installer?
+            make-asahi-installer-package
+            make-asahi-installer-package-main
+            make-installer
+            make-installer-data
+            make-installer-os
+            make-installer-partition
+            write-installer-data
+            read-installer-data))
 
 (define %output-dir "/tmp/asahi-guix/installer/out")
 (define %package-version "1.4.0")
@@ -62,7 +101,7 @@
   installer-partition
   make-installer-partition
   installer-partition?
-  (copy-installer-data?? installer-partition-copy-installer-data?? (default #f))
+  (copy-installer-data? installer-partition-copy-installer-data? (default #f))
   (copy-firmware? installer-partition-copy-firmware? (default #f))
   (expand? installer-partition-expand? (default #f))
   (format installer-partition-format (default #f))
@@ -75,7 +114,7 @@
 
 (define (installer-partition->json partition)
   `(("copy_firmware" . ,(installer-partition-copy-firmware? partition))
-    ("copy_installer_data" . ,(installer-partition-copy-installer-data?? partition))
+    ("copy_installer_data" . ,(installer-partition-copy-installer-data? partition))
     ("expand" . ,(installer-partition-expand? partition))
     ("format" . ,(or (installer-partition-format partition) 'null))
     ("image" . ,(installer-partition-image partition))
@@ -84,6 +123,22 @@
     ("source" . ,(or (installer-partition-source partition) 'null))
     ("type" . ,(installer-partition-type partition))
     ("volume_id" . ,(or (installer-partition-volume-id partition) 'null))))
+
+(define (null->false x)
+  (if (eq? 'null x) #f x))
+
+(define (json->installer-partition alist)
+  (installer-partition
+   (copy-firmware? (assoc-ref alist "copy_firmware"))
+   (copy-installer-data? (assoc-ref alist "copy_installer_data"))
+   (expand? (assoc-ref alist "expand"))
+   (format (null->false (assoc-ref alist "format")))
+   (image (assoc-ref alist "image"))
+   (name (assoc-ref alist "name"))
+   (size (assoc-ref alist "size"))
+   (source (null->false (assoc-ref alist "source")))
+   (type (assoc-ref alist "type"))
+   (volume-id (null->false (assoc-ref alist "volume_id")))))
 
 (define (installer-os->json os)
   (define partitions
@@ -100,12 +155,31 @@
     ("partitions" . ,(apply vector partitions))
     ("supported_fw" . ,(apply vector (installer-os-supported-fw os)))))
 
+(define (json->installer-os alist)
+  (installer-os
+   (boot-object (assoc-ref alist "boot_object"))
+   (default-os-name (assoc-ref alist "default_os_name"))
+   (extras (vector->list (assoc-ref alist "extras")))
+   (icon (null->false (assoc-ref alist "icon")))
+   (name (assoc-ref alist "name"))
+   (next-object (assoc-ref alist "next_object"))
+   (package (assoc-ref alist "package"))
+   (partitions (map json->installer-partition
+                    (vector->list (assoc-ref alist "partitions"))))
+   (supported-fw (vector->list (assoc-ref alist "supported_fw")))))
+
 (define (installer-data->json data)
   (define os-list
     (map (lambda (os)
            (installer-os->json os))
          (installer-data-os-list data)))
   `(("os_list" . ,(apply vector os-list))))
+
+(define (json->installer-data alist)
+  (installer-data
+   (os-list
+    (map json->installer-os
+         (vector->list (assoc-ref alist "os_list"))))))
 
 (define (string-blank? s)
   (string-match "^\\s*$" s))
@@ -201,7 +275,7 @@
     (unpack-efi-partition installer partition)
     (installer-partition
      (copy-firmware? #t)
-     (copy-installer-data?? #t)
+     (copy-installer-data? #t)
      (format "fat")
      (image (basename filename))
      (name (sfdisk-partition-name partition))
@@ -256,15 +330,23 @@
                    (build-os installer disk-image))
                  (installer-disk-images installer)))))
 
-(define (save-installer-data installer data)
-  (let* ((filename (installer-data-filename installer))
-         (content (scm->json-string (installer-data->json data) #:pretty #t)))
+(define (read-installer-data filename)
+  (call-with-input-file filename
+    (lambda (port)
+      (json->installer-data (json->scm port)))))
+
+(define (write-installer-data data filename)
+  (let ((content (scm->json-string (installer-data->json data) #:pretty #t)))
     (mkdir-p (dirname filename))
     (call-with-output-file filename
       (lambda (port)
         (set-port-encoding! port "UTF-8")
         (format port "~a\n" content)))
     data))
+
+(define (save-installer-data installer data)
+  (let ((filename (installer-data-filename installer)))
+    (write-installer-data data filename)))
 
 (define* (make-asahi-installer-package
           disk-images #:key

@@ -23,7 +23,13 @@
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix packages)
-  #:use-module (ice-9 match))
+  #:use-module (ice-9 match)
+  #:export ($ASAHI_INSTALLER_OS_PATH))
+
+(define $ASAHI_INSTALLER_OS_PATH
+  (search-path-specification
+   (variable "ASAHI_INSTALLER_OS_PATH")
+   (files '("share/asahi-installer/os"))))
 
 (define-public asahi-installer-icon
   (package
@@ -38,7 +44,7 @@
           (replace 'install
             (lambda* (#:key inputs #:allow-other-keys)
               (let* ((source (assoc-ref inputs "source"))
-                     (target (string-append #$output "/share/asahi-installer-icon"))
+                     (target (string-append #$output "/share/asahi-installer"))
                      (icon (format #f "~a/asahi-guix.icns" target))
                      (dimensions (list 128)))
                 (define (filename width)
@@ -84,14 +90,16 @@
                    (list (assoc-ref inputs "asahi-installer-image"))
                    #:icon (string-append
                            (assoc-ref inputs "asahi-installer-icon")
-                           "/share/asahi-installer-icon/asahi-guix.icns")
-                   #:output-dir #$output
+                           "/share/asahi-installer/asahi-guix.icns")
+                   #:output-dir (string-append #$output "/share/asahi-installer/os")
                    #:package-version #$(package-version guix)))))))))
     (home-page "https://github.com/asahi-guix/channel")
     (native-inputs `(("asahi-installer-icon" ,asahi-installer-icon)
                      ("asahi-installer-image" ,(system-image image))
                      ("util-linux" ,util-linux)
                      ("p7zip" ,p7zip)))
+    (native-search-paths
+     (list $ASAHI_INSTALLER_OS_PATH))
     (synopsis (format #f "Asahi Installer ~a package" name))
     (description (format #f "Asahi Installer ~a package." name))
     (license license:expat)))

@@ -22,7 +22,7 @@ The Guix [[https://guix.gnu.org/manual/en/html_node/Channels.html][channel]] [[h
 
 #+begin_src scheme
   (channel
-   (name 'asahi-guix-channel)
+   (name 'asahi-guix)
    (url "https://github.com/asahi-guix/channel")
    (branch "main")
    (introduction

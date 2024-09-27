@@ -54,6 +54,7 @@
             write-installer-data
             read-installer-data))
 
+(define %installer-data-file "installer_data.json")
 (define %output-dir "/tmp/asahi-guix/installer/out")
 (define %package-version "1.4.0")
 (define %work-dir "/tmp/asahi-guix/installer/work")
@@ -74,6 +75,7 @@
   installer?
   (disk-images installer-disk-images)
   (icon installer-icon (default #f))
+  (data-file installer-data-file (default %installer-data-file))
   (output-dir installer-output-dir (default %output-dir))
   (package-version installer-package-version (default %package-version))
   (work-dir installer-work-dir (default %work-dir)))
@@ -190,7 +192,7 @@
     (string-join (cdr (string-split (last parts) #\-)) "-")))
 
 (define (os-short-name disk-image)
-  (assoc-ref %os-names (disk-image-name disk-image)))
+  (or (assoc-ref %os-names (disk-image-name disk-image)) "Asahi Guix"))
 
 (define (os-long-name installer disk-image)
   (string-append (os-short-name disk-image)
@@ -216,7 +218,8 @@
       (parse-serial-number (command-output "file" filename)))))
 
 (define (installer-data-filename installer)
-  (format #f "~a/installer_data.json" (installer-output-dir installer)))
+  (format #f "~a/~a" (installer-output-dir installer)
+          (installer-data-file installer)))
 
 (define (installer-partition-filename installer partition)
   (format #f "~a/package/~a.img"
@@ -365,12 +368,19 @@
 
 (define* (make-asahi-installer-package
           disk-images #:key
+          (data-file %installer-data-file)
           (icon #f)
           (output-dir %output-dir)
           (package-version %package-version)
           (work-dir %work-dir))
   (format #t "Building Asahi Guix installer packages ...\n")
+  (format #t "  Data File ............. ~a\n" data-file)
+  (format #t "  Icon .................. ~a\n" icon)
+  (format #t "  Output Directory ...... ~a\n" output-dir)
+  (format #t "  Package Version ....... ~a\n" package-version)
+  (format #t "  Work Directory ........ ~a\n" work-dir)
   (let* ((installer (installer
+                     (data-file data-file)
                      (disk-images disk-images)
                      (icon icon)
                      (output-dir output-dir)
@@ -382,11 +392,15 @@
 ;; Getopt
 
 (define option-spec
-  '((help (single-char #\h) (value #f))
+  '((data-file (single-char #\d) (value #t))
+    (help (single-char #\h) (value #f))
     (icon (single-char #\i) (value #t))
     (output-dir (single-char #\o) (value #t))
     (package-version (single-char #\p) (value #t))
     (work-dir (single-char #\w) (value #t))))
+
+(define (data-file-option options)
+  (option-ref options 'data-file %installer-data-file))
 
 (define (icon-option options)
   (option-ref options 'icon #f))
@@ -403,11 +417,12 @@
 (define (show-usage)
   (display "Usage: make-asahi-installer-package [options] DISK-IMAGE\n\n")
   (display "Options:\n")
-  (display "  -h, --help                      show this help\n")
-  (display "  -i, --icon=ICON                 the icon to use\n")
-  (display "  -o, --output-dir=DIR            the output directory\n")
-  (display "  -p, --package-version=VERSION   the package version to use\n")
-  (display "  -w, --work-dir=DIR              the working directory\n"))
+  (display "  -d, --data-file=FILE            JSON installer data file\n")
+  (display "  -h, --help                      Show help\n")
+  (display "  -i, --icon=ICON                 Icon to use\n")
+  (display "  -o, --output-dir=DIR            Output directory\n")
+  (display "  -p, --package-version=VERSION   Package version to use\n")
+  (display "  -w, --work-dir=DIR              Working directory\n"))
 
 (define* (make-asahi-installer-package-main args)
   (let* ((options (getopt-long args option-spec))
@@ -417,6 +432,7 @@
         (show-usage)
         (make-asahi-installer-package
          disk-images
+         #:data-file (data-file-option options)
          #:icon (icon-option options)
          #:output-dir (output-dir-option options)
          #:package-version (package-version-option options)

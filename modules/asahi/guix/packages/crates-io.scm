@@ -42,14 +42,14 @@
 (define-public rust-asahi-nvram-0.2
   (package
     (name "rust-asahi-nvram")
-    (version "0.2.1")
+    (version "0.2.2")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "asahi-nvram" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "04qp73w97792flzkv9b3qb549iwa9mam837b0l8zh04lcnbcgci6"))))
+        (base32 "0k1slgayjxf4pz6f44gckqwh44wk1n0iln6s3008x8rxxvsmxqac"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.2)
@@ -63,14 +63,14 @@
 (define-public rust-prettyplease-0.2
   (package
     (name "rust-prettyplease")
-    (version "0.2.20")
+    (version "0.2.22")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "prettyplease" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0pk4vm9fir1p0bl11p9fkgl9r1x9vi4avv8l7flb1wx2i1a364jz"))))
+        (base32 "1fpsyn4x1scbp8ik8xw4pfh4jxfm5bv7clax5k1jcd5vzd0gk727"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -448,14 +448,14 @@ plugins")
 (define-public rust-clap-verbosity-flag-2
   (package
     (name "rust-clap-verbosity-flag")
-    (version "2.2.1")
+    (version "2.2.2")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "clap-verbosity-flag" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0lzzirrsjqpy3bbs5d1657f9smhb9a8wjqkikz2n915nsrj9ilb3"))))
+        (base32 "1vb4amgfp20mkfglhx2m4iwxibc74apf9srcbvvjyrh7327176g0"))))
     (build-system cargo-build-system)
     (arguments
      `(#:skip-build? #t
@@ -469,14 +469,14 @@ plugins")
 (define-public rust-speakersafetyd
   (package
     (name "rust-speakersafetyd")
-    (version "1.0.0")
+    (version "1.0.1")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "speakersafetyd" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1hrkmp7qhq8l53j4rf8ibmk1rin3w2kibdzs0ksz4nln4pisnndm"))))
+        (base32 "1dvyj194niz5i4rldsqvjmz8j7df9w9qpvf9rwg3vsnzc2mjh0zg"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-alsa" ,rust-asahi-alsa)

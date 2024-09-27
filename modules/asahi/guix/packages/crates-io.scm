@@ -16,27 +16,26 @@
     (inherit (replace-alsa-lib rust-alsa-0.8))
     (name "rust-asahi-alsa")))
 
-(define-public rust-apple-nvram-0.2
+(define-public rust-apple-nvram-0.3
   (package
     (name "rust-apple-nvram")
-    (version "0.2.1")
+    (version "0.3.0")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "apple-nvram" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "0v6cv4v0m1z46vaj53vb3z9mnkcjc364ql09zyiyzlcqblvhyljx"))))
+        (base32 "1avymr2x9hr0qrqs5881x4vgmk819pjrldpkf9kia0s8dxphbhc6"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:skip-build? #t
-       #:cargo-inputs (("rust-adler32" ,rust-adler32-1)
+     `(#:cargo-inputs (("rust-adler32" ,rust-adler32-1)
                        ("rust-crc32fast" ,rust-crc32fast-1)
                        ("rust-nix" ,rust-nix-0.26))))
     (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
-    (synopsis "Library to parse and write apple-formatted nvram entries")
-    (description
-     "This package provides a library to parse and write apple-formatted nvram entries")
+    (synopsis "library to parse and write apple-formatted nvram entries")
+    (description "This package provides a library to parse and write apple-formatted
+nvram entries.")
     (license license:expat)))
 
 (define-public rust-asahi-nvram-0.2
@@ -52,7 +51,7 @@
         (base32 "0k1slgayjxf4pz6f44gckqwh44wk1n0iln6s3008x8rxxvsmxqac"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.2)
+     `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.3)
                        ("rust-clap" ,rust-clap-3))))
     (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
     (synopsis "Tool to read and write nvram variables on ARM Macs")

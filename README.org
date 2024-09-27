@@ -18,7 +18,7 @@ the [[https://asahilinux.org/][Asahi GNU/Linux]] kernel on [[https://en.wikipedi
 
 ** Channel Introduction
 
-The [[https://guix.gnu.org/manual/en/html_node/Channels.html][channel]] [[https://guix.gnu.org/manual/en/html_node/Channel-Authentication.html][introduction]] of /Asahi Guix/.
+The Guix [[https://guix.gnu.org/manual/en/html_node/Channels.html][channel]] [[https://guix.gnu.org/manual/en/html_node/Channel-Authentication.html][introduction]] of the /Asahi Guix/ channel.
 
 #+begin_src scheme
   (channel

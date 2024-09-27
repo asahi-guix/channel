@@ -67,7 +67,7 @@
 
 (define (make-installer-package name image)
   (package
-    (name (format #f "asahi-installer-~a" name))
+    (name (format #f "asahi-installer-package-~a" name))
     (version "0.0.1")
     (source #f)
     (build-system copy-build-system)
@@ -100,21 +100,21 @@
                      ("p7zip" ,p7zip)))
     (native-search-paths
      (list $ASAHI_INSTALLER_OS_PATH))
-    (synopsis (format #f "Asahi Installer ~a package" name))
-    (description (format #f "Asahi Installer ~a package." name))
+    (synopsis (format #f "Asahi ~a installer package" name))
+    (description (format #f "This package provides the Asahi Guix ~a package for the Asahi Linux installer." name))
     (license license:expat)))
 
-(define-public asahi-installer-base
+(define-public asahi-installer-package-base
   (make-installer-package "base" asahi-base-image))
 
-(define-public asahi-installer-edge
+(define-public asahi-installer-package-edge
   (make-installer-package "edge" asahi-edge-image))
 
-(define-public asahi-installer-gnome
+(define-public asahi-installer-package-gnome
   (make-installer-package "gnome" asahi-gnome-image))
 
-(define-public asahi-installer-plasma
+(define-public asahi-installer-package-plasma
   (make-installer-package "plasma" asahi-plasma-image))
 
-(define-public asahi-installer-sway
+(define-public asahi-installer-package-sway
   (make-installer-package "sway" asahi-sway-image))

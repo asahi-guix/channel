@@ -193,10 +193,8 @@
   (assoc-ref %os-names (disk-image-name disk-image)))
 
 (define (os-long-name installer disk-image)
-  (string-replace-substring
-   (os-short-name disk-image)
-   "Asahi Guix"
-   (format #f "Asahi Guix ~a" (installer-package-version installer))))
+  (string-append (os-short-name disk-image)
+                 " v" (installer-package-version installer)))
 
 (define (installer-esp-dir installer)
   (format #f "~a/package/esp" (installer-work-dir installer)))
@@ -224,6 +222,10 @@
   (format #f "~a/package/~a.img"
           (installer-work-dir installer)
           (sfdisk-partition-name partition)))
+
+(define (installer-icon-output-path installer disk-image)
+  (string-append (installer-output-dir installer) "/"
+                 (disk-image-name disk-image) ".icns"))
 
 (define (efi-partition? partition)
   (equal? "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
@@ -306,11 +308,17 @@
          (build-partition installer table partition))
        (sfdisk-table-partitions table)))
 
-(define (build-package-archive installer disk-image)
+(define (installer-build-archive installer disk-image)
   (let* ((archive-name (installer-package-name installer disk-image))
          (package-dir (format #f "~a/package" (installer-work-dir installer))))
     (with-directory-excursion package-dir
       (invoke "7z" "a" "-tzip" "-r" archive-name))))
+
+(define (installer-build-icon installer disk-image)
+  (when (installer-icon installer)
+    (let ((filename (installer-icon-output-path installer disk-image)))
+      (mkdir-p (dirname filename))
+      (copy-file (installer-icon installer) filename))))
 
 (define* (build-os installer disk-image)
   (let ((table (sfdisk-list disk-image))
@@ -318,11 +326,12 @@
     (format #t "Building ~a ...\n" name)
     (let ((os (installer-os
                (default-os-name (os-short-name disk-image))
-               (icon (installer-icon installer))
+               (icon (installer-icon-output-path installer disk-image))
                (name name)
                (package (installer-package-name installer disk-image))
                (partitions (build-partitions installer table)))))
-      (build-package-archive installer disk-image)
+      (installer-build-archive installer disk-image)
+      (installer-build-icon installer disk-image)
       os)))
 
 (define (build-installer-data installer)

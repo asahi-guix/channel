@@ -7,6 +7,12 @@
 
 (test-begin suite)
 
+(test-equal "capitalize with space"
+  "Hello World" (capitalize "Hello world"))
+
+(test-equal "capitalize with dash"
+  "Hello World" (capitalize "hello-world" #\-))
+
 (test-equal "command-output success"
   "Hello world"
   (command-output "echo" "Hello" "world"))

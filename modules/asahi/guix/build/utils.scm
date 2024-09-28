@@ -1,7 +1,19 @@
 (define-module (asahi guix build utils)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
-  #:export (command-output))
+  #:export (capitalize
+            command-output))
+
+(define* (capitalize str #:optional (separator #\space))
+  (let ((words (string-split str separator)))
+    (string-join
+     (map
+      (lambda (word)
+        (string-append
+         (string-upcase (substring word 0 1))
+         (substring word 1)))
+      words)
+     " ")))
 
 (define (command-output cmd . args)
   "Execute CMD with ARGS and return its output without trailing newspace."

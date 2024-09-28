@@ -65,6 +65,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/packages/display-managers.scm \
 	modules/asahi/guix/packages/firmware.scm \
 	modules/asahi/guix/packages/gl.scm \
+	modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/packages/linux.scm \
 	modules/asahi/guix/packages/llvm.scm \
 	modules/asahi/guix/packages/misc.scm \
@@ -72,6 +73,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/packages/pulseaudio.scm \
 	modules/asahi/guix/packages/wm.scm \
 	modules/asahi/guix/packages/xorg.scm \
+        modules/asahi/guix/packages/website.scm \
 	modules/asahi/guix/services/channels.scm \
 	modules/asahi/guix/services/console-font.scm \
 	modules/asahi/guix/services/firmware.scm \

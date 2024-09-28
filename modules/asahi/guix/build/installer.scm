@@ -63,11 +63,11 @@
   (list "12.3" "12.3.1" "13.5"))
 
 (define %os-names
-  '(("asahi-guix-base-image" . "Asahi Guix Base")
-    ("asahi-guix-edge-image" . "Asahi Guix Edge")
-    ("asahi-guix-gnome-image" . "Asahi Guix with Gnome")
-    ("asahi-guix-plasma-image" . "Asahi Guix with KDE Plasma")
-    ("asahi-guix-sway-image" . "Asahi Guix with Sway")))
+  '(("asahi-guix-base" . "Asahi Guix Base")
+    ("asahi-guix-edge" . "Asahi Guix Edge")
+    ("asahi-guix-gnome" . "Asahi Guix with Gnome")
+    ("asahi-guix-plasma" . "Asahi Guix with KDE Plasma")
+    ("asahi-guix-sway" . "Asahi Guix with Sway")))
 
 (define-record-type* <installer>
   installer

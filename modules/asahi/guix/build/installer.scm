@@ -63,11 +63,11 @@
   (list "12.3" "12.3.1" "13.5"))
 
 (define %os-names
-  '(("asahi-base-image" . "Asahi Guix Base")
-    ("asahi-edge-image" . "Asahi Guix Edge")
-    ("asahi-gnome-image" . "Asahi Guix with Gnome")
-    ("asahi-plasma-image" . "Asahi Guix with KDE Plasma")
-    ("asahi-sway-image" . "Asahi Guix with Sway")))
+  '(("asahi-guix-base-image" . "Asahi Guix Base")
+    ("asahi-guix-edge-image" . "Asahi Guix Edge")
+    ("asahi-guix-gnome-image" . "Asahi Guix with Gnome")
+    ("asahi-guix-plasma-image" . "Asahi Guix with KDE Plasma")
+    ("asahi-guix-sway-image" . "Asahi Guix with Sway")))
 
 (define-record-type* <installer>
   installer
@@ -201,10 +201,21 @@
 (define (installer-esp-dir installer)
   (format #f "~a/package/esp" (installer-work-dir installer)))
 
-(define (installer-package-name installer disk-image)
-  (format #f "~a/~a.zip"
-          (installer-output-dir installer)
-          (disk-image-name disk-image)))
+(define (installer-icon-filename installer disk-image)
+  (format #f "~a-~a.icns" (disk-image-name disk-image)
+          (installer-package-version installer)))
+
+(define (installer-icon-output-path installer disk-image)
+  (string-append (installer-output-dir installer) "/"
+                 (installer-icon-filename installer disk-image)))
+
+(define (installer-package-filename installer disk-image)
+  (format #f "~a-~a.zip" (disk-image-name disk-image)
+          (installer-package-version installer)))
+
+(define (installer-package-output-path installer disk-image)
+  (format #f "~a/~a" (installer-output-dir installer)
+          (installer-package-filename installer disk-image)))
 
 (define (parse-serial-number text)
   (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
@@ -225,10 +236,6 @@
   (format #f "~a/package/~a.img"
           (installer-work-dir installer)
           (sfdisk-partition-name partition)))
-
-(define (installer-icon-output-path installer disk-image)
-  (string-append (installer-output-dir installer) "/"
-                 (disk-image-name disk-image) ".icns"))
 
 (define (efi-partition? partition)
   (equal? "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
@@ -312,7 +319,7 @@
        (sfdisk-table-partitions table)))
 
 (define (installer-build-archive installer disk-image)
-  (let* ((archive-name (installer-package-name installer disk-image))
+  (let* ((archive-name (installer-package-output-path installer disk-image))
          (package-dir (format #f "~a/package" (installer-work-dir installer))))
     (with-directory-excursion package-dir
       (invoke "7z" "a" "-tzip" "-r" archive-name))))
@@ -329,9 +336,9 @@
     (format #t "Building ~a ...\n" name)
     (let ((os (installer-os
                (default-os-name (os-short-name disk-image))
-               (icon (installer-icon-output-path installer disk-image))
+               (icon (installer-icon-filename installer disk-image))
                (name name)
-               (package (installer-package-name installer disk-image))
+               (package (installer-package-filename installer disk-image))
                (partitions (build-partitions installer table)))))
       (installer-build-archive installer disk-image)
       (installer-build-icon installer disk-image)

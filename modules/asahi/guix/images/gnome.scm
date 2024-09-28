@@ -1,9 +1,9 @@
 (define-module (asahi guix images gnome)
   #:use-module (asahi guix systems gnome)
   #:use-module (gnu system images asahi)
-  #:export (asahi-gnome-image))
+  #:export (asahi-guix-gnome-image))
 
-(define asahi-gnome-image
-  (make-asahi-image 'asahi-gnome-image asahi-gnome-os))
+(define asahi-guix-gnome-image
+  (make-asahi-image 'asahi-guix-gnome asahi-gnome-os))
 
-asahi-gnome-image
+asahi-guix-gnome-image

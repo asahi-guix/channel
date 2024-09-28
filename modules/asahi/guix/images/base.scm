@@ -1,9 +1,9 @@
 (define-module (asahi guix images base)
   #:use-module (asahi guix systems base)
   #:use-module (gnu system images asahi)
-  #:export (asahi-base-image))
+  #:export (asahi-guix-base-image))
 
-(define asahi-base-image
-  (make-asahi-image 'asahi-base-image asahi-base-os))
+(define asahi-guix-base-image
+  (make-asahi-image 'asahi-guix-base asahi-base-os))
 
-asahi-base-image
+asahi-guix-base-image

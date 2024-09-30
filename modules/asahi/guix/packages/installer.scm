@@ -22,10 +22,12 @@
   #:use-module (gnu system image)
   #:use-module (guix build-system copy)
   #:use-module (guix gexp)
+  #:use-module (guix git-download)
   #:use-module (guix modules)
   #:use-module (guix packages)
   #:use-module (ice-9 match)
-  #:export ($ASAHI_INSTALLER_OS_PATH))
+  #:export ($ASAHI_INSTALLER_OS_PATH
+            asahi-installer-source))
 
 (define %asahi-installer-os-path
   "share/asahi-installer/os")
@@ -34,6 +36,15 @@
   (search-path-specification
    (variable "ASAHI_INSTALLER_OS_PATH")
    (files (list %asahi-installer-os-path))))
+
+(define (asahi-installer-source version hash)
+  (origin
+    (method git-fetch)
+    (uri (git-reference
+          (url "https://github.com/AsahiLinux/asahi-installer")
+          (commit (string-append "v" version))))
+    (file-name (git-file-name "asahi-installer-source" version))
+    (sha256 (base32 hash))))
 
 (define-public asahi-installer-icon
   (package

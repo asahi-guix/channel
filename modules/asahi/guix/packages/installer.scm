@@ -84,6 +84,37 @@
     (description "This package provides the Asahi Guix installer icon.")
     (license license:expat)))
 
+(define-public asahi-installer-script
+  (package
+    (name "asahi-installer-script")
+    (version "0.0.1")
+    (source %asahi-installer-source)
+    (build-system copy-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'patch-source
+            (lambda* _
+              (substitute* "scripts/bootstrap-prod.sh"
+                (("https://github.com/AsahiLinux/asahi-installer/raw/prod/data/installer_data.json")
+                 "https://www.asahi-guix.org/os/installer_data.json")
+                (("https://alx.sh/installer_data.json")
+                 "https://www.asahi-guix.org/os/installer_data.json")
+                (("https://stats.asahilinux.org/report")
+                 "https://stats.asahi-guix.org/report"))))
+          (replace 'install
+            (lambda* (#:key inputs #:allow-other-keys)
+              (let ((target (string-append #$output "/bin/asahi-guix-installer.sh")))
+                (mkdir-p (dirname target))
+                (copy-file "scripts/bootstrap-prod.sh" target)
+                (chmod target #o755)))))))
+    (home-page "https://guix.gnu.org/")
+    (native-inputs (list imagemagick inkscape libicns))
+    (synopsis "Asahi Guix installer script")
+    (description "This package provides the Asahi Guix installer script.")
+    (license license:expat)))
+
 (define (make-installer-package image)
   (let ((flavor (capitalize (symbol->string (image-name image)))))
     (package

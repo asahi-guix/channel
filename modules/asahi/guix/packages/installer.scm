@@ -107,7 +107,9 @@
                 (("https://alx.sh/installer_data.json")
                  "https://www.asahi-guix.org/os/installer_data.json")
                 (("https://stats.asahilinux.org/report")
-                 "https://stats.asahi-guix.org/report"))))
+                 "https://stats.asahi-guix.org/report")
+                (("REPO_BASE=https://cdn.asahilinux.org")
+                 "REPO_BASE=https://www.asahi-guix.org"))))
           (replace 'install
             (lambda* (#:key inputs #:allow-other-keys)
               (let ((target (string-append #$output "/bin/asahi-guix-installer.sh")))

@@ -29,27 +29,36 @@
               (delete 'unpack)
               (replace 'install
                 (lambda* (#:key inputs #:allow-other-keys)
-                  (let ((target (string-append #$output "/share/asahi-guix-website/os")))
-                    (mkdir-p target)
+                  (let ((installer-script (assoc-ref inputs "asahi-installer-script"))
+                        (os-root (string-append #$output "/share/asahi-guix-website/os")))
+                    ;; Add index.html.
+                    (mkdir-p #$output)
+                    (invoke "touch" (string-append #$output "/index.html"))
+                    ;; Add installer bootstrap script.
+                    (copy-file (string-append installer-script "/bin/asahi-guix-installer.sh")
+                               (string-append #$output "/install.sh"))
+                    ;; Copy operating systems and installer data.
+                    (mkdir-p os-root)
                     (define os-dirs
                       (search-path-as-list
                        (list "share/asahi-installer/os")
                        (map cdr inputs)))
                     (define (symlink-os dir)
                       (for-each (lambda (file)
-                                  (symlink file (string-append target "/" (basename file))))
+                                  (symlink file (string-append os-root "/" (basename file))))
                                 (find-files dir)))
                     (define (merge-data sources)
                       (let ((data (map read-installer-data sources)))
                         (write-installer-data
                          (reduce merge-installer-data #f data)
-                         (string-append target "/installer_data.json"))))
+                         (string-append os-root "/installer_data.json"))))
                     (define (find-data-files dir)
                       (find-files dir ".json"))
                     (for-each symlink-os os-dirs)
                     (merge-data (append-map find-data-files os-dirs))))))))))
     (home-page "https://www.asahi-guix.org")
-    (inputs (list asahi-guix-base-installer-package
+    (inputs (list asahi-installer-script
+                  asahi-guix-base-installer-package
                   asahi-guix-edge-installer-package
                   ;; asahi-guix-gnome-installer-package
                   ;; asahi-guix-plasma-installer-package

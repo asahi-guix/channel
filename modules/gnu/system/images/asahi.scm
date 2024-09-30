@@ -16,7 +16,8 @@
    (size (* 40 (expt 2 20)))
    (offset root-offset)
    (label "BOOT")
-   (file-system "vfat")
+   (file-system "fat32")
+   (file-system-options (list "-S" "4096"))
    (flags '(esp))
    (initializer (with-extensions (list guile-zlib)
                   (with-imported-modules (source-module-closure
@@ -31,7 +32,7 @@
    (size 'guess)
    (label root-label)
    (file-system "ext4")
-   (file-system-options (list "-O" "^metadata_csum,^64bit"))
+   (file-system-options (list "-b" "4096" "-O" "^metadata_csum,^64bit"))
    (flags '(boot))
    (uuid "fef23143-fe46-4f7f-bbb9-efc46a2a5e48")
    (initializer (gexp initialize-root-partition))))

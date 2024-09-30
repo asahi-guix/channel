@@ -94,6 +94,11 @@
      (list
       #:phases
       #~(modify-phases %standard-phases
+          (delete 'patch-generated-file-shebangs)
+          (delete 'patch-shebangs)
+          (delete 'patch-source)
+          (delete 'patch-source-shebangs)
+          (delete 'patch-usr-bin-file)
           (add-after 'unpack 'patch-source
             (lambda* _
               (substitute* "scripts/bootstrap-prod.sh"

@@ -27,6 +27,7 @@
   #:use-module (guix packages)
   #:use-module (ice-9 match)
   #:export ($ASAHI_INSTALLER_OS_PATH
+            %asahi-installer-source
             asahi-installer-source))
 
 (define %asahi-installer-os-path
@@ -45,6 +46,9 @@
           (commit (string-append "v" version))))
     (file-name (git-file-name "asahi-installer-source" version))
     (sha256 (base32 hash))))
+
+(define %asahi-installer-source
+  (asahi-installer-source "0.7.8" "0yj4gn1p6cvk7d507y5l608axp72rkrn0f5f7hywhv8il9c0fs2j"))
 
 (define-public asahi-installer-icon
   (package

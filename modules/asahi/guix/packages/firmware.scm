@@ -53,35 +53,34 @@ propriatary and can not be packaged.")
     (license license:expat)))
 
 (define-public asahi-fwextract
-  (let ((hash "0yj4gn1p6cvk7d507y5l608axp72rkrn0f5f7hywhv8il9c0fs2j"))
-    (package
-      (name "asahi-fwextract")
-      (version "0.7.8")
-      (source
-       (origin
-         (inherit (asahi-installer-source version hash))
-         (modules '((guix build utils)))
-         (snippet
-          '(begin
-             (with-output-to-file "entry_points.txt"
-               (lambda ()
-                 (format #t "[console_scripts]\n")
-                 (format #t "asahi-fwextract = asahi_firmware.update:main")))))))
-      (build-system pyproject-build-system)
-      (arguments
-       (list
-        #:phases
-        #~(modify-phases %standard-phases
-            (add-after 'create-entrypoints 'wrap-program
-              (lambda* (#:key inputs outputs #:allow-other-keys)
-                (let ((out (assoc-ref outputs "out")))
-                  (wrap-program (string-append out "/bin/asahi-fwextract")
-                    `("LD_LIBRARY_PATH" ":" prefix
-                      (,(string-append (assoc-ref inputs "lzfse") "/lib"))))))))))
-      (inputs (list lzfse))
-      (home-page "https://github.com/AsahiLinux/asahi-installer")
-      (synopsis "Asahi Linux firmware extractor")
-      (description "The Asahi Linux firmware extractor transform the firmware archive
+  (package
+    (name "asahi-fwextract")
+    (version "0.7.8")
+    (source
+     (origin
+       (inherit %asahi-installer-source)
+       (modules '((guix build utils)))
+       (snippet
+        '(begin
+           (with-output-to-file "entry_points.txt"
+             (lambda ()
+               (format #t "[console_scripts]\n")
+               (format #t "asahi-fwextract = asahi_firmware.update:main")))))))
+    (build-system pyproject-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'create-entrypoints 'wrap-program
+            (lambda* (#:key inputs outputs #:allow-other-keys)
+              (let ((out (assoc-ref outputs "out")))
+                (wrap-program (string-append out "/bin/asahi-fwextract")
+                  `("LD_LIBRARY_PATH" ":" prefix
+                    (,(string-append (assoc-ref inputs "lzfse") "/lib"))))))))))
+    (inputs (list lzfse))
+    (home-page "https://github.com/AsahiLinux/asahi-installer")
+    (synopsis "Asahi Linux firmware extractor")
+    (description "The Asahi Linux firmware extractor transform the firmware archive
 provided by the Asahi Linux installer into a manifest and CPIO and TAR
 archives that are compatible with the Linux kernel.")
-      (license license:expat))))
+    (license license:expat)))

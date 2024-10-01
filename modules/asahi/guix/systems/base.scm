@@ -58,14 +58,16 @@
     (device (file-system-label "EFI - UEFI"))
     (mount-point "/boot/efi")
     (needed-for-boot? #t)
-    (type "vfat")))
+    ;; (type "vfat")
+    (type "fat32")))
 
 (define %asahi-base-file-system-root
   (file-system
     (device (file-system-label "asahi-guix-root"))
     (mount-point "/")
     (needed-for-boot? #t)
-    (type "ext4")))
+    ;; (type "ext4")
+    (type "btrfs")))
 
 (define %asahi-base-file-systems
   (cons* %asahi-base-file-system-boot

@@ -11,7 +11,8 @@
   #:use-module (guix modules))
 
 (define m1n1-u-boot-grub-installer
-  (with-extensions (list guile-zlib)
+  ;; TODO: guile-sqlite3 seems t be needed since 01-10-2024 ?
+  (with-extensions (list guile-zlib guile-sqlite3)
     (with-imported-modules (source-module-closure
                             '((asahi guix build bootloader m1n1))
                             #:select? import-asahi-module?)

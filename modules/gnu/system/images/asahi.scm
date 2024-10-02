@@ -13,11 +13,9 @@
 
 (define asahi-efi-partition
   (partition
-   ;; (size (* 40 (expt 2 20)))
    (size (* 80 (expt 2 20)))
    (offset root-offset)
    (label "BOOT")
-   ;; (file-system "fat32")
    (file-system "vfat")
    (file-system-options (list "-S" "4096"))
    (flags '(esp))

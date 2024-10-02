@@ -133,7 +133,7 @@ partition. In this example, the filesystem UUID is =86E8-4498=.
                            (device (file-system-label "asahi-guix-root"))
                            (mount-point "/")
                            (needed-for-boot? #t)
-                           (type "ext4"))
+                           (type "btrfs"))
                          %base-file-systems)))
 #+end_src
 
@@ -149,12 +149,12 @@ installing the operating system onto the hard drive.
 **** System installation
 
 Create a new root partition for the Guix system with =cfdisk=, format
-it with the EXT4 filesystem and label it as =asahi-guix-root=. From
+it with the BTRFS filesystem and label it as =asahi-guix-root=. From
 now on we assume this new root partition is created as
 =/dev/nvme0n1p8=.
 
 #+begin_src sh :results none
-  sudo mkfs.ext4 -L asahi-guix-root /dev/nvme0n1p8
+  sudo mkfs.btrfs -L asahi-guix-root /dev/nvme0n1p8
 #+end_src
 
 💣 Make sure the =metadata_csum_seed= feature isn't enabled on this

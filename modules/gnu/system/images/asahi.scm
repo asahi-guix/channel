@@ -13,7 +13,7 @@
 
 (define asahi-efi-partition
   (partition
-   (size (* 80 (expt 2 20)))
+   (size (* 500 (expt 2 20)))
    (offset root-offset)
    (label "BOOT")
    (file-system "vfat")

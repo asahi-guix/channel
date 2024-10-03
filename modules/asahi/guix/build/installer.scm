@@ -205,8 +205,8 @@
   (format #f "~a-~a.icns" (disk-image-name disk-image)
           (installer-package-version installer)))
 
-(define (installer-icon-output-path installer disk-image)
-  (string-append (installer-output-dir installer) "/"
+(define (installer-icon-package-path installer disk-image)
+  (string-append (installer-work-dir installer) "/package/"
                  (installer-icon-filename installer disk-image)))
 
 (define (installer-package-filename installer disk-image)
@@ -328,7 +328,7 @@
 
 (define (installer-build-icon installer disk-image)
   (when (installer-icon installer)
-    (let ((filename (installer-icon-output-path installer disk-image)))
+    (let ((filename (installer-icon-package-path installer disk-image)))
       (mkdir-p (dirname filename))
       (copy-file (installer-icon installer) filename))))
 
@@ -342,8 +342,8 @@
                (name name)
                (package (installer-package-filename installer disk-image))
                (partitions (build-partitions installer table)))))
-      (installer-build-archive installer disk-image)
       (installer-build-icon installer disk-image)
+      (installer-build-archive installer disk-image)
       os)))
 
 (define (build-installer-data installer)

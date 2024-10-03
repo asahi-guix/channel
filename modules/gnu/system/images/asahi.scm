@@ -15,7 +15,7 @@
   (partition
    (size (* 500 (expt 2 20)))
    (offset root-offset)
-   (label "BOOT")
+   (label "EFI")
    (file-system "vfat")
    (file-system-options (list "-S" "4096"))
    (flags '(esp))

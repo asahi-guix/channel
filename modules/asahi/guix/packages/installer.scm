@@ -143,6 +143,9 @@
                 (lambda* (#:key inputs #:allow-other-keys)
                   (build-installer-package
                    (installer-package
+                    (artifact-name #$artifact-name)
+                    (short-name #$short-name)
+                    (long-name #$long-name)
                     (data-file #$(format #f "~a.json" (image-name image)))
                     (disk-image (assoc-ref inputs "asahi-guix-installer-image"))
                     (icon (string-append

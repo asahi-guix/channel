@@ -16,12 +16,15 @@
   #:use-module (srfi srfi-1)
   #:export (build-installer-package
             installer-package
+            installer-package-artifact-name
             installer-package-data-file
             installer-package-disk-image
             installer-package-icon
+            installer-package-long-name
             installer-package-output-dir
-            installer-package-work-dir
             installer-package-script
+            installer-package-short-name
+            installer-package-work-dir
             installer-package?
             make-asahi-installer-package
             make-asahi-installer-package-main
@@ -42,14 +45,15 @@
   installer-package
   make-installer-package
   installer-package?
+  (artifact-name installer-package-artifact-name)
   (data-file installer-package-data-file (default %installer-metadata-file))
   (disk-image installer-package-disk-image)
   (icon installer-package-icon (default #f))
-  ;; (long-name installer-long-name)
+  (long-name installer-package-long-name)
   (output-dir installer-package-output-dir (default %output-dir))
-  (version installer-package-version)
   (script installer-package-script (default #f))
-  ;; (short-name installer-short-name)
+  (short-name installer-package-short-name)
+  (version installer-package-version)
   (work-dir installer-package-work-dir (default %work-dir)))
 
 (define (string-blank? s)

@@ -121,7 +121,7 @@
     (description "This package provides the Asahi Guix installer script.")
     (license license:expat)))
 
-(define (make-installer-package artifact-name short-name long-name image)
+(define (make-installer-package artifact-name default-os-name long-name image)
   (package
     (name artifact-name)
     (version "0.0.1")
@@ -144,7 +144,7 @@
                   (build-installer-package
                    (installer-package
                     (artifact-name #$artifact-name)
-                    (short-name #$short-name)
+                    (default-os-name #$default-os-name)
                     (long-name #$long-name)
                     (data-file #$(format #f "~a.json" (image-name image)))
                     (disk-image (assoc-ref inputs "asahi-guix-installer-image"))
@@ -162,7 +162,7 @@
                      ("p7zip" ,p7zip)))
     (native-search-paths
      (list $ASAHI_INSTALLER_OS_PATH))
-    (synopsis (format #f "~a installer package" short-name))
+    (synopsis (format #f "~a installer package" default-os-name))
     (description (format #f "Asahi Linux installer package for the ~a." long-name))
     (license license:expat)))
 

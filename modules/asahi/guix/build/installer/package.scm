@@ -23,7 +23,7 @@
             installer-package-long-name
             installer-package-output-dir
             installer-package-script
-            installer-package-short-name
+            installer-package-default-os-name
             installer-package-work-dir
             installer-package?
             make-asahi-installer-package
@@ -45,7 +45,7 @@
   (long-name installer-package-long-name)
   (output-dir installer-package-output-dir (default %output-dir))
   (script installer-package-script (default #f))
-  (short-name installer-package-short-name)
+  (default-os-name installer-package-default-os-name)
   (version installer-package-version)
   (work-dir installer-package-work-dir (default %work-dir)))
 
@@ -56,12 +56,12 @@
 (define (installer-esp-dir installer)
   (format #f "~a/package/esp" (installer-package-work-dir installer)))
 
-(define (installer-package-icon-filename installer disk-image)
-  (format #f "~a.icns" (disk-image-name disk-image)))
+(define (installer-package-icon-filename package)
+  (format #f "~a.icns" (installer-package-artifact-name package)))
 
-(define (installer-package-icon-workdir-path installer disk-image)
+(define (installer-package-icon-workdir-path installer)
   (string-append (installer-package-work-dir installer) "/package/"
-                 (installer-package-icon-filename installer disk-image)))
+                 (installer-package-icon-filename installer)))
 
 (define (installer-package-filename package)
   (format #f "~a.zip" (installer-package-artifact-name package)))
@@ -81,20 +81,20 @@
     (when (file-exists? filename)
       (parse-serial-number (command-output "file" filename)))))
 
-(define (installer-metadata-output-path installer)
-  (format #f "~a/~a" (installer-package-output-dir installer)
-          (installer-package-data-file installer)))
+(define (installer-package-metadata-filename package)
+  (string-append (installer-package-artifact-name package) ".json"))
 
-(define (installer-script-output-file installer)
-  (string-replace-substring (installer-package-data-file installer) ".json" ".sh"))
+(define (installer-metadata-output-path package)
+  (string-append (installer-package-output-dir package) "/"
+                 (installer-package-artifact-name package) ".json"))
 
-(define (installer-script-output-path installer)
-  (string-append (installer-package-output-dir installer) "/"
-                 (installer-script-output-file installer)))
+(define (installer-script-output-path package)
+  (string-append (installer-package-output-dir package) "/"
+                 (installer-package-artifact-name package) ".sh"))
 
-(define (installer-partition-filename installer partition)
+(define (installer-partition-filename package partition)
   (format #f "~a/package/~a.img"
-          (installer-package-work-dir installer)
+          (installer-package-work-dir package)
           (sfdisk-partition-name partition)))
 
 (define (partition-index table partition)
@@ -172,15 +172,15 @@
          (build-partition installer table partition))
        (sfdisk-table-partitions table)))
 
-(define (installer-build-archive installer disk-image)
-  (let* ((archive-name (installer-package-output-path installer))
-         (package-dir (format #f "~a/package" (installer-package-work-dir installer))))
+(define (installer-build-archive package)
+  (let* ((archive-name (installer-package-output-path package))
+         (package-dir (format #f "~a/package" (installer-package-work-dir package))))
     (with-directory-excursion package-dir
       (invoke "7z" "a" "-tzip" "-r" archive-name))))
 
 (define (installer-build-icon installer disk-image)
   (when (installer-package-icon installer)
-    (let ((filename (installer-package-icon-workdir-path installer disk-image)))
+    (let ((filename (installer-package-icon-workdir-path installer)))
       (mkdir-p (dirname filename))
       (copy-file (installer-package-icon installer) filename))))
 
@@ -190,13 +190,13 @@
          (name (installer-package-long-name installer)))
     (format #t "Building ~a ...\n" name)
     (let ((os (installer-os
-               (default-os-name (installer-package-short-name installer))
-               (icon (installer-package-icon-filename installer disk-image))
+               (default-os-name (installer-package-default-os-name installer))
+               (icon (installer-package-icon-filename installer))
                (name (installer-package-long-name installer))
                (package (installer-package-filename installer))
                (partitions (build-partitions installer table)))))
       (installer-build-icon installer disk-image)
-      (installer-build-archive installer disk-image)
+      (installer-build-archive installer)
       os)))
 
 (define (build-installer-metadata installer)
@@ -207,18 +207,18 @@
   (let ((filename (installer-metadata-output-path installer)))
     (write-installer-metadata data filename)))
 
-(define (save-installer-script installer)
-  (let ((source (installer-package-script installer))
-        (target (installer-script-output-path installer)))
+(define (save-installer-script package)
+  (let ((source (installer-package-script package))
+        (target (installer-script-output-path package)))
     (mkdir-p (dirname target))
     (copy-file source target)
     (substitute* target
       (("INSTALLER_DATA=.*")
        (string-append "INSTALLER_DATA="
-                      (installer-package-data-file installer) "\n"))
+                      (installer-package-metadata-filename package) "\n"))
       (("INSTALLER_DATA_ALT=.*")
        (string-append "INSTALLER_DATA_ALT="
-                      (installer-package-data-file installer) "\n")))
+                      (installer-package-metadata-filename package) "\n")))
     target))
 
 (define (print-package-info package)

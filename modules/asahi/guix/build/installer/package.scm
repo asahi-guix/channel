@@ -1,4 +1,5 @@
 (define-module (asahi guix build installer package)
+  #:use-module (asahi guix build installer operating-system)
   #:use-module (asahi guix build installer partition)
   #:use-module (asahi guix build sfdisk)
   #:use-module (asahi guix build utils)
@@ -16,17 +17,6 @@
             installer-data
             installer-data-os-list
             installer-data?
-            installer-os
-            installer-os-boot-object
-            installer-os-default-os-name
-            installer-os-extras
-            installer-os-icon
-            installer-os-name
-            installer-os-next-object
-            installer-os-package
-            installer-os-partitions
-            installer-os-supported-fw
-            installer-os?
             installer-package
             installer-package-data-file
             installer-package-disk-image
@@ -38,7 +28,6 @@
             make-asahi-installer-package
             make-asahi-installer-package-main
             make-installer-data
-            make-installer-os
             make-installer-package
             merge-installer-data
             write-installer-data
@@ -78,59 +67,17 @@
   installer-data?
   (os-list installer-data-os-list))
 
-(define-record-type* <installer-os>
-  installer-os
-  make-installer-os
-  installer-os?
-  (boot-object installer-os-boot-object (default "m1n1.bin"))
-  (default-os-name installer-os-default-os-name)
-  (extras installer-os-extras (default '()))
-  (icon installer-os-icon)
-  (name installer-os-name)
-  (next-object installer-os-next-object (default "m1n1/boot.bin"))
-  (package installer-os-package)
-  (partitions installer-os-partitions)
-  (supported-fw installer-os-supported-fw (default %supported-firmwares)))
-
-(define (installer-os->json os)
-  (define partitions
-    (map (lambda (partition)
-           (installer-partition->json-alist partition))
-         (installer-os-partitions os)))
-  `(("boot_object" . ,(installer-os-boot-object os))
-    ("default_os_name" . ,(installer-os-default-os-name os))
-    ("extras" . ,(apply vector (installer-os-extras os)))
-    ("icon" . ,(or (installer-os-icon os) 'null))
-    ("name" . ,(installer-os-name os))
-    ("next_object" . ,(installer-os-next-object os))
-    ("package" . ,(installer-os-package os))
-    ("partitions" . ,(apply vector partitions))
-    ("supported_fw" . ,(apply vector (installer-os-supported-fw os)))))
-
-(define (json->installer-os alist)
-  (installer-os
-   (boot-object (assoc-ref alist "boot_object"))
-   (default-os-name (assoc-ref alist "default_os_name"))
-   (extras (vector->list (assoc-ref alist "extras")))
-   (icon (null->false (assoc-ref alist "icon")))
-   (name (assoc-ref alist "name"))
-   (next-object (assoc-ref alist "next_object"))
-   (package (assoc-ref alist "package"))
-   (partitions (map json-alist->installer-partition
-                    (vector->list (assoc-ref alist "partitions"))))
-   (supported-fw (vector->list (assoc-ref alist "supported_fw")))))
-
 (define (installer-data->json data)
   (define os-list
     (map (lambda (os)
-           (installer-os->json os))
+           (installer-os->json-alist os))
          (installer-data-os-list data)))
   `(("os_list" . ,(apply vector os-list))))
 
 (define (json->installer-data alist)
   (installer-data
    (os-list
-    (map json->installer-os
+    (map json-alist->installer-os
          (vector->list (assoc-ref alist "os_list"))))))
 
 (define (string-blank? s)

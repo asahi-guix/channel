@@ -171,32 +171,32 @@
    "asahi-base-installer-package"
    "Asahi Guix Base"
    "Asahi GNU/Guix operating with the bare minimum"
-   asahi-guix-base-image))
+   asahi-base-os-image))
 
 (define-public asahi-edge-installer-package
   (make-installer-package
    "asahi-edge-installer-package"
    "Asahi Guix Edge"
    "Asahi GNU/Guix operating system with accelerated graphics"
-   asahi-guix-edge-image))
+   asahi-edge-os-image))
 
 (define-public asahi-gnome-installer-package
   (make-installer-package
    "asahi-gnome-installer-package"
    "Asahi Guix Gnome"
    "Asahi GNU/Guix operating system with the Gnome desktop environment"
-   asahi-guix-gnome-image))
+   asahi-gnome-os-image))
 
 (define-public asahi-plasma-installer-package
   (make-installer-package
    "asahi-plasma-installer-package"
    "Asahi Guix Plasma"
    "Asahi GNU/Guix operating system with the KDE Plasma desktop environment"
-   asahi-guix-plasma-image))
+   asahi-plasma-os-image))
 
 (define-public asahi-sway-installer-package
   (make-installer-package
    "asahi-sway-installer-package"
    "Asahi Guix Sway"
    "Asahi GNU/Guix operating system with the Sway window manager"
-   asahi-guix-sway-image))
+   asahi-sway-os-image))

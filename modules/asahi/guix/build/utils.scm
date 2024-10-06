@@ -2,7 +2,8 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   #:export (capitalize
-            command-output))
+            command-output
+            null->false))
 
 (define* (capitalize str #:optional (separator #\space))
   (let ((words (string-split str separator)))
@@ -28,3 +29,6 @@
               (string-trim-right output #\newline)
               (error (format #f "Command failed: ~a ~a\n" cmd (string-join args " "))))))
       #:unwind? #t)))
+
+(define (null->false x)
+  (if (eq? 'null x) #f x))

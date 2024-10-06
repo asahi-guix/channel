@@ -22,9 +22,9 @@
 
 (define %asahi-installer-image-entry
   (manifest-entry
-    (name "asahi-guix-installer-image")
+    (name "asahi-installer-os-image")
     (version %version)
-    (item asahi-guix-installer-image)))
+    (item asahi-installer-os-image)))
 
 (define %asahi-images-manifest
   (manifest (list %asahi-installer-image-entry)))

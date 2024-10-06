@@ -26,7 +26,7 @@
   #:export (cuirass-jobs))
 
 (define (asahi-images)
-  (list asahi-guix-installer-image))
+  (list asahi-installer-os-image))
 
 (define (asahi-manifests)
   (list %asahi-packages-manifest

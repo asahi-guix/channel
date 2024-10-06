@@ -34,13 +34,6 @@
 (define %output-dir "/tmp/asahi-guix/installer/out")
 (define %work-dir "/tmp/asahi-guix/installer/work")
 
-(define %os-names
-  '(("asahi-guix-base" . "Asahi Guix Base")
-    ("asahi-guix-edge" . "Asahi Guix Edge")
-    ("asahi-guix-gnome" . "Asahi Guix with Gnome")
-    ("asahi-guix-plasma" . "Asahi Guix with KDE Plasma")
-    ("asahi-guix-sway" . "Asahi Guix with Sway")))
-
 (define-record-type* <installer-package>
   installer-package
   make-installer-package

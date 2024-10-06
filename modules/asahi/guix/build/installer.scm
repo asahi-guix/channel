@@ -73,11 +73,12 @@
   installer
   make-installer
   installer?
+  (data-file installer-data-file (default %installer-data-file))
   (disk-images installer-disk-images)
   (icon installer-icon (default #f))
-  (data-file installer-data-file (default %installer-data-file))
   (output-dir installer-output-dir (default %output-dir))
   (package-version installer-package-version (default %package-version))
+  (script installer-script (default #f))
   (work-dir installer-work-dir (default %work-dir)))
 
 (define-record-type* <installer-data>
@@ -228,9 +229,16 @@
     (when (file-exists? filename)
       (parse-serial-number (command-output "file" filename)))))
 
-(define (installer-data-filename installer)
+(define (installer-data-output-path installer)
   (format #f "~a/~a" (installer-output-dir installer)
           (installer-data-file installer)))
+
+(define (installer-script-output-file installer)
+  (string-replace-substring (installer-data-file installer) ".json" ".sh"))
+
+(define (installer-script-output-path installer)
+  (string-append (installer-output-dir installer) "/"
+                 (installer-script-output-file installer)))
 
 (define (installer-partition-filename installer partition)
   (format #f "~a/package/~a.img"
@@ -372,8 +380,22 @@
     data))
 
 (define (save-installer-data installer data)
-  (let ((filename (installer-data-filename installer)))
+  (let ((filename (installer-data-output-path installer)))
     (write-installer-data data filename)))
+
+(define (save-installer-script installer)
+  (let ((source (installer-script installer))
+        (target (installer-script-output-path installer)))
+    (mkdir-p (dirname target))
+    (copy-file source target)
+    (substitute* target
+      (("INSTALLER_DATA=.*")
+       (string-append "INSTALLER_DATA="
+                      (installer-data-file installer) "\n"))
+      (("INSTALLER_DATA_ALT=.*")
+       (string-append "INSTALLER_DATA_ALT="
+                      (installer-data-file installer) "\n")))
+    target))
 
 (define* (make-asahi-installer-package
           disk-images #:key
@@ -381,6 +403,7 @@
           (icon #f)
           (output-dir %output-dir)
           (package-version %package-version)
+          (script #f)
           (work-dir %work-dir))
   (format #t "Building Asahi Guix installer packages ...\n")
   (format #t "  Data File ............. ~a\n" data-file)
@@ -393,9 +416,11 @@
                      (disk-images disk-images)
                      (icon icon)
                      (output-dir output-dir)
-                     (package-version package-version)))
+                     (package-version package-version)
+                     (script script)))
          (data (build-installer-data installer)))
     (save-installer-data installer data)
+    (save-installer-script installer)
     data))
 
 ;; Getopt
@@ -403,9 +428,10 @@
 (define option-spec
   '((data-file (single-char #\d) (value #t))
     (help (single-char #\h) (value #f))
-    (icon (single-char #\i) (value #t))
+    (icon (single-char #\i) (value #t))icon
     (output-dir (single-char #\o) (value #t))
     (package-version (single-char #\p) (value #t))
+    (script (single-char #\s) (value #t))
     (work-dir (single-char #\w) (value #t))))
 
 (define (data-file-option options)
@@ -420,6 +446,9 @@
 (define (package-version-option options)
   (option-ref options 'package-version %package-version))
 
+(define (script-option options)
+  (option-ref options 'script #f))
+
 (define (work-dir-option options)
   (option-ref options 'work-dir %work-dir))
 
@@ -431,6 +460,7 @@
   (display "  -i, --icon=ICON                 Icon to use\n")
   (display "  -o, --output-dir=DIR            Output directory\n")
   (display "  -p, --package-version=VERSION   Package version to use\n")
+  (display "  -s, --script=FILE               The path to the Asahi installer script\n")
   (display "  -w, --work-dir=DIR              Working directory\n"))
 
 (define* (make-asahi-installer-package-main args)
@@ -445,6 +475,7 @@
          #:icon (icon-option options)
          #:output-dir (output-dir-option options)
          #:package-version (package-version-option options)
+         #:script (script-option options)
          #:work-dir (work-dir-option options)))))
 
 ;; (define my-data (make-asahi-installer-package (list "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image")))

@@ -151,10 +151,12 @@
                              (assoc-ref inputs "asahi-guix-installer-icon")
                              "/share/asahi-installer/asahi-guix.icns")
                      #:output-dir (string-append #$output "/" #$%asahi-installer-os-path)
-                     #:package-version #$(package-version (current-guix))))))))))
+                     #:package-version #$(package-version (current-guix))
+                     #:script (search-input-file inputs "/bin/asahi-guix-installer.sh")))))))))
       (home-page "https://github.com/asahi-guix/channel")
       (native-inputs `(("asahi-guix-installer-icon" ,asahi-installer-icon)
                        ("asahi-guix-installer-image" ,(system-image image))
+                       ("asahi-guix-installer-script" ,asahi-installer-script)
                        ("util-linux" ,util-linux)
                        ("p7zip" ,p7zip)))
       (native-search-paths

@@ -12,75 +12,75 @@
   #:use-module (guix packages)
   #:use-module (guix profiles)
   #:use-module (guix transformations)
-  #:export (%asahi-image-manifest
-            %asahi-package-manifest
-            %asahi-system-manifest))
+  #:export (%asahi-images-manifest
+            %asahi-packages-manifest
+            %asahi-systems-manifest))
 
 (define %version "0.1.0")
 
 ;; Images
 
-(define %asahi-guix-installer-image
+(define %asahi-installer-image-entry
   (manifest-entry
     (name "asahi-guix-installer-image")
     (version %version)
     (item asahi-guix-installer-image)))
 
-(define %asahi-image-manifest
-  (manifest (list %asahi-guix-installer-image)))
+(define %asahi-images-manifest
+  (manifest (list %asahi-installer-image-entry)))
 
 ;; Systems
 
-(define %asahi-guix-base
+(define %asahi-base-entry
   (manifest-entry
-    (name "asahi-guix-base")
+    (name "asahi-base-os")
     (version %version)
     (item asahi-base-os)))
 
-(define %asahi-guix-edge
+(define %asahi-edge-entry
   (manifest-entry
-    (name "asahi-guix-edge")
+    (name "asahi-edge-os")
     (version %version)
     (item asahi-edge-os)))
 
-(define %asahi-guix-gnome
+(define %asahi-gnome-os-entry
   (manifest-entry
-    (name "asahi-guix-gnome")
+    (name "asahi-gnome-os")
     (version %version)
     (item asahi-gnome-os)))
 
-(define %asahi-guix-installer
+(define asahi-installer-os-entry
   (manifest-entry
-    (name "asahi-guix-installer")
+    (name "asahi-installer-os")
     (version %version)
     (item asahi-installation-os)))
 
-(define %asahi-guix-plasma
+(define %asahi-plasma-os-entry
   (manifest-entry
-    (name "asahi-guix-plasma")
+    (name "asahi-plasma-os")
     (version %version)
     (item asahi-plasma-os)))
 
-(define %asahi-guix-sway
+(define %asahi-sway-os-entry
   (manifest-entry
-    (name "asahi-guix-sway")
+    (name "asahi-sway-os")
     (version %version)
     (item asahi-sway-os)))
 
-(define %asahi-system-manifest
-  (manifest (list %asahi-guix-base
-                  %asahi-guix-edge
-                  %asahi-guix-gnome
-                  ;; %asahi-guix-installer
-                  %asahi-guix-plasma
-                  %asahi-guix-sway)))
+(define %asahi-systems-manifest
+  (manifest (list %asahi-base-entry
+                  %asahi-edge-entry
+                  %asahi-gnome-os-entry
+                  ;; asahi-installer-os-entry
+                  %asahi-plasma-os-entry
+                  %asahi-sway-os-entry)))
 
 ;; Packages
 
-(define %asahi-package-manifest
+(define %asahi-packages-manifest
   (packages->manifest (asahi-packages)))
 
 (concatenate-manifests
- (list %asahi-image-manifest
-       %asahi-package-manifest
-       %asahi-system-manifest))
+ (list %asahi-images-manifest
+       %asahi-packages-manifest
+       %asahi-systems-manifest))

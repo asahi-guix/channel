@@ -29,8 +29,8 @@
   (list asahi-guix-installer-image))
 
 (define (asahi-manifests)
-  (list %asahi-package-manifest
-        %asahi-system-manifest))
+  (list %asahi-packages-manifest
+        %asahi-systems-manifest))
 
 (define (arguments->channels arguments)
   (let ((channels (assq-ref arguments 'channels)))

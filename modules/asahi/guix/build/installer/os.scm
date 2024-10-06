@@ -18,6 +18,9 @@
             json-alist->installer-os
             make-installer-os))
 
+(define %supported-firmwares
+  (list "12.3" "12.3.1" "13.5"))
+
 (define-record-type* <installer-os>
   installer-os
   make-installer-os

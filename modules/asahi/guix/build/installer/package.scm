@@ -31,9 +31,6 @@
 (define %output-dir "/tmp/asahi-guix/installer/out")
 (define %work-dir "/tmp/asahi-guix/installer/work")
 
-(define %supported-firmwares
-  (list "12.3" "12.3.1" "13.5"))
-
 (define %os-names
   '(("asahi-guix-base" . "Asahi Guix Base")
     ("asahi-guix-edge" . "Asahi Guix Edge")

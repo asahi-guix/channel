@@ -1,7 +1,7 @@
 (define-module (asahi guix packages installer)
   #:use-module ((gnu packages linux) #:prefix linux:)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (asahi guix build installer)
+  #:use-module (asahi guix build installer package)
   #:use-module (asahi guix build modules)
   #:use-module (asahi guix build utils)
   #:use-module (asahi guix images base)
@@ -130,29 +130,28 @@
       (build-system copy-build-system)
       (arguments
        (list
-        #:modules '((asahi guix build installer)
+        #:modules '((asahi guix build installer package)
                     (guix build copy-build-system)
                     (guix build utils))
         #:phases
         (with-extensions (list guile-json-4)
           (with-imported-modules (source-module-closure
-                                  '((asahi guix build installer))
+                                  '((asahi guix build installer package))
                                   #:select? import-asahi-module?)
             #~(modify-phases %standard-phases
                 (delete 'unpack)
                 (replace 'install
                   (lambda* (#:key inputs #:allow-other-keys)
-                    (make-asahi-installer-package
-                     (list (assoc-ref inputs "asahi-guix-installer-image"))
-                     #:data-file #$(format #f "~a-~a.json"
-                                           (image-name image)
-                                           (package-version (current-guix)))
-                     #:icon (string-append
+                    (build-installer-package
+                     (installer-package
+                      (data-file #$(format #f "~a.json" (image-name image)))
+                      (disk-image (assoc-ref inputs "asahi-guix-installer-image"))
+                      (icon (string-append
                              (assoc-ref inputs "asahi-guix-installer-icon")
-                             "/share/asahi-installer/asahi-guix.icns")
-                     #:output-dir (string-append #$output "/" #$%asahi-installer-os-path)
-                     #:package-version #$(package-version (current-guix))
-                     #:script (search-input-file inputs "/bin/asahi-guix-installer.sh")))))))))
+                             "/share/asahi-installer/asahi-guix.icns"))
+                      (output-dir (string-append #$output "/" #$%asahi-installer-os-path))
+                      (version #$version)
+                      (script (search-input-file inputs "/bin/asahi-guix-installer.sh")))))))))))
       (home-page "https://github.com/asahi-guix/channel")
       (native-inputs `(("asahi-guix-installer-icon" ,asahi-installer-icon)
                        ("asahi-guix-installer-image" ,(system-image image))

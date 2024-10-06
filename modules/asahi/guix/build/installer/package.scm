@@ -107,14 +107,6 @@
           (installer-package-work-dir installer)
           (sfdisk-partition-name partition)))
 
-(define (efi-partition? partition)
-  (equal? "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
-          (sfdisk-partition-type partition)))
-
-(define (linux-partition? partition)
-  (equal? "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
-          (sfdisk-partition-type partition)))
-
 (define (partition-index table partition)
   (list-index (lambda (p)
                 (equal? partition p))
@@ -180,9 +172,9 @@
      (type "Linux"))))
 
 (define (build-partition installer table partition)
-  (cond ((efi-partition? partition)
+  (cond ((sfdisk-efi-partition? partition)
          (build-efi-partition installer table partition))
-        ((linux-partition? partition)
+        ((sfdisk-linux-partition? partition)
          (build-linux-partition installer table partition))))
 
 (define (build-partitions installer table)

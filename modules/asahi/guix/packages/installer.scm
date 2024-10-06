@@ -121,61 +121,79 @@
     (description "This package provides the Asahi Guix installer script.")
     (license license:expat)))
 
-(define (make-installer-package image)
-  (let ((flavor (capitalize (symbol->string (image-name image)))))
-    (package
-      (name (format #f "~a-installer-package" (image-name image)))
-      (version "0.0.1")
-      (source #f)
-      (build-system copy-build-system)
-      (arguments
-       (list
-        #:modules '((asahi guix build installer package)
-                    (guix build copy-build-system)
-                    (guix build utils))
-        #:phases
-        (with-extensions (list guile-json-4)
-          (with-imported-modules (source-module-closure
-                                  '((asahi guix build installer package))
-                                  #:select? import-asahi-module?)
-            #~(modify-phases %standard-phases
-                (delete 'unpack)
-                (replace 'install
-                  (lambda* (#:key inputs #:allow-other-keys)
-                    (build-installer-package
-                     (installer-package
-                      (data-file #$(format #f "~a.json" (image-name image)))
-                      (disk-image (assoc-ref inputs "asahi-guix-installer-image"))
-                      (icon (string-append
-                             (assoc-ref inputs "asahi-guix-installer-icon")
-                             "/share/asahi-installer/asahi-guix.icns"))
-                      (output-dir (string-append #$output "/" #$%asahi-installer-os-path))
-                      (version #$version)
-                      (script (search-input-file inputs "/bin/asahi-guix-installer.sh")))))))))))
-      (home-page "https://github.com/asahi-guix/channel")
-      (native-inputs `(("asahi-guix-installer-icon" ,asahi-installer-icon)
-                       ("asahi-guix-installer-image" ,(system-image image))
-                       ("asahi-guix-installer-script" ,asahi-installer-script)
-                       ("util-linux" ,util-linux)
-                       ("p7zip" ,p7zip)))
-      (native-search-paths
-       (list $ASAHI_INSTALLER_OS_PATH))
-      (synopsis (format #f "~a installer package" flavor))
-      (description (format #f "This package provides the ~a package
-for the Asahi Linux installer." flavor))
-      (license license:expat))))
+(define (make-installer-package artifact-name short-name long-name image)
+  (package
+    (name artifact-name)
+    (version "0.0.1")
+    (source #f)
+    (build-system copy-build-system)
+    (arguments
+     (list
+      #:modules '((asahi guix build installer package)
+                  (guix build copy-build-system)
+                  (guix build utils))
+      #:phases
+      (with-extensions (list guile-json-4)
+        (with-imported-modules (source-module-closure
+                                '((asahi guix build installer package))
+                                #:select? import-asahi-module?)
+          #~(modify-phases %standard-phases
+              (delete 'unpack)
+              (replace 'install
+                (lambda* (#:key inputs #:allow-other-keys)
+                  (build-installer-package
+                   (installer-package
+                    (data-file #$(format #f "~a.json" (image-name image)))
+                    (disk-image (assoc-ref inputs "asahi-guix-installer-image"))
+                    (icon (string-append
+                           (assoc-ref inputs "asahi-guix-installer-icon")
+                           "/share/asahi-installer/asahi-guix.icns"))
+                    (output-dir (string-append #$output "/" #$%asahi-installer-os-path))
+                    (version #$version)
+                    (script (search-input-file inputs "/bin/asahi-guix-installer.sh")))))))))))
+    (home-page "https://github.com/asahi-guix/channel")
+    (native-inputs `(("asahi-guix-installer-icon" ,asahi-installer-icon)
+                     ("asahi-guix-installer-image" ,(system-image image))
+                     ("asahi-guix-installer-script" ,asahi-installer-script)
+                     ("util-linux" ,util-linux)
+                     ("p7zip" ,p7zip)))
+    (native-search-paths
+     (list $ASAHI_INSTALLER_OS_PATH))
+    (synopsis (format #f "~a installer package" short-name))
+    (description (format #f "Asahi Linux installer package for the ~a." long-name))
+    (license license:expat)))
 
-(define-public asahi-guix-base-installer-package
-  (make-installer-package asahi-guix-base-image))
+(define-public asahi-base-installer-package
+  (make-installer-package
+   "asahi-base-installer-package"
+   "Asahi Guix Base"
+   "Asahi GNU/Guix operating with the bare minimum"
+   asahi-guix-base-image))
 
-(define-public asahi-guix-edge-installer-package
-  (make-installer-package asahi-guix-edge-image))
+(define-public asahi-edge-installer-package
+  (make-installer-package
+   "asahi-edge-installer-package"
+   "Asahi Guix Edge"
+   "Asahi GNU/Guix operating system with accelerated graphics"
+   asahi-guix-edge-image))
 
-(define-public asahi-guix-gnome-installer-package
-  (make-installer-package asahi-guix-gnome-image))
+(define-public asahi-gnome-installer-package
+  (make-installer-package
+   "asahi-gnome-installer-package"
+   "Asahi Guix Gnome"
+   "Asahi GNU/Guix operating system with the Gnome desktop environment"
+   asahi-guix-gnome-image))
 
-(define-public asahi-guix-plasma-installer-package
-  (make-installer-package asahi-guix-plasma-image))
+(define-public asahi-plasma-installer-package
+  (make-installer-package
+   "asahi-plasma-installer-package"
+   "Asahi Guix Plasma"
+   "Asahi GNU/Guix operating system with the KDE Plasma desktop environment"
+   asahi-guix-plasma-image))
 
-(define-public asahi-guix-sway-installer-package
-  (make-installer-package asahi-guix-sway-image))
+(define-public asahi-sway-installer-package
+  (make-installer-package
+   "asahi-sway-installer-package"
+   "Asahi Guix Sway"
+   "Asahi GNU/Guix operating system with the Sway window manager"
+   asahi-guix-sway-image))

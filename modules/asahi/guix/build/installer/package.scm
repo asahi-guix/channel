@@ -63,12 +63,6 @@
   (let ((parts (string-split filename #\/)))
     (string-join (cdr (string-split (last parts) #\-)) "-")))
 
-(define (os-short-name disk-image)
-  (or (assoc-ref %os-names (disk-image-name disk-image)) "Asahi Guix"))
-
-(define (os-long-name installer disk-image)
-  (string-append (os-short-name disk-image)))
-
 (define (installer-esp-dir installer)
   (format #f "~a/package/esp" (installer-package-work-dir installer)))
 
@@ -79,12 +73,12 @@
   (string-append (installer-package-work-dir installer) "/package/"
                  (installer-package-icon-filename installer disk-image)))
 
-(define (installer-package-filename installer disk-image)
-  (format #f "~a.zip" (disk-image-name disk-image)))
+(define (installer-package-filename package)
+  (format #f "~a.zip" (installer-package-artifact-name package)))
 
-(define (installer-package-output-path installer disk-image)
+(define (installer-package-output-path installer)
   (format #f "~a/~a" (installer-package-output-dir installer)
-          (installer-package-filename installer disk-image)))
+          (installer-package-filename installer)))
 
 (define (parse-serial-number text)
   (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
@@ -197,7 +191,7 @@
        (sfdisk-table-partitions table)))
 
 (define (installer-build-archive installer disk-image)
-  (let* ((archive-name (installer-package-output-path installer disk-image))
+  (let* ((archive-name (installer-package-output-path installer))
          (package-dir (format #f "~a/package" (installer-package-work-dir installer))))
     (with-directory-excursion package-dir
       (invoke "7z" "a" "-tzip" "-r" archive-name))))
@@ -211,13 +205,13 @@
 (define* (build-os installer)
   (let* ((disk-image (installer-package-disk-image installer))
          (table (sfdisk-list disk-image))
-         (name (os-long-name installer disk-image)))
+         (name (installer-package-long-name installer)))
     (format #t "Building ~a ...\n" name)
     (let ((os (installer-os
-               (default-os-name (os-short-name disk-image))
+               (default-os-name (installer-package-short-name installer))
                (icon (installer-package-icon-filename installer disk-image))
-               (name name)
-               (package (installer-package-filename installer disk-image))
+               (name (installer-package-long-name installer))
+               (package (installer-package-filename installer))
                (partitions (build-partitions installer table)))))
       (installer-build-icon installer disk-image)
       (installer-build-archive installer disk-image)

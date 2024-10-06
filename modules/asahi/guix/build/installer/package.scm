@@ -1,4 +1,5 @@
 (define-module (asahi guix build installer package)
+  #:use-module (asahi guix build installer metadata)
   #:use-module (asahi guix build installer operating-system)
   #:use-module (asahi guix build installer partition)
   #:use-module (asahi guix build sfdisk)
@@ -14,9 +15,6 @@
   #:use-module (json)
   #:use-module (srfi srfi-1)
   #:export (build-installer-package
-            installer-data
-            installer-data-os-list
-            installer-data?
             installer-package
             installer-package-data-file
             installer-package-disk-image
@@ -24,14 +22,10 @@
             installer-package-output-dir
             installer-package-work-dir
             installer-package-script
-            installer?
+            installer-package?
             make-asahi-installer-package
             make-asahi-installer-package-main
-            make-installer-data
-            make-installer-package
-            merge-installer-data
-            write-installer-data
-            read-installer-data))
+            make-installer-package))
 
 (define %installer-data-file "installer_data.json")
 (define %output-dir "/tmp/asahi-guix/installer/out")
@@ -60,25 +54,6 @@
   (script installer-package-script (default #f))
   ;; (short-name installer-short-name)
   (work-dir installer-package-work-dir (default %work-dir)))
-
-(define-record-type* <installer-data>
-  installer-data
-  make-installer-data
-  installer-data?
-  (os-list installer-data-os-list))
-
-(define (installer-data->json data)
-  (define os-list
-    (map (lambda (os)
-           (installer-os->json-alist os))
-         (installer-data-os-list data)))
-  `(("os_list" . ,(apply vector os-list))))
-
-(define (json->installer-data alist)
-  (installer-data
-   (os-list
-    (map json-alist->installer-os
-         (vector->list (assoc-ref alist "os_list"))))))
 
 (define (string-blank? s)
   (string-match "^\\s*$" s))
@@ -250,25 +225,6 @@
 (define (build-installer-data installer)
   (installer-data
    (os-list (list (build-os installer)))))
-
-(define (merge-installer-data data-1 data-2)
-  (installer-data
-   (os-list (append (installer-data-os-list data-1)
-                    (installer-data-os-list data-2)))))
-
-(define (read-installer-data filename)
-  (call-with-input-file filename
-    (lambda (port)
-      (json->installer-data (json->scm port)))))
-
-(define (write-installer-data data filename)
-  (let ((content (scm->json-string (installer-data->json data) #:pretty #t)))
-    (mkdir-p (dirname filename))
-    (call-with-output-file filename
-      (lambda (port)
-        (set-port-encoding! port "UTF-8")
-        (format port "~a\n" content)))
-    data))
 
 (define (save-installer-data installer data)
   (let ((filename (installer-data-output-path installer)))

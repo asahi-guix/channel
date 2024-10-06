@@ -43,7 +43,10 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/build/bootloader/m1n1.scm \
 	modules/asahi/guix/build/firmware.scm \
-	modules/asahi/guix/build/installer.scm \
+	modules/asahi/guix/build/installer/metadata.scm \
+	modules/asahi/guix/build/installer/package.scm \
+        modules/asahi/guix/build/installer/operating-system.scm \
+        modules/asahi/guix/build/installer/partition.scm \
 	modules/asahi/guix/build/modules.scm \
 	modules/asahi/guix/build/sfdisk.scm \
 	modules/asahi/guix/build/utils.scm \

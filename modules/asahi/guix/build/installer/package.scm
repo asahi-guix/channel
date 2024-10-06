@@ -25,8 +25,6 @@
             installer-package-default-os-name
             installer-package-work-dir
             installer-package?
-            make-asahi-installer-package
-            make-asahi-installer-package-main
             make-installer-package))
 
 (define %output-dir "/tmp/asahi-guix/installer/out")

@@ -146,7 +146,6 @@
                     (artifact-name #$artifact-name)
                     (default-os-name #$default-os-name)
                     (long-name #$long-name)
-                    (data-file #$(format #f "~a.json" (image-name image)))
                     (disk-image (assoc-ref inputs "asahi-guix-installer-image"))
                     (icon (string-append
                            (assoc-ref inputs "asahi-guix-installer-icon")

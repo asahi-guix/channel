@@ -17,7 +17,6 @@
   #:export (build-installer-package
             installer-package
             installer-package-artifact-name
-            installer-package-data-file
             installer-package-disk-image
             installer-package-icon
             installer-package-long-name
@@ -30,7 +29,6 @@
             make-asahi-installer-package-main
             make-installer-package))
 
-(define %installer-metadata-file "installer_data.json")
 (define %output-dir "/tmp/asahi-guix/installer/out")
 (define %work-dir "/tmp/asahi-guix/installer/work")
 
@@ -39,7 +37,6 @@
   make-installer-package
   installer-package?
   (artifact-name installer-package-artifact-name)
-  (data-file installer-package-data-file (default %installer-metadata-file))
   (disk-image installer-package-disk-image)
   (icon installer-package-icon (default #f))
   (long-name installer-package-long-name)
@@ -49,11 +46,13 @@
   (version installer-package-version)
   (work-dir installer-package-work-dir (default %work-dir)))
 
-(define (disk-image-name filename)
-  (let ((parts (string-split filename #\/)))
-    (string-join (cdr (string-split (last parts) #\-)) "-")))
+(define (parse-serial-number text)
+  (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
+    (if (regexp-match? match)
+        (match:substring match 1)
+        #f)))
 
-(define (installer-esp-dir package)
+(define (installer-package-esp-dir package)
   (format #f "~a/package/esp" (installer-package-work-dir package)))
 
 (define (installer-package-icon-filename package)
@@ -63,36 +62,30 @@
   (string-append (installer-package-work-dir package) "/package/"
                  (installer-package-icon-filename package)))
 
-(define (installer-package-filename package)
+(define (installer-package-archive-filename package)
   (format #f "~a.zip" (installer-package-artifact-name package)))
 
-(define (installer-package-output-path package)
+(define (installer-package-archive-output-path package)
   (format #f "~a/~a" (installer-package-output-dir package)
-          (installer-package-filename package)))
+          (installer-package-archive-filename package)))
 
-(define (parse-serial-number text)
-  (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
-    (if (regexp-match? match)
-        (match:substring match 1)
-        #f)))
-
-(define (installer-esp-volume-id package partition)
-  (let ((filename (installer-partition-filename package partition)))
+(define (installer-package-esp-volume-id package partition)
+  (let ((filename (installer-package-partition-filename package partition)))
     (when (file-exists? filename)
       (parse-serial-number (command-output "file" filename)))))
 
 (define (installer-package-metadata-filename package)
   (string-append (installer-package-artifact-name package) ".json"))
 
-(define (installer-metadata-output-path package)
+(define (installer-package-metadata-output package)
   (string-append (installer-package-output-dir package) "/"
                  (installer-package-artifact-name package) ".json"))
 
-(define (installer-script-output-path package)
+(define (installer-package-script-output package)
   (string-append (installer-package-output-dir package) "/"
                  (installer-package-artifact-name package) ".sh"))
 
-(define (installer-partition-filename package partition)
+(define (installer-package-partition-filename package partition)
   (format #f "~a/package/~a.img"
           (installer-package-work-dir package)
           (sfdisk-partition-name partition)))
@@ -112,14 +105,14 @@
   (let ((work-dir (installer-package-work-dir package)))
     (list "dd"
           (format #f "if=~a" (sfdisk-table-device table))
-          (format #f "of=~a" (installer-partition-filename package partition))
+          (format #f "of=~a" (installer-package-partition-filename package partition))
           (format #f "skip=~a" (sfdisk-partition-start partition))
           (format #f "count=~a" (sfdisk-partition-size partition))
           (format #f "bs=~a" (sfdisk-table-sector-size table)))))
 
 (define (extract-partition package table partition)
   (let ((command (extract-command package table partition))
-        (filename (installer-partition-filename package partition)))
+        (filename (installer-package-partition-filename package partition)))
     (mkdir-p (dirname filename))
     (apply system* command)
     filename))
@@ -128,8 +121,8 @@
   (format #f "~aB" (stat:size (stat filename))))
 
 (define (unpack-efi-partition package partition)
-  (let ((directory (installer-esp-dir package))
-        (filename (installer-partition-filename package partition)))
+  (let ((directory (installer-package-esp-dir package))
+        (filename (installer-package-partition-filename package partition)))
     (mkdir-p directory)
     (invoke "7z" "-aoa" "x" (format #f "-o~a" directory) filename)))
 
@@ -137,7 +130,7 @@
   (let* ((filename (extract-partition package table partition))
          (work-dir (installer-package-work-dir package))
          (size (partition-size filename))
-         (volume-id (installer-esp-volume-id package partition)))
+         (volume-id (installer-package-esp-volume-id package partition)))
     (format #t "  Partition #~a: ~a\n" (partition-index table partition) filename)
     (unpack-efi-partition package partition)
     (delete-file filename)
@@ -173,7 +166,7 @@
        (sfdisk-table-partitions table)))
 
 (define (build-archive package)
-  (let* ((archive-name (installer-package-output-path package))
+  (let* ((archive-name (installer-package-archive-output-path package))
          (package-dir (format #f "~a/package" (installer-package-work-dir package))))
     (with-directory-excursion package-dir
       (invoke "7z" "a" "-tzip" "-r" archive-name))))
@@ -193,7 +186,7 @@
                (default-os-name (installer-package-default-os-name package))
                (icon (installer-package-icon-filename package))
                (name (installer-package-long-name package))
-               (package (installer-package-filename package))
+               (package (installer-package-archive-filename package))
                (partitions partitions))))
       (build-icon package)
       (build-archive package)
@@ -203,12 +196,12 @@
   (installer-metadata (os-list (list (build-os package)))))
 
 (define (save-installer-metadata package data)
-  (let ((filename (installer-metadata-output-path package)))
+  (let ((filename (installer-package-metadata-output package)))
     (write-installer-metadata data filename)))
 
 (define (save-installer-script package)
   (let ((source (installer-package-script package))
-        (target (installer-script-output-path package)))
+        (target (installer-package-script-output package)))
     (mkdir-p (dirname target))
     (copy-file source target)
     (substitute* target
@@ -221,7 +214,6 @@
     target))
 
 (define (print-installer-package package)
-  (format #t "  Data File ............. ~a\n" (installer-package-data-file package))
   (format #t "  Icon .................. ~a\n" (installer-package-icon package))
   (format #t "  Output Directory ...... ~a\n" (installer-package-output-dir package))
   (format #t "  Version ............... ~a\n" (installer-package-version package))

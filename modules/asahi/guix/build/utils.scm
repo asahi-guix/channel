@@ -1,9 +1,11 @@
 (define-module (asahi guix build utils)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
+  #:use-module (ice-9 regex)
   #:export (capitalize
             command-output
-            null->false))
+            null->false
+            string-blank?))
 
 (define* (capitalize str #:optional (separator #\space))
   (let ((words (string-split str separator)))
@@ -32,3 +34,6 @@
 
 (define (null->false x)
   (if (eq? 'null x) #f x))
+
+(define (string-blank? s)
+  (string-match "^\\s*$" s))

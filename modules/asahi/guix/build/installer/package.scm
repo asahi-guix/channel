@@ -56,9 +56,6 @@
   (version installer-package-version)
   (work-dir installer-package-work-dir (default %work-dir)))
 
-(define (string-blank? s)
-  (string-match "^\\s*$" s))
-
 (define (disk-image-name filename)
   (let ((parts (string-split filename #\/)))
     (string-join (cdr (string-split (last parts) #\-)) "-")))

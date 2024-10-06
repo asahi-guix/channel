@@ -1,6 +1,6 @@
 (define-module (asahi guix build installer package)
   #:use-module (asahi guix build installer metadata)
-  #:use-module (asahi guix build installer operating-system)
+  #:use-module (asahi guix build installer os)
   #:use-module (asahi guix build installer partition)
   #:use-module (asahi guix build sfdisk)
   #:use-module (asahi guix build utils)
@@ -27,7 +27,7 @@
             make-asahi-installer-package-main
             make-installer-package))
 
-(define %installer-data-file "installer_data.json")
+(define %installer-metadata-file "installer_data.json")
 (define %output-dir "/tmp/asahi-guix/installer/out")
 (define %work-dir "/tmp/asahi-guix/installer/work")
 
@@ -45,7 +45,7 @@
   installer-package
   make-installer-package
   installer-package?
-  (data-file installer-package-data-file (default %installer-data-file))
+  (data-file installer-package-data-file (default %installer-metadata-file))
   (disk-image installer-package-disk-image)
   (icon installer-package-icon (default #f))
   ;; (long-name installer-long-name)
@@ -96,7 +96,7 @@
     (when (file-exists? filename)
       (parse-serial-number (command-output "file" filename)))))
 
-(define (installer-data-output-path installer)
+(define (installer-metadata-output-path installer)
   (format #f "~a/~a" (installer-package-output-dir installer)
           (installer-package-data-file installer)))
 
@@ -166,7 +166,7 @@
     (delete-file filename)
     (installer-partition
      (copy-firmware? #t)
-     (copy-installer-data? #t)
+     (copy-installer-metadata? #t)
      (format "fat")
      (name (sfdisk-partition-name partition))
      (size size)
@@ -222,13 +222,13 @@
       (installer-build-archive installer disk-image)
       os)))
 
-(define (build-installer-data installer)
-  (installer-data
+(define (build-installer-metadata installer)
+  (installer-metadata
    (os-list (list (build-os installer)))))
 
-(define (save-installer-data installer data)
-  (let ((filename (installer-data-output-path installer)))
-    (write-installer-data data filename)))
+(define (save-installer-metadata installer data)
+  (let ((filename (installer-metadata-output-path installer)))
+    (write-installer-metadata data filename)))
 
 (define (save-installer-script installer)
   (let ((source (installer-package-script installer))
@@ -254,7 +254,7 @@
 (define (build-installer-package package)
   (format #t "Building Asahi Guix installer packages ...\n")
   (print-package-info package)
-  (let ((data (build-installer-data package)))
-    (save-installer-data package data)
+  (let ((data (build-installer-metadata package)))
+    (save-installer-metadata package data)
     (save-installer-script package)
     data))

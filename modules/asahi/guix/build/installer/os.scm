@@ -1,11 +1,11 @@
-(define-module (asahi guix build installer operating-system)
+(define-module (asahi guix build installer os)
   #:use-module (asahi guix build installer partition)
   #:use-module (asahi guix build utils)
   #:use-module (guix records)
   #:export (installer-os
             installer-os->json-alist
             installer-os-copy-firmware?
-            installer-os-copy-installer-data?
+            installer-os-copy-installer-metadata?
             installer-os-expand?
             installer-os-format
             installer-os-image

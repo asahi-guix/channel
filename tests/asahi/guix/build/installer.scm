@@ -7,7 +7,7 @@
 
 (define efi-partition
   (installer-partition
-   (copy-installer-data? #t)
+   (copy-installer-metadata? #t)
    (copy-firmware? #t)
    (expand? #f)
    (format "fat")
@@ -20,7 +20,7 @@
 
 (define root-partition
   (installer-partition
-   (copy-installer-data? #f)
+   (copy-installer-metadata? #f)
    (copy-firmware? #f)
    (expand? #t)
    (format #f)
@@ -55,29 +55,29 @@
    (partitions (list efi-partition root-partition))
    (supported-fw '("12.3" "12.3.1" "13.5"))))
 
-(define test-installer-data
-  (installer-data
+(define test-installer-metadata
+  (installer-metadata
    (os-list
     (list base-os))))
 
 (test-begin suite)
 
 (test-equal "merge installer data"
-  (installer-data
+  (installer-metadata
    (os-list
     (list base-os edge-os)))
-  (merge-installer-data
-   (installer-data
+  (merge-installer-metadata
+   (installer-metadata
     (os-list
      (list base-os)))
-   (installer-data
+   (installer-metadata
     (os-list
      (list edge-os)))))
 
 (test-equal "write and read installer data"
-  test-installer-data
+  test-installer-metadata
   (let ((filename "/tmp/asahi-guix/write/installer/data"))
-    (write-installer-data test-installer-data filename)
-    (read-installer-data filename)))
+    (write-installer-metadata test-installer-metadata filename)
+    (read-installer-metadata filename)))
 
 (test-end suite)

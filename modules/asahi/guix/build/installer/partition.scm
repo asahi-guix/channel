@@ -4,7 +4,7 @@
   #:export (installer-partition
             installer-partition->json-alist
             installer-partition-copy-firmware?
-            installer-partition-copy-installer-data?
+            installer-partition-copy-installer-metadata?
             installer-partition-expand?
             installer-partition-format
             installer-partition-image
@@ -21,7 +21,7 @@
   installer-partition
   make-installer-partition
   installer-partition?
-  (copy-installer-data? installer-partition-copy-installer-data? (default #f))
+  (copy-installer-metadata? installer-partition-copy-installer-metadata? (default #f))
   (copy-firmware? installer-partition-copy-firmware? (default #f))
   (expand? installer-partition-expand? (default #f))
   (format installer-partition-format (default #f))
@@ -35,7 +35,7 @@
 (define (installer-partition->json-alist partition)
   "Convert an installer partition to a JSON alist."
   `(("copy_firmware" . ,(installer-partition-copy-firmware? partition))
-    ("copy_installer_data" . ,(installer-partition-copy-installer-data? partition))
+    ("copy_installer_data" . ,(installer-partition-copy-installer-metadata? partition))
     ("expand" . ,(installer-partition-expand? partition))
     ("format" . ,(or (installer-partition-format partition) 'null))
     ("image" . ,(or (installer-partition-image partition) 'null))
@@ -49,7 +49,7 @@
   "Convert a JSON alist to an installer partition."
   (installer-partition
    (copy-firmware? (assoc-ref alist "copy_firmware"))
-   (copy-installer-data? (assoc-ref alist "copy_installer_data"))
+   (copy-installer-metadata? (assoc-ref alist "copy_installer_data"))
    (expand? (assoc-ref alist "expand"))
    (format (null->false (assoc-ref alist "format")))
    (image (null->false (assoc-ref alist "image")))

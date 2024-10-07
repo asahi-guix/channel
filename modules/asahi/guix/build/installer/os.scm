@@ -4,14 +4,22 @@
   #:use-module (guix records)
   #:export (installer-os
             installer-os->json-alist
+            installer-os-boot-object
             installer-os-copy-firmware?
             installer-os-copy-installer-metadata?
+            installer-os-default-os-name
             installer-os-expand?
+            installer-os-extras
             installer-os-format
+            installer-os-icon
             installer-os-image
             installer-os-name
+            installer-os-next-object
+            installer-os-package
+            installer-os-partitions
             installer-os-size
             installer-os-source
+            installer-os-supported-fw
             installer-os-type
             installer-os-volume-id
             installer-os?

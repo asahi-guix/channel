@@ -165,37 +165,37 @@
     (description (format #f "Asahi Linux installer package for the ~a." long-name))
     (license license:expat)))
 
-(define-public asahi-base-installer-package
+(define-public asahi-installer-package-base
   (make-installer-package
-   "asahi-base-installer-package"
+   "asahi-installer-package-base"
    "Asahi Guix Base"
    "Asahi Guix with the bare minimum"
    asahi-base-os-image))
 
-(define-public asahi-edge-installer-package
+(define-public asahi-installer-package-edge
   (make-installer-package
-   "asahi-edge-installer-package"
+   "asahi-installer-package-edge"
    "Asahi Guix Edge"
    "Asahi Guix with accelerated graphics"
    asahi-edge-os-image))
 
-(define-public asahi-gnome-installer-package
+(define-public asahi-installer-package-gnome
   (make-installer-package
-   "asahi-gnome-installer-package"
+   "asahi-installer-package-gnome"
    "Asahi Guix Gnome"
    "Asahi Guix with the Gnome desktop environment"
    asahi-gnome-os-image))
 
-(define-public asahi-plasma-installer-package
+(define-public asahi-installer-package-plasma
   (make-installer-package
-   "asahi-plasma-installer-package"
+   "asahi-installer-package-plasma"
    "Asahi Guix Plasma"
    "Asahi Guix with the KDE Plasma desktop environment"
    asahi-plasma-os-image))
 
-(define-public asahi-sway-installer-package
+(define-public asahi-installer-package-sway
   (make-installer-package
-   "asahi-sway-installer-package"
+   "asahi-installer-package-sway"
    "Asahi Guix Sway"
    "Asahi Guix with the Sway window manager"
    asahi-sway-os-image))

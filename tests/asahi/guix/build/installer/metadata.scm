@@ -1,5 +1,7 @@
-(define-module (tests asahi guix build installer)
-  #:use-module (asahi guix build installer)
+(define-module (tests asahi guix build installer metadata)
+  #:use-module (asahi guix build installer metadata)
+  #:use-module (asahi guix build installer os)
+  #:use-module (asahi guix build installer partition)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-64))
 

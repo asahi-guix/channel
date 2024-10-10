@@ -97,7 +97,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 
 TESTS = \
  tests/asahi/guix/build/block-devices.scm \
- tests/asahi/guix/build/installer.scm \
+ tests/asahi/guix/build/installer/metadata.scm \
  tests/asahi/guix/build/sfdisk.scm \
  tests/asahi/guix/build/utils.scm
 

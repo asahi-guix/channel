@@ -1,11 +1,11 @@
-(define-module (tests asahi guix build installer data)
+(define-module (tests asahi guix installer data)
   #:use-module (asahi guix installer data)
   #:use-module (asahi guix installer os)
   #:use-module (asahi guix installer partition)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-64))
 
-(define suite "test-asahi-guix-build-installer")
+(define suite "test-asahi-guix-installer-data")
 
 (define efi-partition
   (installer-partition

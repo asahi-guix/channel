@@ -1,4 +1,4 @@
-(define-module (asahi guix build installer partition)
+(define-module (asahi guix installer partition)
   #:use-module (asahi guix build utils)
   #:use-module (guix records)
   #:export (installer-partition

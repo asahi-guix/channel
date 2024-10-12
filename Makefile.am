@@ -43,10 +43,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/build/bootloader/m1n1.scm \
 	modules/asahi/guix/build/firmware.scm \
-	modules/asahi/guix/build/installer/metadata.scm \
 	modules/asahi/guix/build/installer/package.scm \
-        modules/asahi/guix/build/installer/os.scm \
-        modules/asahi/guix/build/installer/partition.scm \
 	modules/asahi/guix/build/modules.scm \
 	modules/asahi/guix/build/sfdisk.scm \
 	modules/asahi/guix/build/utils.scm \
@@ -89,15 +86,18 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/systems/gnome.scm \
 	modules/asahi/guix/systems/install.scm \
 	modules/asahi/guix/systems/plasma.scm \
-        modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/systems/sway.scm \
 	modules/asahi/guix/transformations.scm \
 	modules/asahi/guix/udev.scm \
+	modules/asahi/guix/installer/data.scm \
+        modules/asahi/guix/installer/os.scm \
+        modules/asahi/guix/installer/partition.scm \
+        modules/asahi/guix/packages/installer.scm \
         modules/gnu/system/images/asahi.scm
 
 TESTS = \
  tests/asahi/guix/build/block-devices.scm \
- tests/asahi/guix/build/installer/metadata.scm \
+ tests/asahi/guix/installer/data.scm \
  tests/asahi/guix/build/sfdisk.scm \
  tests/asahi/guix/build/utils.scm
 

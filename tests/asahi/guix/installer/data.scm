@@ -1,7 +1,7 @@
-(define-module (tests asahi guix build installer metadata)
-  #:use-module (asahi guix build installer metadata)
-  #:use-module (asahi guix build installer os)
-  #:use-module (asahi guix build installer partition)
+(define-module (tests asahi guix build installer data)
+  #:use-module (asahi guix installer data)
+  #:use-module (asahi guix installer os)
+  #:use-module (asahi guix installer partition)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-64))
 
@@ -57,29 +57,29 @@
    (partitions (list efi-partition root-partition))
    (supported-fw '("12.3" "12.3.1" "13.5"))))
 
-(define test-installer-metadata
-  (installer-metadata
+(define test-installer-data
+  (installer-data
    (os-list
     (list base-os))))
 
 (test-begin suite)
 
 (test-equal "merge installer data"
-  (installer-metadata
+  (installer-data
    (os-list
     (list base-os edge-os)))
-  (merge-installer-metadata
-   (installer-metadata
+  (merge-installer-data
+   (installer-data
     (os-list
      (list base-os)))
-   (installer-metadata
+   (installer-data
     (os-list
      (list edge-os)))))
 
 (test-equal "write and read installer data"
-  test-installer-metadata
+  test-installer-data
   (let ((filename "/tmp/asahi-guix/write/installer/data"))
-    (write-installer-metadata test-installer-metadata filename)
-    (read-installer-metadata filename)))
+    (write-installer-data test-installer-data filename)
+    (read-installer-data filename)))
 
 (test-end suite)

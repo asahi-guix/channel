@@ -23,7 +23,6 @@
             installer-package-long-name
             installer-package-output-dir
             installer-package-script
-            installer-package-version
             installer-package-work-dir
             installer-package?
             make-installer-package))
@@ -42,7 +41,6 @@
   (long-name installer-package-long-name)
   (output-dir installer-package-output-dir (default %output-dir))
   (script installer-package-script (default #f))
-  (version installer-package-version)
   (work-dir installer-package-work-dir (default %work-dir)))
 
 (define (parse-serial-number text)
@@ -215,7 +213,6 @@
 (define (print-installer-package package)
   (format #t "  Icon .................. ~a\n" (installer-package-icon package))
   (format #t "  Output Directory ...... ~a\n" (installer-package-output-dir package))
-  (format #t "  Version ............... ~a\n" (installer-package-version package))
   (format #t "  Work Directory ........ ~a\n" (installer-package-work-dir package)))
 
 (define (build-installer-package package)

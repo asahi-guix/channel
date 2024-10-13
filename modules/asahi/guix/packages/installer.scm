@@ -165,3 +165,34 @@
     (source (system-image asahi-base-os-image))
     (synopsis "Asahi Guix Sway")
     (description "Asahi Guix with the Sway window manager.")))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(define-public asahi-installer-os-base2
+  (package
+    (name "asahi-installer-os-base2")
+    (version "0.0.1")
+    (source (system-image asahi-base-os-image))
+    (build-system installer-build-system)
+    (home-page "https://github.com/asahi-guix/channel")
+    (native-search-paths (list $ASAHI_INSTALLER_OS_PATH))
+    (synopsis "Asahi Guix Base")
+    (description "Asahi Guix with the bare minimum.")
+    (license license:expat)))

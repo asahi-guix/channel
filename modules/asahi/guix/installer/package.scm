@@ -18,12 +18,12 @@
             install-package
             installer-package
             installer-package-artifact-name
+            installer-package-build-dir
             installer-package-default-os-name
             installer-package-disk-image
             installer-package-icon
             installer-package-long-name
             installer-package-script
-            installer-package-build-dir
             installer-package-version
             installer-package?
             make-installer-package))

@@ -13,6 +13,7 @@
   (build-package
    (installer-package
     (artifact-name name)
+    (build-dir "build")
     (default-os-name name)
     (long-name name)
     (disk-image source)
@@ -24,6 +25,7 @@
   (install-package
    (installer-package
     (artifact-name name)
+    (build-dir "build")
     (default-os-name name)
     (long-name name)
     (disk-image source)

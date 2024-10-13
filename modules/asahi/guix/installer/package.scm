@@ -85,8 +85,10 @@
           (sfdisk-partition-name partition)))
 
 (define (extract-partition package table partition)
-  (let ((filename (installer-package-partition-path package partition)))
-    (sfdisk-extract-partition table partition filename)))
+  (let* ((filename (installer-package-partition-path package partition))
+         (partition (sfdisk-extract-partition table partition filename)))
+    (reset-timestamps filename)
+    partition))
 
 (define (partition-size filename)
   (format #f "~aB" (stat:size (stat filename))))
@@ -95,7 +97,9 @@
   (let ((directory (installer-package-esp-dir package))
         (filename (installer-package-partition-path package partition)))
     (mkdir-p directory)
-    (invoke "7z" "-aoa" "x" (format #f "-o~a" directory) filename)))
+    (invoke "7z" "-aoa" "x" (format #f "-o~a" directory) filename)
+    (reset-timestamps directory)
+    directory))
 
 (define (build-efi-partition package table partition)
   (let* ((filename (extract-partition package table partition))
@@ -140,14 +144,17 @@
   (let* ((archive-name (installer-package-archive-path package))
          (package-dir (format #f "~a/package" (installer-package-build-dir package))))
     (with-directory-excursion package-dir
-      (reset-timestamps package-dir)
-      (invoke "7z" "a" "-tzip" "-r" archive-name))))
+      (invoke "7z" "a" "-tzip" "-r" archive-name)
+      (reset-timestamps archive-name)
+      archive-name)))
 
 (define (build-icon package)
   (when (installer-package-icon package)
     (let ((filename (installer-package-icon-path package)))
       (mkdir-p (dirname filename))
-      (copy-file (installer-package-icon package) filename))))
+      (copy-file (installer-package-icon package) filename)
+      (reset-timestamps filename)
+      filename)))
 
 (define (build-os package)
   (let* ((disk-image (installer-package-disk-image package))
@@ -167,6 +174,7 @@
   (let ((data (installer-data (os-list (list (build-os package)))))
         (filename (installer-package-metadata-path package)))
     (write-installer-data data filename)
+    (reset-timestamps filename)
     data))
 
 (define (build-installer-script package)
@@ -181,6 +189,7 @@
       (("INSTALLER_DATA_ALT=.*")
        (string-append "INSTALLER_DATA_ALT="
                       (installer-package-metadata-file package) "\n")))
+    (reset-timestamps target)
     target))
 
 (define (print-package package)

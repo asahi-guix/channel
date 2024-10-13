@@ -4,8 +4,8 @@
   #:use-module (json)
   #:export (make-sfdisk-partition
             make-sfdisk-table
-            sfdisk-efi-partition?
-            sfdisk-linux-partition?
+            sfdisk-partition-efi?
+            sfdisk-partition-linux?
             sfdisk-list
             sfdisk-parse
             sfdisk-partition
@@ -56,11 +56,11 @@
   (type sfdisk-partition-type)
   (uuid sfdisk-partition-uuid))
 
-(define (sfdisk-efi-partition? partition)
+(define (sfdisk-partition-efi? partition)
   (equal? "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
           (sfdisk-partition-type partition)))
 
-(define (sfdisk-linux-partition? partition)
+(define (sfdisk-partition-linux? partition)
   (equal? "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
           (sfdisk-partition-type partition)))
 

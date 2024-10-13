@@ -155,9 +155,9 @@
      (type "Linux"))))
 
 (define (build-partition package table partition)
-  (cond ((sfdisk-efi-partition? partition)
+  (cond ((sfdisk-partition-efi? partition)
          (build-efi-partition package table partition))
-        ((sfdisk-linux-partition? partition)
+        ((sfdisk-partition-linux? partition)
          (build-linux-partition package table partition))))
 
 (define (build-partitions package table)

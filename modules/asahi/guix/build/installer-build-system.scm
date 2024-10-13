@@ -9,7 +9,7 @@
 
 ;; Phases
 
-(define* (build #:key name icon inputs output-dir script source version #:allow-other-keys)
+(define* (build #:key name icon inputs script source version #:allow-other-keys)
   (build-package
    (installer-package
     (artifact-name name)
@@ -17,12 +17,20 @@
     (long-name name)
     (disk-image source)
     (icon icon)
-    (output-dir output-dir)
     (script script)
     (version version))))
 
-(define* (install #:key name icon inputs output-dir script source version #:allow-other-keys)
-  #t)
+(define* (install #:key name icon inputs outputs script source version #:allow-other-keys)
+  (install-package
+   (installer-package
+    (artifact-name name)
+    (default-os-name name)
+    (long-name name)
+    (disk-image source)
+    (icon icon)
+    (script script)
+    (version version))
+   (assoc-ref outputs "out")))
 
 (define %standard-phases
   (modify-phases gnu:%standard-phases

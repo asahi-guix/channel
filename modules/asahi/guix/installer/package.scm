@@ -22,29 +22,26 @@
             installer-package-disk-image
             installer-package-icon
             installer-package-long-name
-            installer-package-output-dir
             installer-package-script
-            installer-package-work-dir
+            installer-package-build-dir
             installer-package-version
             installer-package?
             make-installer-package))
 
-(define %output-dir "/tmp/asahi-guix/installer/out")
-(define %work-dir "/tmp/asahi-guix/installer/work")
+(define %build-dir "/tmp/asahi-guix/installer/work")
 
 (define-record-type* <installer-package>
   installer-package
   make-installer-package
   installer-package?
   (artifact-name installer-package-artifact-name)
+  (build-dir installer-package-build-dir (default %build-dir))
   (default-os-name installer-package-default-os-name)
   (disk-image installer-package-disk-image)
   (icon installer-package-icon (default #f))
   (long-name installer-package-long-name)
-  (output-dir installer-package-output-dir (default %output-dir))
   (script installer-package-script (default #f))
-  (version installer-package-version (default #f) )
-  (work-dir installer-package-work-dir (default %work-dir)))
+  (version installer-package-version (default #f) ))
 
 (define (parse-serial-number text)
   (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
@@ -53,20 +50,20 @@
         #f)))
 
 (define (installer-package-esp-dir package)
-  (format #f "~a/package/esp" (installer-package-work-dir package)))
+  (format #f "~a/package/esp" (installer-package-build-dir package)))
 
 (define (installer-package-icon-filename package)
   (format #f "~a.icns" (installer-package-artifact-name package)))
 
 (define (installer-package-icon-workdir-path package)
-  (string-append (installer-package-work-dir package) "/package/"
+  (string-append (installer-package-build-dir package) "/package/"
                  (installer-package-icon-filename package)))
 
 (define (installer-package-archive-filename package)
   (format #f "~a.zip" (installer-package-artifact-name package)))
 
 (define (installer-package-archive-output-path package)
-  (format #f "~a/~a" (installer-package-output-dir package)
+  (format #f "~a/~a" (installer-package-build-dir package)
           (installer-package-archive-filename package)))
 
 (define (installer-package-esp-volume-id package partition)
@@ -78,20 +75,20 @@
   (string-append (installer-package-artifact-name package) ".json"))
 
 (define (installer-package-metadata-output package)
-  (string-append (installer-package-output-dir package) "/"
+  (string-append (installer-package-build-dir package) "/"
                  (installer-package-artifact-name package) ".json"))
 
 (define (installer-package-script-output package)
-  (string-append (installer-package-output-dir package) "/"
+  (string-append (installer-package-build-dir package) "/"
                  (installer-package-artifact-name package) ".sh"))
 
 (define (installer-package-partition-filename package partition)
   (format #f "~a/package/~a.img"
-          (installer-package-work-dir package)
+          (installer-package-build-dir package)
           (sfdisk-partition-name partition)))
 
 (define (partition-filename package table partition)
-  (format #f "~a/~a" (installer-package-work-dir package)
+  (format #f "~a/~a" (installer-package-build-dir package)
           (list-index (lambda (p)
                         (equal? partition p))
                       (sfdisk-table-partitions table))))
@@ -111,7 +108,7 @@
 
 (define (build-efi-partition package table partition)
   (let* ((filename (extract-partition package table partition))
-         (work-dir (installer-package-work-dir package))
+         (build-dir (installer-package-build-dir package))
          (size (partition-size filename))
          (volume-id (installer-package-esp-volume-id package partition)))
     (format #t "  Partition #~a: ~a\n" (sfdisk-partition-index table partition) filename)
@@ -150,7 +147,7 @@
 
 (define (build-archive package)
   (let* ((archive-name (installer-package-archive-output-path package))
-         (package-dir (format #f "~a/package" (installer-package-work-dir package))))
+         (package-dir (format #f "~a/package" (installer-package-build-dir package))))
     (with-directory-excursion package-dir
       (invoke "7z" "a" "-tzip" "-r" archive-name))))
 
@@ -197,18 +194,29 @@
     target))
 
 (define (print-installer-package package)
+  (format #t "  Artifact Name ......... ~a\n" (installer-package-artifact-name package))
+  (format #t "  Build Directory ....... ~a\n" (installer-package-build-dir package))
+  (format #t "  Default OS Name ....... ~a\n" (installer-package-default-os-name package))
+  (format #t "  Disk Image ............ ~a\n" (installer-package-disk-image package))
   (format #t "  Icon .................. ~a\n" (installer-package-icon package))
-  (format #t "  Output Directory ...... ~a\n" (installer-package-output-dir package))
-  (format #t "  Work Directory ........ ~a\n" (installer-package-work-dir package)))
+  (format #t "  Long Name ............. ~a\n" (installer-package-long-name package))
+  (format #t "  Script ................ ~a\n" (installer-package-script package))
+  (format #t "  Version ............... ~a\n" (installer-package-version package)))
 
 (define (build-package package)
-  (format #t "Building Asahi Guix installer packages ...\n")
+  (format #t "Building Asahi installer package ...\n")
   (print-installer-package package)
   (let ((data (build-installer-data package)))
     (save-installer-data package data)
     (save-installer-script package)
     data))
 
-(define (install-package package)
-  (format #t "Building Asahi Guix installer packages ...\n")
-  (print-installer-package package))
+(define (install-package package directory)
+  (format #t "Installing Asahi installer package ...\n")
+  (print-installer-package package)
+  (format #t "  Install Directory ..... ~a\n" directory)
+  (let ((os-dir (string-append directory "/share/asahi-installer/os")))
+    (mkdir-p os-dir)
+    (install-file (installer-package-archive-output-path package) os-dir)
+    (install-file (installer-package-metadata-output package) os-dir)
+    (install-file (installer-package-script-output package) os-dir)))

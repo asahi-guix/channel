@@ -67,6 +67,7 @@
                    ,@`(("asahi-installer-icon" ,icon)
                        ("asahi-installer-script" ,script)
                        ("util-linux" ,util-linux)
+                       ("zip" ,zip)
                        ("p7zip" ,p7zip))))
     (build-inputs native-inputs)
     (outputs outputs)

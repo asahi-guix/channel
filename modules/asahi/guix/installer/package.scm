@@ -145,7 +145,9 @@
          (package-dir (format #f "~a/package" (installer-package-build-dir package))))
     (with-directory-excursion package-dir
       (reset-timestamps package-dir)
-      (invoke "7z" "a" "-tzip" "-r" archive-name)
+      ;; TODO: 7z compresses better but isn't reproducible?
+      ;; (invoke "7z" "a" "-tzip" "-r" archive-name)
+      (invoke "zip" "-9" "-r" "-X" archive-name ".")
       (reset-timestamps archive-name)
       archive-name)))
 

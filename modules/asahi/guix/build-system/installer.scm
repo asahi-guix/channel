@@ -57,7 +57,6 @@
   "Return a bag for NAME from the given arguments."
   (define private-keywords
     '(#:target #:inputs #:native-inputs))
-
   (bag
     (name name)
     (system system)
@@ -79,6 +78,8 @@
 (define* (installer-build name inputs
                           #:key
                           guile source
+                          (os-description "Asahi Guix")
+                          (os-name "Asahi Guix")
                           (outputs '("out"))
                           (search-paths '())
                           (out-of-source? #t)
@@ -108,6 +109,8 @@
                      #:version #$version
                      #:source #+source
                      #:system #$system
+                     #:os-name #$os-name
+                     #:os-description #$os-description
                      #:outputs %outputs
                      #:inputs %build-inputs
                      #:icon (string-append

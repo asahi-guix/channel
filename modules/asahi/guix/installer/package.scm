@@ -18,12 +18,12 @@
   #:export (build-package
             install-package
             installer-package
-            installer-package-artifact-name
+            installer-package-artifact
             installer-package-build-dir
-            installer-package-default-os-name
             installer-package-disk-image
             installer-package-icon
-            installer-package-long-name
+            installer-package-os-description
+            installer-package-os-name
             installer-package-script
             installer-package-version
             installer-package?
@@ -35,14 +35,14 @@
   installer-package
   make-installer-package
   installer-package?
-  (artifact-name installer-package-artifact-name)
+  (artifact installer-package-artifact)
   (build-dir installer-package-build-dir (default %build-dir))
-  (default-os-name installer-package-default-os-name)
   (disk-image installer-package-disk-image)
   (icon installer-package-icon (default #f))
-  (long-name installer-package-long-name)
+  (os-description installer-package-os-description)
+  (os-name installer-package-os-name)
   (script installer-package-script (default #f))
-  (version installer-package-version (default #f) ))
+  (version installer-package-version (default #f)))
 
 (define (parse-serial-number text)
   (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
@@ -58,7 +58,7 @@
                  (basename (installer-package-icon package))))
 
 (define (installer-package-archive-file package)
-  (format #f "~a.zip" (installer-package-artifact-name package)))
+  (format #f "~a.zip" (installer-package-artifact package)))
 
 (define (installer-package-archive-path package)
   (format #f "~a/~a" (installer-package-build-dir package)
@@ -70,7 +70,7 @@
       (parse-serial-number (command-output "file" filename)))))
 
 (define (installer-package-metadata-file package)
-  (string-append (installer-package-artifact-name package) ".json"))
+  (string-append (installer-package-artifact package) ".json"))
 
 (define (installer-package-metadata-path package)
   (string-append (installer-package-build-dir package) "/"
@@ -78,7 +78,7 @@
 
 (define (installer-package-script-path package)
   (string-append (installer-package-build-dir package) "/"
-                 (installer-package-artifact-name package) ".sh"))
+                 (installer-package-artifact package) ".sh"))
 
 (define (installer-package-partition-path package partition)
   (format #f "~a/package/~a.img"
@@ -165,9 +165,9 @@
          (table (sfdisk-list disk-image))
          (partitions (build-partitions package table))
          (os (installer-os
-              (default-os-name (installer-package-default-os-name package))
+              (default-os-name (installer-package-os-name package))
               (icon (basename (installer-package-icon package)))
-              (name (installer-package-long-name package))
+              (name (installer-package-os-description package))
               (package (installer-package-archive-file package))
               (partitions partitions))))
     (build-icon package)
@@ -197,12 +197,12 @@
     target))
 
 (define (print-package package)
-  (format #t "  Artifact Name ......... ~a\n" (installer-package-artifact-name package))
+  (format #t "  Artifact Name ......... ~a\n" (installer-package-artifact package))
+  (format #t "  OS Name ............... ~a\n" (installer-package-os-name package))
+  (format #t "  OS Description ........ ~a\n" (installer-package-os-description package))
   (format #t "  Build Directory ....... ~a\n" (installer-package-build-dir package))
-  (format #t "  Default OS Name ....... ~a\n" (installer-package-default-os-name package))
   (format #t "  Disk Image ............ ~a\n" (installer-package-disk-image package))
   (format #t "  Icon .................. ~a\n" (installer-package-icon package))
-  (format #t "  Long Name ............. ~a\n" (installer-package-long-name package))
   (format #t "  Script ................ ~a\n" (installer-package-script package))
   (format #t "  Version ............... ~a\n" (installer-package-version package)))
 

@@ -121,8 +121,11 @@
     (build-system installer-build-system)
     (home-page "https://github.com/asahi-guix/channel")
     (native-search-paths (list $ASAHI_INSTALLER_OS_PATH))
-    (synopsis "Asahi Guix Base")
-    (description "Asahi Guix with the bare minimum.")
+    (arguments (list #:os-name "Asahi Guix Base"
+                     #:os-description "Asahi Guix with the bare minimum"))
+    (synopsis "Asahi Guix Base installer package")
+    (description "This package provides the Asahi installer package for the Asahi Guix
+operating system with the bare minimum.")
     (license license:expat)))
 
 (define-public asahi-installer-os-edge
@@ -130,29 +133,44 @@
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-edge")
     (source (system-image asahi-base-os-image))
-    (synopsis "Asahi Guix Edge")
-    (description "Asahi Guix with accelerated graphics.")))
+    (arguments (list #:os-name "Asahi Guix Edge"
+                     #:os-description "Asahi Guix with accelerated graphics"))
+    (synopsis "Asahi Guix Edge installer package")
+    (description "This package provides the Asahi installer package for the Asahi Guix
+operating system with accelerated graphics.")))
 
 (define-public asahi-installer-os-gnome
   (package
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-gnome")
     (source (system-image asahi-base-os-image))
-    (synopsis "Asahi Guix Gnome")
-    (description "Asahi Guix with the Gnome desktop environment.")))
+    (arguments (list #:os-name "Asahi Guix Gnome"
+                     #:os-description "Asahi Guix with the Gnome desktop environment"))
+    (synopsis "Asahi Guix Gnome installer package")
+    (description "This package provides the Asahi installer package for the Asahi Guix
+operating system with accelerated graphics and the Gnome desktop
+environment.")))
 
 (define-public asahi-installer-os-plasma
   (package
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-plasma")
     (source (system-image asahi-base-os-image))
-    (synopsis "Asahi Guix Plasma")
-    (description "Asahi Guix with the Plasma desktop environment.")))
+    (arguments (list #:os-name "Asahi Guix Plasma"
+                     #:os-description "Asahi Guix with the Plasma desktop environment"))
+    (synopsis "Asahi Guix Plasma installer package")
+    (description "This package provides the Asahi installer package for the Asahi Guix
+operating system with accelerated graphics and the KDE Plasma desktop
+environment.")))
 
 (define-public asahi-installer-os-sway
   (package
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-sway")
     (source (system-image asahi-base-os-image))
-    (synopsis "Asahi Guix Sway")
-    (description "Asahi Guix with the Sway window manager.")))
+    (arguments (list #:os-name "Asahi Guix Sway"
+                     #:os-description "Asahi Guix with the Sway window manager"))
+    (synopsis "Asahi Guix Sway installer package")
+    (description "This package provides the Asahi installer package for the Asahi Guix
+operating system with accelerated graphics and the Sway window
+manager.")))

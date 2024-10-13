@@ -1,11 +1,16 @@
 (define-module (asahi guix build utils)
+  #:use-module (guix build utils)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
   #:export (capitalize
             command-output
             null->false
-            string-blank?))
+            string-blank?
+            reset-timestamps))
+
+(define circa-1980
+  (* 10 366 24 60 60))
 
 (define* (capitalize str #:optional (separator #\space))
   (let ((words (string-split str separator)))
@@ -37,3 +42,10 @@
 
 (define (string-blank? s)
   (string-match "^\\s*$" s))
+
+(define (reset-timestamps directory)
+  (for-each (lambda (file)
+              (let ((s (lstat file)))
+                (unless (eq? (stat:type s) 'symlink)
+                  (utime file circa-1980 circa-1980))))
+            (find-files directory #:directories? #t)))

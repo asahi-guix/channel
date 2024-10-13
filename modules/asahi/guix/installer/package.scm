@@ -1,4 +1,4 @@
-(define-module (asahi guix build installer package)
+(define-module (asahi guix installer package)
   #:use-module (asahi guix build sfdisk)
   #:use-module (asahi guix build utils)
   #:use-module (asahi guix installer data)

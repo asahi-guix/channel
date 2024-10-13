@@ -21,7 +21,7 @@
 (define %installer-build-system-modules
   ;; Build-side modules imported by default.
   `((asahi guix build installer-build-system)
-    (asahi guix build installer package)
+    (asahi guix installer package)
     (asahi guix build sfdisk)
     (asahi guix build utils)
     (asahi guix installer data)

@@ -1,7 +1,7 @@
 (define-module (asahi guix packages installer)
   #:use-module ((gnu packages linux) #:prefix linux:)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (asahi guix build installer package)
+  #:use-module (asahi guix installer package)
   #:use-module (asahi guix build modules)
   #:use-module (asahi guix build utils)
   #:use-module (asahi guix build-system installer)

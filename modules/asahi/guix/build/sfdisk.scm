@@ -3,6 +3,7 @@
   #:use-module (guix build utils)
   #:use-module (guix records)
   #:use-module (json)
+  #:use-module (srfi srfi-1)
   #:export (make-sfdisk-partition
             make-sfdisk-table
             sfdisk-extract-partition

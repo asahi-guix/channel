@@ -1,7 +1,7 @@
 (define-module (asahi guix build installer package)
   #:use-module (asahi guix build sfdisk)
   #:use-module (asahi guix build utils)
-  #:use-module (asahi guix installer metadata)
+  #:use-module (asahi guix installer data)
   #:use-module (asahi guix installer os)
   #:use-module (asahi guix installer partition)
   #:use-module (guix build utils)
@@ -17,12 +17,13 @@
   #:export (build-installer-package
             installer-package
             installer-package-artifact-name
+            installer-package-default-os-name
             installer-package-disk-image
             installer-package-icon
             installer-package-long-name
             installer-package-output-dir
             installer-package-script
-            installer-package-default-os-name
+            installer-package-version
             installer-package-work-dir
             installer-package?
             make-installer-package))
@@ -35,12 +36,12 @@
   make-installer-package
   installer-package?
   (artifact-name installer-package-artifact-name)
+  (default-os-name installer-package-default-os-name)
   (disk-image installer-package-disk-image)
   (icon installer-package-icon (default #f))
   (long-name installer-package-long-name)
   (output-dir installer-package-output-dir (default %output-dir))
   (script installer-package-script (default #f))
-  (default-os-name installer-package-default-os-name)
   (version installer-package-version)
   (work-dir installer-package-work-dir (default %work-dir)))
 

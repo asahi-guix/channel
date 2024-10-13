@@ -1,0 +1,72 @@
+(define-module (asahi guix build installer-build-system)
+  #:use-module ((guix build gnu-build-system) #:prefix gnu:)
+  #:use-module (asahi guix build installer package)
+  #:use-module (asahi guix build sfdisk)
+  #:use-module (asahi guix build utils)
+  #:use-module (asahi guix installer data)
+  #:use-module (asahi guix installer os)
+  #:use-module (asahi guix installer partition)
+  #:use-module (guix build utils)
+  #:use-module (guix records)
+  #:use-module (ice-9 ftw)
+  #:use-module (ice-9 getopt-long)
+  #:use-module (ice-9 match)
+  #:use-module (ice-9 popen)
+  #:use-module (ice-9 pretty-print)
+  #:use-module (ice-9 rdelim)
+  #:use-module (ice-9 regex)
+  #:use-module (ice-9 string-fun)
+  #:use-module (json)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-26)
+  #:export (%standard-phases
+            installer-build))
+
+;; Phases
+
+(define* (package-from-params #:key name source inputs outputs #:allow-other-keys)
+  (let ((disk-image (assoc-ref inputs "asahi-guix-installer-image"))
+        (icon (string-append (assoc-ref inputs "asahi-installer-icon")
+                             "/share/asahi-installer/asahi-guix.icns"))
+        (script (search-input-file inputs "/bin/asahi-guix-installer.sh"))
+        (output-dir (assoc-ref outputs "out")))
+    (format #t "Name ............. ~a~%" name)
+    (format #t "Disk Image ....... ~a~%" source)
+    (format #t "Icon  ............ ~a~%" icon)
+    (format #t "Script ........... ~a~%" script)
+    (format #t "output ........... ~a~%" output-dir)
+    ;; (format (getcwd))
+    #t))
+
+(define* (build #:key name icon inputs output-dir script source #:allow-other-keys)
+  (build-installer-package
+   (installer-package
+    (artifact-name name)
+    (default-os-name name)
+    (long-name name)
+    (disk-image source)
+    (icon icon)
+    (output-dir output-dir)
+    (version "TODO")
+    (script script)))
+  #t)
+
+(define* (install #:key install-plan outputs #:allow-other-keys)
+  ;; (format #t "Installing ~a~%" install-plan)
+  ;; (format #t "Outputs ~a~%" outputs)
+  #t)
+
+(define %standard-phases
+  (modify-phases gnu:%standard-phases
+    (delete 'bootstrap)
+    (delete 'check)
+    (delete 'configure)
+    (delete 'unpack)
+    (replace 'build build)
+    (replace 'install install)))
+
+(define* (installer-build #:key inputs (phases %standard-phases)
+                          #:allow-other-keys #:rest args)
+  "Build the given package, applying all of PHASES in order."
+  (apply gnu:gnu-build #:inputs inputs #:phases phases args))

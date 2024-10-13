@@ -4,6 +4,7 @@
   #:use-module (asahi guix build installer package)
   #:use-module (asahi guix build modules)
   #:use-module (asahi guix build utils)
+  #:use-module (asahi guix build-system installer)
   #:use-module (asahi guix images base)
   #:use-module (asahi guix images edge)
   #:use-module (asahi guix images gnome)
@@ -121,81 +122,46 @@
     (description "This package provides the Asahi Guix installer script.")
     (license license:expat)))
 
-(define (make-installer-package artifact-name default-os-name long-name image)
+(define-public asahi-installer-package-base
   (package
-    (name artifact-name)
+    (name "asahi-installer-package-base")
     (version "0.0.1")
-    (source #f)
-    (build-system copy-build-system)
-    (arguments
-     (list
-      #:modules '((asahi guix build installer package)
-                  (guix build copy-build-system)
-                  (guix build utils))
-      #:phases
-      (with-extensions (list guile-json-4)
-        (with-imported-modules (source-module-closure
-                                '((asahi guix build installer package))
-                                #:select? import-asahi-module?)
-          #~(modify-phases %standard-phases
-              (delete 'unpack)
-              (replace 'install
-                (lambda* (#:key inputs #:allow-other-keys)
-                  (build-installer-package
-                   (installer-package
-                    (artifact-name #$artifact-name)
-                    (default-os-name #$default-os-name)
-                    (long-name #$long-name)
-                    (disk-image (assoc-ref inputs "asahi-guix-installer-image"))
-                    (icon (string-append
-                           (assoc-ref inputs "asahi-guix-installer-icon")
-                           "/share/asahi-installer/asahi-guix.icns"))
-                    (output-dir (string-append #$output "/" #$%asahi-installer-os-path))
-                    (version #$version)
-                    (script (search-input-file inputs "/bin/asahi-guix-installer.sh")))))))))))
+    (source (system-image asahi-base-os-image))
+    (build-system installer-build-system)
     (home-page "https://github.com/asahi-guix/channel")
-    (native-inputs `(("asahi-guix-installer-icon" ,asahi-installer-icon)
-                     ("asahi-guix-installer-image" ,(system-image image))
-                     ("asahi-guix-installer-script" ,asahi-installer-script)
-                     ("util-linux" ,util-linux)
-                     ("p7zip" ,p7zip)))
-    (native-search-paths
-     (list $ASAHI_INSTALLER_OS_PATH))
-    (synopsis (format #f "~a installer package" default-os-name))
-    (description (format #f "Asahi Linux installer package for the ~a." long-name))
+    (native-search-paths (list $ASAHI_INSTALLER_OS_PATH))
+    (synopsis "Asahi Guix Base")
+    (description "Asahi Linux installer package for Asahi Guix Base.")
     (license license:expat)))
 
-(define-public asahi-installer-package-base
-  (make-installer-package
-   "asahi-installer-package-base"
-   "Asahi Guix Base"
-   "Asahi Guix with the bare minimum"
-   asahi-base-os-image))
-
 (define-public asahi-installer-package-edge
-  (make-installer-package
-   "asahi-installer-package-edge"
-   "Asahi Guix Edge"
-   "Asahi Guix with accelerated graphics"
-   asahi-edge-os-image))
+  (package
+    (inherit asahi-installer-package-base)
+    (name "asahi-installer-package-edge")
+    (source (system-image asahi-base-os-image))
+    (synopsis "Asahi Guix Edge")
+    (description "Asahi Linux installer package for Asahi Guix Edge.")))
 
 (define-public asahi-installer-package-gnome
-  (make-installer-package
-   "asahi-installer-package-gnome"
-   "Asahi Guix Gnome"
-   "Asahi Guix with the Gnome desktop environment"
-   asahi-gnome-os-image))
+  (package
+    (inherit asahi-installer-package-base)
+    (name "asahi-installer-package-gnome")
+    (source (system-image asahi-base-os-image))
+    (synopsis "Asahi Guix Gnome")
+    (description "Asahi Linux installer package for Asahi Guix Gnome.")))
 
 (define-public asahi-installer-package-plasma
-  (make-installer-package
-   "asahi-installer-package-plasma"
-   "Asahi Guix Plasma"
-   "Asahi Guix with the KDE Plasma desktop environment"
-   asahi-plasma-os-image))
+  (package
+    (inherit asahi-installer-package-base)
+    (name "asahi-installer-package-plasma")
+    (source (system-image asahi-base-os-image))
+    (synopsis "Asahi Guix Plasma")
+    (description "Asahi Linux installer package for Asahi Guix Plasma.")))
 
 (define-public asahi-installer-package-sway
-  (make-installer-package
-   "asahi-installer-package-sway"
-   "Asahi Guix Sway"
-   "Asahi Guix with the Sway window manager"
-   asahi-sway-os-image))
+  (package
+    (inherit asahi-installer-package-base)
+    (name "asahi-installer-package-sway")
+    (source (system-image asahi-base-os-image))
+    (synopsis "Asahi Guix Sway")
+    (description "Asahi Linux installer package for Asahi Guix Sway.")))

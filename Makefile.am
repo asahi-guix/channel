@@ -73,6 +73,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/packages/pulseaudio.scm \
 	modules/asahi/guix/packages/wm.scm \
 	modules/asahi/guix/packages/xorg.scm \
+	modules/asahi/guix/search-paths.scm \
 	modules/asahi/guix/services/channels.scm \
 	modules/asahi/guix/services/console-font.scm \
 	modules/asahi/guix/services/firmware.scm \

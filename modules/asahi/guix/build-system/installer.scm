@@ -20,13 +20,15 @@
 (define %installer-build-system-modules
   ;; Build-side modules imported by default.
   `((asahi guix build installer-build-system)
-    (asahi guix installer package)
     (asahi guix build sfdisk)
     (asahi guix build utils)
     (asahi guix installer data)
     (asahi guix installer os)
+    (asahi guix installer package)
     (asahi guix installer partition)
+    (asahi guix search-paths)
     (guix records)
+    (guix search-paths)
     ,@%default-gnu-imported-modules))
 
 (define (default-glibc)

@@ -1,7 +1,6 @@
 (define-module (asahi guix packages installer)
   #:use-module ((gnu packages linux) #:prefix linux:)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (asahi guix installer package)
   #:use-module (asahi guix build modules)
   #:use-module (asahi guix build utils)
   #:use-module (asahi guix build-system installer)
@@ -10,6 +9,8 @@
   #:use-module (asahi guix images gnome)
   #:use-module (asahi guix images plasma)
   #:use-module (asahi guix images sway)
+  #:use-module (asahi guix installer package)
+  #:use-module (asahi guix search-paths)
   #:use-module (gnu image)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages gnupg)
@@ -27,19 +28,9 @@
   #:use-module (guix modules)
   #:use-module (guix packages)
   #:use-module (ice-9 match)
-  #:export ($ASAHI_INSTALLER_OS_PATH
-            %asahi-installer-source
-            asahi-installer-source))
+  #:export (%asahi-installer-source))
 
-(define %asahi-installer-os-path
-  "share/asahi-installer/os")
-
-(define $ASAHI_INSTALLER_OS_PATH
-  (search-path-specification
-   (variable "ASAHI_INSTALLER_OS_PATH")
-   (files (list %asahi-installer-os-path))))
-
-(define (asahi-installer-source version hash)
+(define (make-installer-source version hash)
   (origin
     (method git-fetch)
     (uri (git-reference
@@ -49,7 +40,7 @@
     (sha256 (base32 hash))))
 
 (define %asahi-installer-source
-  (asahi-installer-source "0.7.8" "0yj4gn1p6cvk7d507y5l608axp72rkrn0f5f7hywhv8il9c0fs2j"))
+  (make-installer-source "0.7.8" "0yj4gn1p6cvk7d507y5l608axp72rkrn0f5f7hywhv8il9c0fs2j"))
 
 (define-public asahi-installer-icon
   (package
@@ -165,34 +156,3 @@
     (source (system-image asahi-base-os-image))
     (synopsis "Asahi Guix Sway")
     (description "Asahi Guix with the Sway window manager.")))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-(define-public asahi-installer-os-base2
-  (package
-    (name "asahi-installer-os-base2")
-    (version "0.0.1")
-    (source (system-image asahi-base-os-image))
-    (build-system installer-build-system)
-    (home-page "https://github.com/asahi-guix/channel")
-    (native-search-paths (list $ASAHI_INSTALLER_OS_PATH))
-    (synopsis "Asahi Guix Base")
-    (description "Asahi Guix with the bare minimum.")
-    (license license:expat)))

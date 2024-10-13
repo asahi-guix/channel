@@ -9,11 +9,11 @@
 
 ;; Phases
 
-(define* (build #:key name icon inputs script source version #:allow-other-keys)
+(define* (build #:key build-dir name icon inputs script source version #:allow-other-keys)
   (build-package
    (installer-package
     (artifact-name name)
-    (build-dir "build")
+    (build-dir build-dir)
     (default-os-name name)
     (long-name name)
     (disk-image source)
@@ -21,11 +21,11 @@
     (script script)
     (version version))))
 
-(define* (install #:key name icon inputs outputs script source version #:allow-other-keys)
+(define* (install #:key build-dir name icon inputs outputs script source version #:allow-other-keys)
   (install-package
    (installer-package
     (artifact-name name)
-    (build-dir "build")
+    (build-dir build-dir)
     (default-os-name name)
     (long-name name)
     (disk-image source)

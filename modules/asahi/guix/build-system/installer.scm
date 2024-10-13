@@ -115,7 +115,7 @@
                              "/share/asahi-installer/asahi-guix.icns")
                      #:script (search-input-file %build-inputs "/bin/asahi-guix-installer.sh")
                      #:output-dir (assoc-ref %outputs "out")
-                     #:work-dir "build"
+                     #:build-dir (string-append (getcwd) "/build")
                      #:install-plan #$(if (pair? install-plan)
                                           (sexp->gexp install-plan)
                                           install-plan)

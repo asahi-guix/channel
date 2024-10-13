@@ -15,6 +15,7 @@
             sfdisk-partition-efi?
             sfdisk-partition-end
             sfdisk-partition-id
+            sfdisk-partition-index
             sfdisk-partition-linux?
             sfdisk-partition-name
             sfdisk-partition-sectors
@@ -65,6 +66,11 @@
 (define (sfdisk-partition-linux? partition)
   (equal? "0FC63DAF-8483-4772-8E79-3D69D8477DE4"
           (sfdisk-partition-type partition)))
+
+(define (sfdisk-partition-index table partition)
+  (list-index (lambda (p)
+                (equal? partition p))
+              (sfdisk-table-partitions table)))
 
 (define (sfdisk-json->partition partition)
   (sfdisk-partition

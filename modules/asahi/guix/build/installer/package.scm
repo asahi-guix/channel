@@ -90,11 +90,6 @@
           (installer-package-work-dir package)
           (sfdisk-partition-name partition)))
 
-(define (partition-index table partition)
-  (list-index (lambda (p)
-                (equal? partition p))
-              (sfdisk-table-partitions table)))
-
 (define (partition-filename package table partition)
   (format #f "~a/~a" (installer-package-work-dir package)
           (list-index (lambda (p)
@@ -119,7 +114,7 @@
          (work-dir (installer-package-work-dir package))
          (size (partition-size filename))
          (volume-id (installer-package-esp-volume-id package partition)))
-    (format #t "  Partition #~a: ~a\n" (partition-index table partition) filename)
+    (format #t "  Partition #~a: ~a\n" (sfdisk-partition-index table partition) filename)
     (unpack-efi-partition package partition)
     (delete-file filename)
     (installer-partition
@@ -134,7 +129,7 @@
 
 (define (build-linux-partition package table partition)
   (let ((filename (extract-partition package table partition)))
-    (format #t "  Partition #~a: ~a\n" (partition-index table partition) filename)
+    (format #t "  Partition #~a: ~a\n" (sfdisk-partition-index table partition) filename)
     (installer-partition
      (expand? #t)
      (image (basename filename))

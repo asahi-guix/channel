@@ -1,4 +1,4 @@
-(define-module (gnu system images asahi)
+(define-module (gnu system images asahi installer)
   #:use-module (asahi guix build bootloader m1n1)
   #:use-module (asahi guix build modules)
   #:use-module (gnu image)
@@ -7,9 +7,8 @@
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix platforms arm)
-  #:export (asahi-image
-            asahi-image-type
-            make-asahi-image))
+  #:export (asahi-installer-image-type
+            make-installer-image))
 
 (define asahi-efi-partition
   (partition
@@ -37,9 +36,9 @@
    (uuid "fef23143-fe46-4f7f-bbb9-efc46a2a5e48")
    (initializer (gexp initialize-root-partition))))
 
-(define asahi-image-type
+(define asahi-installer-image-type
   (image-type
-   (name 'asahi-raw)
+   (name 'asahi-installer)
    (constructor
     (lambda (os)
       (image
@@ -49,8 +48,8 @@
        (partitions (list asahi-efi-partition
                          asahi-root-partition)))))))
 
-(define (make-asahi-image name os)
+(define (make-installer-image name os)
   (image
    (inherit
-    (os+platform->image os aarch64-linux #:type asahi-image-type))
+    (os+platform->image os aarch64-linux #:type asahi-installer-image-type))
    (name name)))

@@ -93,7 +93,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
         modules/asahi/guix/installer/os.scm \
         modules/asahi/guix/installer/partition.scm \
         modules/asahi/guix/packages/installer.scm \
-        modules/gnu/system/images/asahi.scm
+        modules/gnu/system/images/asahi/installer.scm
 
 TESTS = \
  tests/asahi/guix/build/block-devices.scm \

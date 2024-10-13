@@ -7,22 +7,29 @@
 
 ;; Phases
 
-(define* (build #:key name icon inputs output-dir script source #:allow-other-keys)
-  (build-installer-package
+(define* (build #:key name icon inputs output-dir script source version #:allow-other-keys)
+  (build-package
    (installer-package
     (artifact-name name)
     (default-os-name name)
     (long-name name)
     (disk-image source)
     (icon icon)
-    (output-dir output-dir)
-    (script script)))
-  #t)
+    (output-dir (string-append output-dir "/share/asahi-installer/os"))
+    (script script)
+    (version version))))
 
-(define* (install #:key install-plan outputs #:allow-other-keys)
-  ;; (format #t "Installing ~a~%" install-plan)
-  ;; (format #t "Outputs ~a~%" outputs)
-  #t)
+(define* (install  #:key name icon inputs output-dir script source version #:allow-other-keys)
+  (install-package
+   (installer-package
+    (artifact-name name)
+    (default-os-name name)
+    (disk-image source)
+    (icon icon)
+    (long-name name)
+    (output-dir (string-append output-dir "/share/asahi-installer/os"))
+    (script script)
+    (version version))))
 
 (define %standard-phases
   (modify-phases gnu:%standard-phases

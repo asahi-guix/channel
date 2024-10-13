@@ -14,7 +14,8 @@
   #:use-module (ice-9 string-fun)
   #:use-module (json)
   #:use-module (srfi srfi-1)
-  #:export (build-installer-package
+  #:export (build-package
+            install-package
             installer-package
             installer-package-artifact-name
             installer-package-default-os-name
@@ -24,6 +25,7 @@
             installer-package-output-dir
             installer-package-script
             installer-package-work-dir
+            installer-package-version
             installer-package?
             make-installer-package))
 
@@ -41,6 +43,7 @@
   (long-name installer-package-long-name)
   (output-dir installer-package-output-dir (default %output-dir))
   (script installer-package-script (default #f))
+  (version installer-package-version (default #f) )
   (work-dir installer-package-work-dir (default %work-dir)))
 
 (define (parse-serial-number text)
@@ -215,10 +218,14 @@
   (format #t "  Output Directory ...... ~a\n" (installer-package-output-dir package))
   (format #t "  Work Directory ........ ~a\n" (installer-package-work-dir package)))
 
-(define (build-installer-package package)
+(define (build-package package)
   (format #t "Building Asahi Guix installer packages ...\n")
   (print-installer-package package)
   (let ((data (build-installer-data package)))
     (save-installer-data package data)
     (save-installer-script package)
     data))
+
+(define (install-package package)
+  (format #t "Building Asahi Guix installer packages ...\n")
+  (print-installer-package package))

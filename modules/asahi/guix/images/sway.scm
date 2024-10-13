@@ -1,9 +1,9 @@
 (define-module (asahi guix images sway)
   #:use-module (asahi guix systems sway)
-  #:use-module (gnu system images asahi)
+  #:use-module (gnu system images asahi installer)
   #:export (asahi-sway-os-image))
 
 (define asahi-sway-os-image
-  (make-asahi-image 'asahi-guix-sway asahi-sway-os))
+  (make-installer-image 'asahi-guix-sway asahi-sway-os))
 
 asahi-sway-os-image

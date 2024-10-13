@@ -10,7 +10,6 @@
   #:use-module (guix search-paths)
   #:use-module (guix store)
   #:use-module (guix utils)
-  #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-11)
   #:export (%installer-build-system-modules
             default-glibc

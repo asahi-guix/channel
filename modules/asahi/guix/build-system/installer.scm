@@ -80,7 +80,6 @@
                           #:key
                           guile source
                           (outputs '("out"))
-                          (install-plan ''(("." "./")))
                           (search-paths '())
                           (out-of-source? #t)
                           (tests? #t)
@@ -97,7 +96,6 @@
                           (imported-modules %installer-build-system-modules)
                           (modules '((asahi guix build installer-build-system)
                                      (guix build utils))))
-  "Build SOURCE using INSTALL-PLAN, and with INPUTS."
   (let-values (((name version) (package-name->name+version name #\-)))
     (define builder
       (with-extensions (list guile-json-4)
@@ -116,11 +114,7 @@
                              (assoc-ref %build-inputs "asahi-installer-icon")
                              "/share/asahi-installer/asahi-guix.icns")
                      #:script (search-input-file %build-inputs "/bin/asahi-guix-installer.sh")
-                     #:output-dir (assoc-ref %outputs "out")
                      #:build-dir (string-append (getcwd) "/build")
-                     #:install-plan #$(if (pair? install-plan)
-                                          (sexp->gexp install-plan)
-                                          install-plan)
                      #:search-paths '#$(sexp->gexp
                                         (map search-path-specification->sexp
                                              search-paths))

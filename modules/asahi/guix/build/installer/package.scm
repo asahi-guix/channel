@@ -101,21 +101,9 @@
                         (equal? partition p))
                       (sfdisk-table-partitions table))))
 
-(define (extract-command package table partition)
-  (let ((work-dir (installer-package-work-dir package)))
-    (list "dd"
-          (format #f "if=~a" (sfdisk-table-device table))
-          (format #f "of=~a" (installer-package-partition-filename package partition))
-          (format #f "skip=~a" (sfdisk-partition-start partition))
-          (format #f "count=~a" (sfdisk-partition-size partition))
-          (format #f "bs=~a" (sfdisk-table-sector-size table)))))
-
 (define (extract-partition package table partition)
-  (let ((command (extract-command package table partition))
-        (filename (installer-package-partition-filename package partition)))
-    (mkdir-p (dirname filename))
-    (apply system* command)
-    filename))
+  (let ((filename (installer-package-partition-filename package partition)))
+    (sfdisk-extract-partition table partition filename)))
 
 (define (partition-size filename)
   (format #f "~aB" (stat:size (stat filename))))

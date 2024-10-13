@@ -1,19 +1,21 @@
 (define-module (asahi guix build sfdisk)
   #:use-module (asahi guix build utils)
+  #:use-module (guix build utils)
   #:use-module (guix records)
   #:use-module (json)
   #:export (make-sfdisk-partition
             make-sfdisk-table
-            sfdisk-partition-efi?
-            sfdisk-partition-linux?
+            sfdisk-extract-partition
             sfdisk-list
             sfdisk-parse
             sfdisk-partition
             sfdisk-partition-attrs
             sfdisk-partition-boot?
             sfdisk-partition-device
+            sfdisk-partition-efi?
             sfdisk-partition-end
             sfdisk-partition-id
+            sfdisk-partition-linux?
             sfdisk-partition-name
             sfdisk-partition-sectors
             sfdisk-partition-size
@@ -95,5 +97,19 @@
 
 (define (sfdisk-list filename)
   (sfdisk-parse (apply command-output (sfdisk-command filename))))
+
+(define (sfdisk-extract-partition-command table partition filename)
+  (list "dd"
+        (format #f "if=~a" (sfdisk-table-device table))
+        (format #f "of=~a" filename)
+        (format #f "skip=~a" (sfdisk-partition-start partition))
+        (format #f "count=~a" (sfdisk-partition-size partition))
+        (format #f "bs=~a" (sfdisk-table-sector-size table))))
+
+(define (sfdisk-extract-partition table partition filename)
+  (let ((command (sfdisk-extract-partition-command table partition filename)))
+    (mkdir-p (dirname filename))
+    (apply system* command)
+    filename))
 
 ;; (sfdisk-list "/gnu/store/hfr97d38hpgq2skh10192f1ik1smvrx7-asahi-base-image")

@@ -144,6 +144,7 @@
   (let* ((archive-name (installer-package-archive-path package))
          (package-dir (format #f "~a/package" (installer-package-build-dir package))))
     (with-directory-excursion package-dir
+      (reset-timestamps package-dir)
       (invoke "7z" "a" "-tzip" "-r" archive-name)
       (reset-timestamps archive-name)
       archive-name)))

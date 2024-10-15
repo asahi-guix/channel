@@ -132,7 +132,7 @@ operating system with the bare minimum.")
   (package
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-edge")
-    (source (system-image asahi-base-os-image))
+    (source (system-image asahi-edge-os-image))
     (arguments (list #:os-name "Asahi Guix Edge"
                      #:os-description "Asahi Guix with accelerated graphics"))
     (synopsis "Asahi Guix Edge installer package")
@@ -143,7 +143,7 @@ operating system with accelerated graphics.")))
   (package
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-gnome")
-    (source (system-image asahi-base-os-image))
+    (source (system-image asahi-gnome-os-image))
     (arguments (list #:os-name "Asahi Guix Gnome"
                      #:os-description "Asahi Guix with the Gnome desktop environment"))
     (synopsis "Asahi Guix Gnome installer package")
@@ -155,7 +155,7 @@ environment.")))
   (package
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-plasma")
-    (source (system-image asahi-base-os-image))
+    (source (system-image asahi-plasma-os-image))
     (arguments (list #:os-name "Asahi Guix Plasma"
                      #:os-description "Asahi Guix with the Plasma desktop environment"))
     (synopsis "Asahi Guix Plasma installer package")
@@ -167,7 +167,7 @@ environment.")))
   (package
     (inherit asahi-installer-os-base)
     (name "asahi-installer-os-sway")
-    (source (system-image asahi-base-os-image))
+    (source (system-image asahi-sway-os-image))
     (arguments (list #:os-name "Asahi Guix Sway"
                      #:os-description "Asahi Guix with the Sway window manager"))
     (synopsis "Asahi Guix Sway installer package")

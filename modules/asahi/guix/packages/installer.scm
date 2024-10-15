@@ -83,9 +83,9 @@
             (lambda* _
               (substitute* "scripts/bootstrap-prod.sh"
                 (("https://github.com/AsahiLinux/asahi-installer/raw/prod/data/installer_data.json")
-                 "https://www.asahi-guix.org/os/installer_data.json")
+                 "https://www.asahi-guix.org/installer_data.json")
                 (("https://alx.sh/installer_data.json")
-                 "https://www.asahi-guix.org/os/installer_data.json")
+o                 "https://www.asahi-guix.org/installer_data.json")
                 (("https://stats.asahilinux.org/report")
                  "https://stats.asahi-guix.org/report")
                 (("REPO_BASE=https://cdn.asahilinux.org")

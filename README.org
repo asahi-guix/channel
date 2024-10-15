@@ -9,7 +9,7 @@
 #+OPTIONS: toc:nil
 #+PROPERTY: header-args :eval never-export
 
-[[https://ci.asahi-guix.org/jobset/asahi-guix-channel][https://ci.asahi-guix.org/jobset/asahi-guix-channel/badge.svg?type=0]]
+[[https://ci.asahi-guix.org/jobset/asahi][https://ci.asahi-guix.org/jobset/asahi/badge.svg?type=0]]
 
 Asahi Guix is a [[https://guix.gnu.org/manual/en/html_node/Channels.html][Guix channel]] to run the [[https://guix.gnu.org/][GNU operating system]] with the
 [[https://asahilinux.org/][Asahi Linux]] kernel on [[https://en.wikipedia.org/wiki/Apple_silicon][Apple Silicon]] devices.

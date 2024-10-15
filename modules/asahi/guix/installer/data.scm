@@ -4,7 +4,8 @@
   #:use-module (guix build utils)
   #:use-module (guix records)
   #:use-module (json)
-  #:export (installer-data
+  #:export (%installer-data-filename
+            installer-data
             installer-data->json-alist
             installer-data-os-list
             installer-data?
@@ -13,6 +14,9 @@
             merge-installer-data
             read-installer-data
             write-installer-data))
+
+(define %installer-data-filename
+  "installer_data.json")
 
 (define-record-type* <installer-data>
   installer-data

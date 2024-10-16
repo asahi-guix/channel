@@ -2,6 +2,7 @@
   #:use-module (asahi guix installer partition)
   #:use-module (asahi guix build utils)
   #:use-module (guix records)
+  #:use-module (ice-9 string-fun)
   #:export (installer-os
             installer-os->json-alist
             installer-os-boot-object
@@ -17,6 +18,7 @@
             installer-os-next-object
             installer-os-package
             installer-os-partitions
+            installer-os-replace-package-substring
             installer-os-size
             installer-os-source
             installer-os-supported-fw
@@ -70,3 +72,9 @@
    (partitions (map json-alist->installer-partition
                     (vector->list (assoc-ref alist "partitions"))))
    (supported-fw (vector->list (assoc-ref alist "supported_fw")))))
+
+(define (installer-os-replace-package-substring os from to)
+  (let ((package (installer-os-package os)))
+    (installer-os
+     (inherit os)
+     (package (string-replace-substring package from to)))))

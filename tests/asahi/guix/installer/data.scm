@@ -82,4 +82,15 @@
     (write-installer-data test-installer-data filename)
     (read-installer-data filename)))
 
+(test-equal "replace installer data package substring"
+  (installer-data
+   (os-list
+    (list (installer-os
+           (inherit base-os)
+           (package "https://www.asahi-guix.org/builds/os/asahi-base-image.zip")))))
+  (installer-data-replace-package-substring
+   test-installer-data
+   "/gnu/store/iwzvbzdvby9mr4xm9znw0c1ll5m1gbz5-asahi-installer-base-0.0.1/share/asahi-installer"
+   "https://www.asahi-guix.org/builds"))
+
 (test-end suite)

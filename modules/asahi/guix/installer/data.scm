@@ -8,6 +8,7 @@
             installer-data
             installer-data->json-alist
             installer-data-os-list
+            installer-data-replace-package-substring
             installer-data?
             json-alist->installer-data
             make-installer-data
@@ -55,3 +56,9 @@
         (set-port-encoding! port "UTF-8")
         (format port "~a\n" content)))
     data))
+
+(define (installer-data-replace-package-substring data from to)
+  (installer-data
+   (os-list (map (lambda (os)
+                   (installer-os-replace-package-substring os from to))
+                 (installer-data-os-list data)))))

@@ -42,16 +42,10 @@
   (let ((module (resolve-interface '(asahi guix packages installer))))
     (module-ref module 'asahi-installer-icon)))
 
-(define (installer-script)
-  "Return the default installer script."
-  (let ((module (resolve-interface '(asahi guix packages installer))))
-    (module-ref module 'asahi-installer-script)))
-
 (define* (lower name
                 #:key source inputs native-inputs outputs system target
                 (glibc (default-glibc))
                 (icon (installer-icon))
-                (script (installer-script))
                 #:allow-other-keys
                 #:rest arguments)
   "Return a bag for NAME from the given arguments."
@@ -66,7 +60,6 @@
                    ,@inputs
                    ,@(standard-packages)
                    ,@`(("asahi-installer-icon" ,icon)
-                       ("asahi-installer-script" ,script)
                        ("util-linux" ,util-linux)
                        ("zip" ,zip)
                        ("p7zip" ,p7zip))))
@@ -116,7 +109,6 @@
                      #:icon (string-append
                              (assoc-ref %build-inputs "asahi-installer-icon")
                              "/share/asahi-installer/asahi-guix.icns")
-                     #:script (search-input-file %build-inputs "/bin/asahi-guix-installer.sh")
                      #:build-dir (string-append (getcwd) "/build")
                      #:search-paths '#$(sexp->gexp
                                         (map search-path-specification->sexp

@@ -41,7 +41,6 @@
   (icon installer-package-icon (default #f))
   (os-description installer-package-os-description)
   (os-name installer-package-os-name)
-  (script installer-package-script (default #f))
   (version installer-package-version (default #f)))
 
 (define (parse-serial-number text)
@@ -51,18 +50,18 @@
         #f)))
 
 (define (installer-package-esp-dir package)
-  (format #f "~a/package/esp" (installer-package-build-dir package)))
+  (string-append (installer-package-build-dir package) "/package/esp"))
 
 (define (installer-package-icon-path package)
   (string-append (installer-package-build-dir package) "/package/"
                  (basename (installer-package-icon package))))
 
 (define (installer-package-archive-file package)
-  (format #f "~a.zip" (installer-package-artifact package)))
+  (string-append (installer-package-artifact package) ".zip"))
 
 (define (installer-package-archive-path package)
-  (format #f "~a/~a" (installer-package-build-dir package)
-          (installer-package-archive-file package)))
+  (string-append (installer-package-build-dir package) "/os/"
+                 (installer-package-archive-file package)))
 
 (define (installer-package-esp-volume-id package partition)
   (let ((filename (installer-package-partition-path package partition)))
@@ -76,14 +75,9 @@
   (string-append (installer-package-build-dir package) "/"
                  (installer-package-metadata-file package)))
 
-(define (installer-package-script-path package)
-  (string-append (installer-package-build-dir package) "/"
-                 (installer-package-artifact package) ".sh"))
-
 (define (installer-package-partition-path package partition)
-  (format #f "~a/package/~a.img"
-          (installer-package-build-dir package)
-          (sfdisk-partition-name partition)))
+  (string-append (installer-package-build-dir package) "/package/"
+                 (sfdisk-partition-name partition) ".img"))
 
 (define (extract-partition package table partition)
   (let* ((filename (installer-package-partition-path package partition))
@@ -142,15 +136,16 @@
        (sfdisk-table-partitions table)))
 
 (define (build-archive package)
-  (let* ((archive-name (installer-package-archive-path package))
+  (let* ((archive-path (installer-package-archive-path package))
          (package-dir (format #f "~a/package" (installer-package-build-dir package))))
     (with-directory-excursion package-dir
+      (mkdir-p (dirname archive-path))
       (reset-timestamps package-dir)
       ;; TODO: 7z compresses better but isn't reproducible?
-      ;; (invoke "7z" "a" "-tzip" "-r" archive-name)
-      (invoke "zip" "-9" "-r" "-X" archive-name ".")
-      (reset-timestamps archive-name)
-      archive-name)))
+      ;; (invoke "7z" "a" "-tzip" "-r" archive-path)
+      (invoke "zip" "-9" "-r" "-X" archive-path ".")
+      (reset-timestamps archive-path)
+      archive-path)))
 
 (define (build-icon package)
   (when (installer-package-icon package)
@@ -181,21 +176,6 @@
     (reset-timestamps filename)
     data))
 
-(define (build-installer-script package)
-  (let ((source (installer-package-script package))
-        (target (installer-package-script-path package)))
-    (mkdir-p (dirname target))
-    (copy-file source target)
-    (substitute* target
-      (("INSTALLER_DATA=.*")
-       (string-append "INSTALLER_DATA="
-                      (installer-package-metadata-file package) "\n"))
-      (("INSTALLER_DATA_ALT=.*")
-       (string-append "INSTALLER_DATA_ALT="
-                      (installer-package-metadata-file package) "\n")))
-    (reset-timestamps target)
-    target))
-
 (define (print-package package)
   (format #t "  Artifact Name ......... ~a\n" (installer-package-artifact package))
   (format #t "  OS Name ............... ~a\n" (installer-package-os-name package))
@@ -203,22 +183,29 @@
   (format #t "  Build Directory ....... ~a\n" (installer-package-build-dir package))
   (format #t "  Disk Image ............ ~a\n" (installer-package-disk-image package))
   (format #t "  Icon .................. ~a\n" (installer-package-icon package))
-  (format #t "  Script ................ ~a\n" (installer-package-script package))
   (format #t "  Version ............... ~a\n" (installer-package-version package)))
 
 (define (build-package package)
   (format #t "Building Asahi installer package ...\n")
   (print-package package)
-  (let ((data (build-installer-data package)))
-    (build-installer-script package)
-    data))
+  (build-installer-data package))
+
+;; Install
+
+(define (install-os-path package directory)
+  (string-append directory "/" %asahi-installer-os-path))
+
+(define (install-archive package directory)
+  (install-file (installer-package-archive-path package)
+                (install-os-path package directory)))
+
+(define (install-metadata package directory)
+  (install-file (installer-package-metadata-path package)
+                (install-os-path package directory)))
 
 (define (install-package package directory)
   (format #t "Installing Asahi installer package ...\n")
   (print-package package)
   (format #t "  Install Directory ..... ~a\n" directory)
-  (let ((os-dir (string-append directory "/" %asahi-installer-os-path)))
-    (mkdir-p os-dir)
-    (install-file (installer-package-archive-path package) os-dir)
-    (install-file (installer-package-metadata-path package) os-dir)
-    (install-file (installer-package-script-path package) os-dir)))
+  (install-archive package directory)
+  (install-metadata package directory))

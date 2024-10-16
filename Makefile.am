@@ -43,7 +43,6 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/build/bootloader/m1n1.scm \
 	modules/asahi/guix/build/firmware.scm \
-	modules/asahi/guix/build/installer/package.scm \
 	modules/asahi/guix/build/modules.scm \
 	modules/asahi/guix/build/sfdisk.scm \
 	modules/asahi/guix/build/utils.scm \
@@ -57,6 +56,8 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/images/plasma.scm \
 	modules/asahi/guix/images/sway.scm \
 	modules/asahi/guix/initrd.scm \
+	modules/asahi/guix/installer/data.scm \
+	modules/asahi/guix/installer/package.scm \
 	modules/asahi/guix/manifests.scm \
 	modules/asahi/guix/packages.scm \
 	modules/asahi/guix/packages/audio.scm \
@@ -90,7 +91,6 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/systems/sway.scm \
 	modules/asahi/guix/transformations.scm \
 	modules/asahi/guix/udev.scm \
-	modules/asahi/guix/installer/data.scm \
         modules/asahi/guix/installer/os.scm \
         modules/asahi/guix/installer/partition.scm \
         modules/asahi/guix/packages/installer.scm \

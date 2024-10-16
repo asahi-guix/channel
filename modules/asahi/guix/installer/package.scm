@@ -25,7 +25,6 @@
             installer-package-os-description
             installer-package-os-name
             installer-package-script
-            installer-package-version
             installer-package?
             make-installer-package))
 
@@ -40,8 +39,7 @@
   (disk-image installer-package-disk-image)
   (icon installer-package-icon (default #f))
   (os-description installer-package-os-description)
-  (os-name installer-package-os-name)
-  (version installer-package-version (default #f)))
+  (os-name installer-package-os-name))
 
 (define (parse-serial-number text)
   (let ((match (string-match "serial number\\s+(0x[0-9a-fA-F]+)" text)))
@@ -182,8 +180,7 @@
   (format #t "  OS Description ........ ~a\n" (installer-package-os-description package))
   (format #t "  Build Directory ....... ~a\n" (installer-package-build-dir package))
   (format #t "  Disk Image ............ ~a\n" (installer-package-disk-image package))
-  (format #t "  Icon .................. ~a\n" (installer-package-icon package))
-  (format #t "  Version ............... ~a\n" (installer-package-version package)))
+  (format #t "  Icon .................. ~a\n" (installer-package-icon package)))
 
 (define (build-package package)
   (format #t "Building Asahi installer package ...\n")

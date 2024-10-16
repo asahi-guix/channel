@@ -90,50 +90,48 @@
                           (imported-modules %installer-build-system-modules)
                           (modules '((asahi guix build installer-build-system)
                                      (guix build utils))))
-  (let-values (((name version) (package-name->name+version name #\-)))
-    (define builder
-      (with-extensions (list guile-json-4)
-        (with-imported-modules imported-modules
-          #~(begin
-              (use-modules #$@modules)
-              #$(with-build-variables inputs outputs
-                  #~(installer-build
-                     #:name #$name
-                     #:version #$version
-                     #:source #+source
-                     #:system #$system
-                     #:os-name #$os-name
-                     #:os-description #$os-description
-                     #:outputs %outputs
-                     #:inputs %build-inputs
-                     #:icon (string-append
-                             (assoc-ref %build-inputs "asahi-installer-icon")
-                             "/share/asahi-installer/asahi-guix.icns")
-                     #:build-dir (string-append (getcwd) "/build")
-                     #:search-paths '#$(sexp->gexp
-                                        (map search-path-specification->sexp
-                                             search-paths))
-                     #:phases #$(if (pair? phases)
-                                    (sexp->gexp phases)
-                                    phases)
-                     #:out-of-source? #$out-of-source?
-                     #:tests? #$tests?
-                     #:validate-runpath? #$validate-runpath?
-                     #:patch-shebangs? #$patch-shebangs?
-                     #:strip-binaries? #$strip-binaries?
-                     #:strip-flags #$strip-flags
-                     #:strip-directories #$strip-directories))))))
+  (define builder
+    (with-extensions (list guile-json-4)
+      (with-imported-modules imported-modules
+        #~(begin
+            (use-modules #$@modules)
+            #$(with-build-variables inputs outputs
+                #~(installer-build
+                   #:name #$name
+                   #:source #+source
+                   #:system #$system
+                   #:os-name #$os-name
+                   #:os-description #$os-description
+                   #:outputs %outputs
+                   #:inputs %build-inputs
+                   #:icon (string-append
+                           (assoc-ref %build-inputs "asahi-installer-icon")
+                           "/share/asahi-installer/asahi-guix.icns")
+                   #:build-dir (string-append (getcwd) "/build")
+                   #:search-paths '#$(sexp->gexp
+                                      (map search-path-specification->sexp
+                                           search-paths))
+                   #:phases #$(if (pair? phases)
+                                  (sexp->gexp phases)
+                                  phases)
+                   #:out-of-source? #$out-of-source?
+                   #:tests? #$tests?
+                   #:validate-runpath? #$validate-runpath?
+                   #:patch-shebangs? #$patch-shebangs?
+                   #:strip-binaries? #$strip-binaries?
+                   #:strip-flags #$strip-flags
+                   #:strip-directories #$strip-directories))))))
 
-    (define guile-derivation
-      (package->derivation (or guile (default-guile)) system #:graft? #f))
+  (define guile-derivation
+    (package->derivation (or guile (default-guile)) system #:graft? #f))
 
-    (mlet %store-monad ((guile guile-derivation))
-      (gexp->derivation name builder
-                        #:system system
-                        #:target #f
-                        #:substitutable? substitutable?
-                        #:graft? #f
-                        #:guile-for-build guile))))
+  (mlet %store-monad ((guile guile-derivation))
+    (gexp->derivation name builder
+                      #:system system
+                      #:target #f
+                      #:substitutable? substitutable?
+                      #:graft? #f
+                      #:guile-for-build guile)))
 
 (define installer-build-system
   (build-system

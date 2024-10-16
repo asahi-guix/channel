@@ -7,27 +7,23 @@
   #:export (%standard-phases
             installer-build))
 
-(define* (build #:key build-dir name icon os-name os-description
-                source version #:allow-other-keys)
+(define* (build #:key build-dir name icon os-name os-description source #:allow-other-keys)
   (build-package (installer-package
                   (artifact name)
                   (build-dir build-dir)
                   (disk-image source)
                   (icon icon)
                   (os-description os-description)
-                  (os-name os-name)
-                  (version version))))
+                  (os-name os-name))))
 
-(define* (install #:key build-dir name icon os-name os-description
-                  outputs source version #:allow-other-keys)
+(define* (install #:key build-dir name icon os-name os-description outputs source #:allow-other-keys)
   (install-package (installer-package
                     (artifact name)
                     (build-dir build-dir)
                     (disk-image source)
                     (icon icon)
                     (os-description os-description)
-                    (os-name os-name)
-                    (version version))
+                    (os-name os-name))
                    (assoc-ref outputs "out")))
 
 (define %standard-phases

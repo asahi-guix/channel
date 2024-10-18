@@ -1,7 +1,8 @@
 (define-module (asahi guix installer os)
-  #:use-module (asahi guix installer partition)
   #:use-module (asahi guix build utils)
+  #:use-module (asahi guix installer partition)
   #:use-module (guix records)
+  #:use-module (ice-9 optargs)
   #:use-module (ice-9 string-fun)
   #:export (installer-os
             installer-os->json-alist
@@ -18,7 +19,7 @@
             installer-os-next-object
             installer-os-package
             installer-os-partitions
-            installer-os-replace-package-substring
+            installer-os-apply-package
             installer-os-size
             installer-os-source
             installer-os-supported-fw
@@ -73,8 +74,8 @@
                     (vector->list (assoc-ref alist "partitions"))))
    (supported-fw (vector->list (assoc-ref alist "supported_fw")))))
 
-(define (installer-os-replace-package-substring os from to)
-  (let ((package (installer-os-package os)))
+(define (installer-os-apply-package os fun . args)
+  (let ((next-package (apply fun (installer-os-package os) args)))
     (installer-os
      (inherit os)
-     (package (string-replace-substring package from to)))))
+     (package next-package))))

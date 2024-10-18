@@ -1,14 +1,15 @@
 (define-module (asahi guix installer data)
-  #:use-module (asahi guix installer os)
   #:use-module (asahi guix build utils)
+  #:use-module (asahi guix installer os)
   #:use-module (guix build utils)
   #:use-module (guix records)
+  #:use-module (ice-9 optargs)
   #:use-module (json)
   #:export (%installer-data-filename
             installer-data
             installer-data->json-alist
             installer-data-os-list
-            installer-data-replace-package-substring
+            installer-data-apply-package
             installer-data?
             json-alist->installer-data
             make-installer-data
@@ -57,8 +58,8 @@
         (format port "~a\n" content)))
     data))
 
-(define (installer-data-replace-package-substring data from to)
+(define (installer-data-apply-package data fun . args)
   (installer-data
    (os-list (map (lambda (os)
-                   (installer-os-replace-package-substring os from to))
+                   (apply installer-os-apply-package os fun args))
                  (installer-data-os-list data)))))

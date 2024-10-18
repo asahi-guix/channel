@@ -8,8 +8,7 @@ do_subst = $(SED)					\
   -e 's,[@]localedir[@],$(localedir),g'
 
 nodist_noinst_SCRIPTS = \
-  pre-inst-env \
-  scripts/make-asahi-installer-package
+  pre-inst-env
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
 

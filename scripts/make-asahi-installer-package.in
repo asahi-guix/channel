@@ -1,5 +1,0 @@
-#!@GUILE@ --no-auto-compile
--*- scheme -*-
-!#
-(use-modules (asahi guix build installer))
-(make-asahi-installer-package-main (command-line))

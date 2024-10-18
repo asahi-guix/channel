@@ -13,6 +13,7 @@
   #:use-module (gnu system image)
   #:use-module (guix build utils)
   #:use-module (guix build-system copy)
+  #:use-module (guix build-system trivial)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
@@ -69,33 +70,25 @@
     (name "asahi-installer-script")
     (version "0.0.1")
     (source %asahi-installer-source)
-    (build-system copy-build-system)
+    (build-system trivial-build-system)
     (arguments
      (list
-      #:phases
-      #~(modify-phases %standard-phases
-          (delete 'patch-generated-file-shebangs)
-          (delete 'patch-shebangs)
-          (delete 'patch-source)
-          (delete 'patch-source-shebangs)
-          (delete 'patch-usr-bin-file)
-          (add-after 'unpack 'patch-source
-            (lambda* _
-              (substitute* "scripts/bootstrap-prod.sh"
-                (("https://github.com/AsahiLinux/asahi-installer/raw/prod/data/installer_data.json")
-                 "https://www.asahi-guix.org/installer_data.json")
-                (("https://alx.sh/installer_data.json")
-                 "https://www.asahi-guix.org/installer_data.json")
-                (("https://stats.asahilinux.org/report")
-                 "https://stats.asahi-guix.org/report")
-                (("REPO_BASE=https://cdn.asahilinux.org")
-                 "REPO_BASE=https://www.asahi-guix.org"))))
-          (replace 'install
-            (lambda* (#:key inputs #:allow-other-keys)
-              (let ((target (string-append #$output "/bin/asahi-guix-installer.sh")))
-                (mkdir-p (dirname target))
-                (copy-file "scripts/bootstrap-prod.sh" target)
-                (chmod target #o755)))))))
+      #:modules '((asahi guix installer script)
+                  (guix build utils)
+                  (guix records))
+      #:builder
+      #~(begin
+          (use-modules (asahi guix installer script))
+          (let ((source (string-append #$(package-source this-package) "/scripts/bootstrap-prod.sh"))
+                (target (string-append #$output "/bin/asahi-guix-install")))
+            (write-installer-script
+             (installer-script
+              (inherit (read-installer-script source))
+              (installer-data "https://www.asahi-guix.org/installer_data.json")
+              (installer-data-alt "https://www.asahi-guix.org/installer_data.json")
+              (repo-base "https://www.asahi-guix.org")
+              (report "https://stats.asahi-guix.org/report"))
+             target)))))
     (home-page "https://github.com/AsahiLinux/asahi-installer")
     (synopsis "Asahi Guix installer script")
     (description "This package provides the Asahi Guix installer script.")

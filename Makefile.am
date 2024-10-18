@@ -37,7 +37,8 @@ SUFFIXES = .scm .go
 NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
 	modules/asahi/guix/files/bootlogo.svg \
 	modules/asahi/guix/packages/defconfig.main \
-	modules/asahi/guix/packages/defconfig.edge
+	modules/asahi/guix/packages/defconfig.edge \
+	tests/asahi/guix/installer/alx.sh
 
 SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/build/block-devices.scm \
@@ -57,7 +58,10 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/images/sway.scm \
 	modules/asahi/guix/initrd.scm \
 	modules/asahi/guix/installer/data.scm \
+	modules/asahi/guix/installer/os.scm \
 	modules/asahi/guix/installer/package.scm \
+	modules/asahi/guix/installer/partition.scm \
+	modules/asahi/guix/installer/script.scm \
 	modules/asahi/guix/manifests.scm \
 	modules/asahi/guix/packages.scm \
 	modules/asahi/guix/packages/audio.scm \
@@ -66,6 +70,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/packages/display-managers.scm \
 	modules/asahi/guix/packages/firmware.scm \
 	modules/asahi/guix/packages/gl.scm \
+	modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/packages/linux.scm \
 	modules/asahi/guix/packages/llvm.scm \
@@ -91,14 +96,12 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/systems/sway.scm \
 	modules/asahi/guix/transformations.scm \
 	modules/asahi/guix/udev.scm \
-        modules/asahi/guix/installer/os.scm \
-        modules/asahi/guix/installer/partition.scm \
-        modules/asahi/guix/packages/installer.scm \
-        modules/gnu/system/images/asahi/installer.scm
+	modules/gnu/system/images/asahi/installer.scm
 
 TESTS = \
  tests/asahi/guix/build/block-devices.scm \
  tests/asahi/guix/installer/data.scm \
+ tests/asahi/guix/installer/script.scm \
  tests/asahi/guix/build/sfdisk.scm \
  tests/asahi/guix/build/utils.scm
 

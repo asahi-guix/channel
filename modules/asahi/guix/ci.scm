@@ -29,8 +29,7 @@
   (list asahi-installer-os-image))
 
 (define (asahi-manifests)
-  (list %asahi-packages-manifest
-        %asahi-systems-manifest))
+  (list %asahi-packages-manifest))
 
 (define (arguments->channels arguments)
   (let ((channels (assq-ref arguments 'channels)))

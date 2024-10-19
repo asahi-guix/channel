@@ -35,8 +35,6 @@ SUFFIXES = .scm .go
 
 NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
 	modules/asahi/guix/files/bootlogo.svg \
-	modules/asahi/guix/packages/defconfig.main \
-	modules/asahi/guix/packages/defconfig.edge \
 	tests/asahi/guix/installer/alx.sh
 
 SOURCES = modules/asahi/guix/build/block-devices.scm \

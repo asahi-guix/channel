@@ -39,8 +39,7 @@ NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix
 	modules/asahi/guix/packages/defconfig.edge \
 	tests/asahi/guix/installer/alx.sh
 
-SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
-	modules/asahi/guix/build/block-devices.scm \
+SOURCES = modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/build/bootloader/m1n1.scm \
 	modules/asahi/guix/build/firmware.scm \
 	modules/asahi/guix/build/modules.scm \
@@ -95,6 +94,7 @@ SOURCES = modules/asahi/guix/bootloader/m1n1.scm \
 	modules/asahi/guix/systems/sway.scm \
 	modules/asahi/guix/transformations.scm \
 	modules/asahi/guix/udev.scm \
+	modules/gnu/bootloader/m1n1.scm \
 	modules/gnu/system/images/asahi/installer.scm
 
 TESTS = \

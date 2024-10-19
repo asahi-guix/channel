@@ -1,5 +1,5 @@
 (define-module (asahi guix systems base)
-  #:use-module (asahi guix bootloader m1n1)
+  #:use-module (gnu bootloader m1n1)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages linux)
   #:use-module (asahi guix services console-font)

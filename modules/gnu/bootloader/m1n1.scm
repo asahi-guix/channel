@@ -1,4 +1,4 @@
-(define-module (asahi guix bootloader m1n1)
+(define-module (gnu bootloader m1n1)
   #:use-module (asahi guix build bootloader m1n1)
   #:use-module (asahi guix build modules)
   #:use-module (asahi guix packages bootloader)

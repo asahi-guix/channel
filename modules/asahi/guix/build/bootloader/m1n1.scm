@@ -96,6 +96,7 @@
       (update-m1n1 m1n1 target-bin #:dtbs dtbs #:u-boot u-boot))))
 
 (define (install-m1n1-u-boot-grub bootloader efi-dir mount-point)
+  (format #t "Installing m1n1 to ~a ...\n" efi-dir)
   (install-m1n1-u-boot bootloader efi-dir mount-point)
   (install-grub-efi-removable bootloader efi-dir mount-point))
 

@@ -129,7 +129,6 @@ EXTRA_DIST += NOTES.org \
               .guix-authorizations \
               .guix-channel \
               .gitignore \
-              manifest.scm \
 	      share/systems/gnome.tmpl \
 	      share/systems/plasma.tmpl \
 	      share/systems/sway.tmpl \

@@ -240,6 +240,19 @@ the feature on the device with the following command:
 - [[https://mail.gnu.org/archive/html/guix-devel/2024-04/msg00195.html][GNU Guix: Guix bios installation: Grub error: unknown filesystem]]
 - [[https://bugs.launchpad.net/ubuntu/+source/grub2/+bug/1844012][Ubuntu Launchpad: Grub2 doesn't recognize ext4 with metadata_csum_seed enabled]]
 
+**** Asahi installer enters boot loop in step2.sh
+
+After installing Asahi Guix with the [[https://github.com/AsahiLinux/asahi-installer/issues/255][Asahi Linux Installer]] one might
+run into a boot loop. This seems to be an Apple bug that happens when
+an OS is installed too many times. This was reported at [[https://github.com/AsahiLinux/asahi-installer/issues/255][GH-255]] and can
+be fixed with:
+
+#+begin_quote
+Boot into recoveryOS (Startup Options), pull up a terminal (it's in
+the menu), and run curl -L https://alx.sh/cleanbp | sh. Then try
+again.
+#+end_quote
+
 ** Firmware
 
 The firmware required to boot GNU/Linux on Apple silicon is proprietary

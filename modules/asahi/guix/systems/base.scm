@@ -20,6 +20,7 @@
   #:use-module (gnu services)
   #:use-module (gnu system accounts)
   #:use-module (gnu system file-systems)
+  #:use-module (gnu system image)
   #:use-module (gnu system keyboard)
   #:use-module (gnu system linux-initrd)
   #:use-module (gnu system nss)
@@ -55,18 +56,16 @@
 
 (define %asahi-base-file-system-boot
   (file-system
-    (device (file-system-label "EFI - UEFI"))
+    (device (file-system-label "EFI - ASAHI"))
     (mount-point "/boot/efi")
     (needed-for-boot? #t)
-    ;; (type "vfat")
     (type "fat32")))
 
 (define %asahi-base-file-system-root
   (file-system
-    (device (file-system-label "asahi-guix-root"))
+    (device (file-system-label root-label))
     (mount-point "/")
     (needed-for-boot? #t)
-    ;; (type "ext4")
     (type "btrfs")))
 
 (define %asahi-base-file-systems

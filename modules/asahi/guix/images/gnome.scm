@@ -4,6 +4,6 @@
   #:export (asahi-gnome-os-image))
 
 (define asahi-gnome-os-image
-  (make-installer-image 'asahi-guix-gnome asahi-gnome-os))
+  (make-installer-image 'asahi-gnome-image asahi-gnome-os))
 
 asahi-gnome-os-image

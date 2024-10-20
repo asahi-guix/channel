@@ -4,6 +4,6 @@
   #:export (asahi-base-os-image))
 
 (define asahi-base-os-image
-  (make-installer-image 'asahi-guix-base asahi-base-os))
+  (make-installer-image 'asahi-base-image asahi-base-os))
 
 asahi-base-os-image

@@ -4,6 +4,6 @@
   #:export (asahi-sway-os-image))
 
 (define asahi-sway-os-image
-  (make-installer-image 'asahi-guix-sway asahi-sway-os))
+  (make-installer-image 'asahi-sway-image asahi-sway-os))
 
 asahi-sway-os-image

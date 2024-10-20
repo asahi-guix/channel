@@ -4,6 +4,6 @@
   #:export (asahi-plasma-os-image))
 
 (define asahi-plasma-os-image
-  (make-installer-image 'asahi-guix-plasma asahi-plasma-os))
+  (make-installer-image 'asahi-plasma-image asahi-plasma-os))
 
 asahi-plasma-os-image

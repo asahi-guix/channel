@@ -5,6 +5,6 @@
 
 (define asahi-installer-os-image
   ;; TODO: Use installation os
-  (make-installer-image 'asahi-guix-installer asahi-base-os))
+  (make-installer-image 'asahi-installer-image asahi-base-os))
 
 asahi-installer-os-image

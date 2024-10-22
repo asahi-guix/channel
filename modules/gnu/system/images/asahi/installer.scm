@@ -45,8 +45,8 @@
        (operating-system os)
        (format 'disk-image)
        (partition-table-type 'gpt)
-       (partitions (list asahi-efi-partition
-                         asahi-root-partition)))))))
+       (partitions (list asahi-efi-partition asahi-root-partition))
+       (volatile-root? #f))))))
 
 (define (make-installer-image name os)
   (image

@@ -1,5 +1,5 @@
 (define-module (asahi guix systems base)
-  #:use-module (gnu bootloader m1n1)
+  #:use-module (asahi guix build utils)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages linux)
   #:use-module (asahi guix services console-font)
@@ -7,6 +7,7 @@
   #:use-module (asahi guix services sound)
   #:use-module (asahi guix substitutes)
   #:use-module (gnu bootloader grub)
+  #:use-module (gnu bootloader m1n1)
   #:use-module (gnu bootloader)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages gnome)
@@ -56,14 +57,14 @@
 
 (define %asahi-base-file-system-boot
   (file-system
-    (device (file-system-label "EFI - ASAHI"))
+    (device (file-system-label (escape-label "EFI - ASAHI")))
     (mount-point "/boot/efi")
     (needed-for-boot? #t)
     (type "fat32")))
 
 (define %asahi-base-file-system-root
   (file-system
-    (device (file-system-label root-label))
+    (device (file-system-label (escape-label root-label)))
     (mount-point "/")
     (needed-for-boot? #t)
     (type "btrfs")))

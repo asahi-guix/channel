@@ -55,7 +55,7 @@
 (define %asahi-default-kernel-arguments
   (append '("net.ifnames=0") %default-kernel-arguments))
 
-(define %asahi-base-file-system-boot
+(define %asahi-base-file-system-efi
   (file-system
     (device (file-system-label (escape-label "EFI - ASAHI")))
     (mount-point "/boot/efi")
@@ -70,7 +70,7 @@
     (type "btrfs")))
 
 (define %asahi-base-file-systems
-  (cons* %asahi-base-file-system-boot
+  (cons* %asahi-base-file-system-efi
          %asahi-base-file-system-root
          %base-file-systems))
 

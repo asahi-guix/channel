@@ -18,6 +18,9 @@
   (command-output "echo" "Hello" "world"))
 
 (test-error "command-output error"
-            (command-output "x" "Hello" "world"))
+  (command-output "x" "Hello" "world"))
+
+(test-equal "escape whitespace in label"
+  "EFI\\040-\\040ASAHI" (escape-label "EFI - ASAHI"))
 
 (test-end suite)

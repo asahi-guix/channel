@@ -5,6 +5,7 @@
   #:use-module (ice-9 regex)
   #:export (capitalize
             command-output
+            escape-label
             null->false
             string-blank?
             reset-timestamps))
@@ -36,6 +37,9 @@
               (string-trim-right output #\newline)
               (error (format #f "Command failed: ~a ~a\n" cmd (string-join args " "))))))
       #:unwind? #t)))
+
+(define (escape-label label)
+  (regexp-substitute/global #f "[ \t]+" label 'pre "\\040" 'post))
 
 (define (null->false x)
   (if (eq? 'null x) #f x))

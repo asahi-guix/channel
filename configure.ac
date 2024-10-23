@@ -12,7 +12,6 @@ AM_SILENT_RULES([yes])
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([pre-inst-env], [chmod +x pre-inst-env])
-AC_CONFIG_FILES([scripts/make-asahi-installer-package], [chmod +x scripts/make-asahi-installer-package])
 
 dnl Search for 'guile' and 'guild'.  This macro defines
 dnl 'GUILE_EFFECTIVE_VERSION'.

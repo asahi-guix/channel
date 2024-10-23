@@ -33,78 +33,78 @@
   #:use-module (ice-9 optargs)
   #:export (asahi-base-os))
 
-(define %asahi-keyboard-options
+(define %keyboard-options
   '("caps:ctrl_modifier" "terminate:ctrl_alt_bksp"))
 
-(define %asahi-keyboard-layout
-  (keyboard-layout "us" #:options %asahi-keyboard-options))
+(define %keyboard-layout
+  (keyboard-layout "us" #:options %keyboard-options))
 
-(define %asahi-base-bootloader
+(define %bootloader
   (bootloader-configuration
    (bootloader m1n1-u-boot-grub-bootloader)
    (targets (list "/boot/efi"))
-   (keyboard-layout %asahi-keyboard-layout)))
+   (keyboard-layout %keyboard-layout)))
 
-(define %asahi-guest-user
+(define %guest-user
   (user-account
    (name "guest")
    (comment "Guest")
    (group "users")
    (supplementary-groups '("audio" "netdev" "video" "wheel"))))
 
-(define %asahi-default-kernel-arguments
+(define %kernel-arguments
   (append '("net.ifnames=0") %default-kernel-arguments))
 
-(define %asahi-base-file-system-efi
+(define %file-system-efi
   (file-system
     (device (file-system-label (escape-label "EFI - ASAHI")))
     (mount-point "/boot/efi")
     (needed-for-boot? #t)
     (type "fat32")))
 
-(define %asahi-base-file-system-root
+(define %file-system-root
   (file-system
     (device (file-system-label (escape-label root-label)))
     (mount-point "/")
     (needed-for-boot? #t)
     (type "btrfs")))
 
-(define %asahi-base-file-systems
-  (cons* %asahi-base-file-system-efi
-         %asahi-base-file-system-root
+(define %file-systems
+  (cons* %file-system-efi
+         %file-system-root
          %base-file-systems))
 
-(define %asahi-base-packages
+(define %packages
   (cons* e2fsprogs network-manager %base-packages))
 
-(define %asahi-base-openssh-configuration
+(define %openssh-configuration
   (openssh-configuration (openssh openssh-sans-x)))
 
-(define %asahi-base-services
+(define %services
   (modify-services (cons* (service asahi-firmware-service-type)
                           (service network-manager-service-type)
-                          (service openssh-service-type %asahi-base-openssh-configuration)
+                          (service openssh-service-type %openssh-configuration)
                           (service wpa-supplicant-service-type)
                           %base-services)
     (console-font-service-type config => (console-font-terminus config))
     (guix-service-type config => (append-substitutes config))))
 
-(define %asahi-base-user-accounts
-  (cons %asahi-guest-user %base-user-accounts))
+(define %user-accounts
+  (cons %guest-user %base-user-accounts))
 
 (define asahi-base-os
   (operating-system
     (host-name "asahi-guix")
     (locale "en_US.utf8")
     (timezone "Europe/Berlin")
-    (keyboard-layout %asahi-keyboard-layout)
-    (bootloader %asahi-base-bootloader)
+    (keyboard-layout %keyboard-layout)
+    (bootloader %bootloader)
     (kernel asahi-linux)
-    (kernel-arguments %asahi-default-kernel-arguments)
+    (kernel-arguments %kernel-arguments)
     (initrd-modules asahi-initrd-modules)
-    (file-systems %asahi-base-file-systems)
-    (packages %asahi-base-packages)
-    (services %asahi-base-services)
-    (users %asahi-base-user-accounts)))
+    (file-systems %file-systems)
+    (packages %packages)
+    (services %services)
+    (users %user-accounts)))
 
 asahi-base-os

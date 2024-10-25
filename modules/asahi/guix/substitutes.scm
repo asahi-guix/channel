@@ -10,6 +10,9 @@
 (define-public %authorized-keys
   (list (local-file "files/authorized-keys/substitutes.asahi-guix.org.pub")))
 
+(define %channels
+  (list asahi-channel guix-channel))
+
 (define-public %substitute-urls
   (list "https://substitutes.asahi-guix.org"))
 
@@ -21,14 +24,12 @@
   (guix-configuration
    (inherit config)
    (authorized-keys
-    (append
-     (guix-configuration-authorized-keys config)
-     authorized-keys))
+    (append authorized-keys (guix-configuration-authorized-keys config)))
    ;; Using guix-for-channels causes Cuirass to fail with the following error:
    ;; #<&inferior-exception arguments: (git-error #<inferior-object
    ;; #<<git-error> code: -3 message: "could not find repository at
    ;; (guix (guix-for-channels (list asahi-channel guix-channel)))
+   (channels %channels)
+   (guix (guix-for-channels %channels))
    (substitute-urls
-    (append
-     (guix-configuration-substitute-urls config)
-     substitute-urls))))
+    (append substitute-urls (guix-configuration-substitute-urls config)))))

@@ -4,6 +4,7 @@
   #:use-module (gnu image)
   #:use-module (gnu packages guile)
   #:use-module (gnu system image)
+  #:use-module (gnu system)
   #:use-module (guix gexp)
   #:use-module (guix modules)
   #:use-module (guix platforms arm)
@@ -42,7 +43,7 @@
    (constructor
     (lambda (os)
       (image
-       (operating-system os)
+       (operating-system (operating-system-with-provenance os))
        (format 'disk-image)
        (partition-table-type 'gpt)
        (partitions (list asahi-efi-partition asahi-root-partition))

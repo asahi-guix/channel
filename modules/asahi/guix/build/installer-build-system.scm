@@ -1,7 +1,5 @@
 (define-module (asahi guix build installer-build-system)
   #:use-module ((guix build gnu-build-system) #:prefix gnu:)
-  #:use-module (ice-9 ftw)
-  #:use-module (asahi guix build sfdisk)
   #:use-module (asahi guix installer package)
   #:use-module (guix build utils)
   #:export (%standard-phases

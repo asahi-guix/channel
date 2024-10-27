@@ -1,35 +1,18 @@
 (define-module (asahi guix build bootloader m1n1)
   #:use-module (gnu build image)
   #:use-module (guix build utils)
-  #:use-module (guix utils)
-  #:use-module (ice-9 binary-ports)
   #:export (install-m1n1-u-boot-grub
             m1n1-initialize-efi-partition))
 
-(define (copy-bytes from to)
-  (let ((result (get-u8 from)))
-    (when (not (eof-object? result))
-      (put-u8 to result)
-      (copy-bytes from to))))
-
-(define (append-file file out)
-  (call-with-input-file file
-    (lambda (in) (copy-bytes in out))
-    #:binary #t))
-
-(define (append-file-gzip file out)
-  (call-with-compressed-output-port 'gzip out
-    (lambda (out) (append-file file out))))
-
 (define* (write-m1n1 m1n1 target #:key dtbs u-boot)
   (mkdir-p (dirname target))
-  (call-with-output-file target
-    (lambda (out)
-      (append-file m1n1 out)
-      (for-each (lambda (dtb) (append-file dtb out)) dtbs)
-      (when (file-exists? u-boot)
-        (append-file-gzip u-boot out)))
-    #:binary #t))
+  (invoke "sh" "-c" (string-append "cat " m1n1 " > " target))
+  (when (list? dtbs)
+    (for-each (lambda (dtb)
+                (invoke "sh" "-c" (string-append "cat " dtb " >> " target)))
+              dtbs))
+  (when (and u-boot (file-exists? u-boot))
+    (invoke "sh" "-c" (string-append "gzip -c " u-boot " >> " target))))
 
 (define* (update-m1n1 m1n1 target #:key dtbs u-boot)
   (let ((new-file (string-append target ".new"))
@@ -39,8 +22,8 @@
       (rename-file target old-file))
     (rename-file new-file target)))
 
-;; TODO: Use in install-m1n1-u-boot
-(define* (m1n1-install-bootloader bootloader esp)
+(define* (install-bootloader-to-esp bootloader esp)
+  (format #t "Installing m1n1 to ~a ...\n" esp)
   (let* ((install-dir (string-append esp "/m1n1"))
          (target-bin (string-append install-dir "/boot.bin"))
          (dtbs (find-files (string-append bootloader "/lib/dtbs") "\\.*.dtb$"
@@ -86,17 +69,10 @@
            ;; MOUNT-POINT rather than /boot/efi on the live image.
            (target-esp (if (file-exists? (string-append mount-point efi-dir))
                            (string-append mount-point efi-dir)
-                           efi-dir))
-           (install-dir (string-append target-esp "/m1n1"))
-           (target-bin (string-append install-dir "/boot.bin"))
-           (dtbs (find-files (string-append bootloader "/lib/dtbs") "\\.*.dtb$"
-                             #:stat stat #:directories? #t))
-           (m1n1 (string-append bootloader "/libexec/m1n1.bin"))
-           (u-boot (string-append bootloader "/libexec/u-boot-nodtb.bin")))
-      (update-m1n1 m1n1 target-bin #:dtbs dtbs #:u-boot u-boot))))
+                           efi-dir)))
+      (install-bootloader-to-esp bootloader target-esp))))
 
 (define (install-m1n1-u-boot-grub bootloader efi-dir mount-point)
-  (format #t "Installing m1n1 to ~a ...\n" efi-dir)
   (install-m1n1-u-boot bootloader efi-dir mount-point)
   (install-grub-efi-removable bootloader efi-dir mount-point))
 
@@ -104,6 +80,5 @@
           root
           #:key bootloader-package grub-efi
           #:allow-other-keys)
-  (format #t "Installing m1n1 to ~a ...\n" root)
   (initialize-efi-partition root #:grub-efi grub-efi)
-  (m1n1-install-bootloader bootloader-package root))
+  (install-bootloader-to-esp bootloader-package root))

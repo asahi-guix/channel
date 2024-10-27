@@ -5,14 +5,15 @@
   #:use-module (asahi guix packages linux)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages bash)
+  #:use-module (gnu packages compression)
   #:use-module (gnu packages guile)
   #:use-module (guix gexp)
-  #:use-module (ice-9 pretty-print)
   #:use-module (guix modules))
 
 (define m1n1-u-boot-grub-installer
-  ;; TODO: guile-sqlite3 seems t be needed since 01-10-2024 ?
-  (with-extensions (list guile-zlib guile-sqlite3)
+  (with-extensions (list coreutils bash-minimal gzip guile-sqlite3)
     (with-imported-modules (source-module-closure
                             '((asahi guix build bootloader m1n1))
                             #:select? import-asahi-module?)

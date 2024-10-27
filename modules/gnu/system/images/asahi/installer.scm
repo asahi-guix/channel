@@ -2,7 +2,9 @@
   #:use-module (asahi guix build bootloader m1n1)
   #:use-module (asahi guix build modules)
   #:use-module (gnu image)
-  #:use-module (gnu packages guile)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages bash)
+  #:use-module (gnu packages compression)
   #:use-module (gnu system image)
   #:use-module (gnu system)
   #:use-module (guix gexp)
@@ -19,12 +21,18 @@
    (file-system "vfat")
    (file-system-options (list "-S" "4096"))
    (flags '(esp))
-   (initializer (with-extensions (list guile-zlib)
+   (initializer (with-extensions (list coreutils bash-minimal gzip)
                   (with-imported-modules (source-module-closure
                                           '((asahi guix build bootloader m1n1))
                                           #:select? import-asahi-module?)
                     #~(lambda* (root . args)
                         (use-modules (asahi guix build bootloader m1n1))
+                        (setenv "PATH" (string-join
+                                        (list (getenv "PATH")
+                                              (string-append #$bash-minimal "/bin")
+                                              (string-append #$coreutils "/bin")
+                                              (string-append #$gzip "/bin"))
+                                        ":"))
                         (apply m1n1-initialize-efi-partition root args)))))))
 
 (define asahi-root-partition

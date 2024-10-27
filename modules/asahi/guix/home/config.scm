@@ -8,7 +8,7 @@
   #:export (asahi-home-environment))
 
 (define services
-  (list (service home-channels-service-type channels)
+  (list (service home-channels-service-type asahi-channels)
         (service home-dbus-service-type)
         (service home-pipewire-service-type)))
 

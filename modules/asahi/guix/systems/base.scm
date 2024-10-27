@@ -1,11 +1,12 @@
 (define-module (asahi guix systems base)
   #:use-module (asahi guix build utils)
+  #:use-module (asahi guix channels)
+  #:use-module (asahi guix config)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages linux)
   #:use-module (asahi guix services console-font)
   #:use-module (asahi guix services firmware)
   #:use-module (asahi guix services sound)
-  #:use-module (asahi guix substitutes)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader m1n1)
   #:use-module (gnu bootloader)
@@ -86,8 +87,19 @@
                           (service openssh-service-type %openssh-configuration)
                           (service wpa-supplicant-service-type)
                           %base-services)
-    (console-font-service-type config => (console-font-terminus config))
-    (guix-service-type config => (append-substitutes config))))
+    (console-font-service-type
+     config => (console-font-terminus config))
+    (guix-service-type
+     config => (guix-configuration
+                (inherit config)
+                (authorized-keys
+                 (append %asahi-substitute-keys
+                         (guix-configuration-authorized-keys config)))
+                (channels asahi-channels)
+                (guix (guix-for-channels asahi-channels))
+                (substitute-urls
+                 (append %asahi-substitute-urls
+                         (guix-configuration-substitute-urls config)))))))
 
 (define %user-accounts
   (cons %guest-user %base-user-accounts))

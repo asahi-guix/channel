@@ -1,8 +1,8 @@
 (define-module (asahi guix channels)
   #:use-module (guix channels)
   #:export (asahi-channel
+            asahi-channels
             asahi-next-channel
-            channels
             guix-channel))
 
 (define asahi-channel
@@ -37,7 +37,7 @@
      (openpgp-fingerprint
       "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
 
-(define channels
+(define asahi-channels
   (list asahi-channel guix-channel))
 
-channels
+asahi-channels

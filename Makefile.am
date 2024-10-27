@@ -46,6 +46,7 @@ SOURCES = modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/build/sfdisk.scm \
 	modules/asahi/guix/build/utils.scm \
 	modules/asahi/guix/channels.scm \
+	modules/asahi/guix/config.scm \
 	modules/asahi/guix/home/config.scm \
 	modules/asahi/guix/home/services/sound.scm \
 	modules/asahi/guix/images/base.scm \
@@ -78,13 +79,11 @@ SOURCES = modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/packages/wm.scm \
 	modules/asahi/guix/packages/xorg.scm \
 	modules/asahi/guix/search-paths.scm \
-	modules/asahi/guix/services/channels.scm \
 	modules/asahi/guix/services/console-font.scm \
 	modules/asahi/guix/services/firmware.scm \
 	modules/asahi/guix/services/sound.scm \
 	modules/asahi/guix/services/speakersafetyd.scm \
 	modules/asahi/guix/services/udev.scm \
-	modules/asahi/guix/substitutes.scm \
 	modules/asahi/guix/systems/base.scm \
 	modules/asahi/guix/systems/desktop.scm \
 	modules/asahi/guix/systems/edge.scm \

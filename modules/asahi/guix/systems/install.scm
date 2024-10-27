@@ -1,4 +1,6 @@
 (define-module (asahi guix systems install)
+  #:use-module (asahi guix channels)
+  #:use-module (asahi guix config)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages linux)
   #:use-module (asahi guix services console-font)
@@ -23,12 +25,13 @@
      config => (guix-configuration
                 (inherit config)
                 (authorized-keys
-                 (append (guix-configuration-authorized-keys config)
-                         %authorized-keys))
-                ;; (guix guix)
+                 (append %asahi-substitute-keys
+                         (guix-configuration-authorized-keys config)))
+                (channels asahi-channels)
+                (guix (guix-for-channels asahi-channels))
                 (substitute-urls
-                 (append (guix-configuration-substitute-urls config)
-                         %substitute-urls))))))
+                 (append %asahi-substitute-urls
+                         (guix-configuration-substitute-urls config)))))))
 
 (define-public asahi-installation-os
   (operating-system

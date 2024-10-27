@@ -1,6 +1,7 @@
 (define-module (asahi guix packages installer)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (asahi guix build-system installer)
+  #:use-module (asahi guix config)
   #:use-module (asahi guix images base)
   #:use-module (asahi guix images edge)
   #:use-module (asahi guix images gnome)
@@ -97,7 +98,7 @@
 (define-public asahi-installer-os-base
   (package
     (name "asahi-installer-os-base")
-    (version "0.0.1")
+    (version %asahi-version)
     (source (system-image asahi-base-os-image))
     (build-system installer-build-system)
     (home-page "https://github.com/asahi-guix/channel")

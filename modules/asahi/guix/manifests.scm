@@ -1,4 +1,5 @@
 (define-module (asahi guix manifests)
+  #:use-module (asahi guix config)
   #:use-module (asahi guix images installer)
   #:use-module (asahi guix packages)
   #:use-module (asahi guix systems base)
@@ -16,14 +17,12 @@
             %asahi-packages-manifest
             %asahi-systems-manifest))
 
-(define %version "0.1.0")
-
 ;; Images
 
 (define %asahi-installer-image-entry
   (manifest-entry
     (name "asahi-installer-os-image")
-    (version %version)
+    (version %asahi-version)
     (item asahi-installer-os-image)))
 
 (define %asahi-images-manifest
@@ -34,37 +33,37 @@
 (define %asahi-base-entry
   (manifest-entry
     (name "asahi-base-os")
-    (version %version)
+    (version %asahi-version)
     (item asahi-base-os)))
 
 (define %asahi-edge-entry
   (manifest-entry
     (name "asahi-edge-os")
-    (version %version)
+    (version %asahi-version)
     (item asahi-edge-os)))
 
 (define %asahi-gnome-os-entry
   (manifest-entry
     (name "asahi-gnome-os")
-    (version %version)
+    (version %asahi-version)
     (item asahi-gnome-os)))
 
 (define asahi-installer-os-entry
   (manifest-entry
     (name "asahi-installer-os")
-    (version %version)
+    (version %asahi-version)
     (item asahi-installation-os)))
 
 (define %asahi-plasma-os-entry
   (manifest-entry
     (name "asahi-plasma-os")
-    (version %version)
+    (version %asahi-version)
     (item asahi-plasma-os)))
 
 (define %asahi-sway-os-entry
   (manifest-entry
     (name "asahi-sway-os")
-    (version %version)
+    (version %asahi-version)
     (item asahi-sway-os)))
 
 (define %asahi-systems-manifest

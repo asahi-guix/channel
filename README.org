@@ -219,7 +219,7 @@ Write the installer disk image to the USB stick at =/dev/sda=.
 #+end_src
 
 *** Troubleshooting
-**** Unsupported Ext4 filesystem feature
+**** Grub Install: Unknown filesystem
 
 When installing the Guix system on an [[https://en.wikipedia.org/wiki/Ext4][Ext4]] filesystem, the
 installation of the Grub bootloader might fail with the following

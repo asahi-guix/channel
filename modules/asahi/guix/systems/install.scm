@@ -1,7 +1,6 @@
 (define-module (asahi guix systems install)
   #:use-module (asahi guix initrd)
   #:use-module (asahi guix packages linux)
-  #:use-module (asahi guix services channels)
   #:use-module (asahi guix services console-font)
   #:use-module (asahi guix services firmware)
   #:use-module (asahi guix substitutes)
@@ -16,9 +15,8 @@
   #:use-module (gnu system))
 
 (define %services
-  (modify-services (append (operating-system-user-services installation-os)
-                           (list %asahi-channels-service
-                                 (service asahi-firmware-service-type)))
+  (modify-services (cons (service asahi-firmware-service-type)
+                         (operating-system-user-services installation-os))
     (console-font-service-type
      config => (console-font-terminus config))
     (guix-service-type

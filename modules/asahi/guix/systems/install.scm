@@ -5,7 +5,6 @@
   #:use-module (asahi guix packages linux)
   #:use-module (asahi guix services console-font)
   #:use-module (asahi guix services firmware)
-  #:use-module (asahi guix substitutes)
   #:use-module (asahi guix systems base)
   #:use-module (gnu bootloader grub)
   #:use-module (gnu bootloader)

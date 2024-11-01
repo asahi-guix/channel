@@ -1,25 +1,40 @@
 (define-module (asahi guix packages virtualization)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (gnu packages llvm)
+  #:use-module (gnu packages digest)
+  #:use-module (gnu packages ninja)
+  #:use-module (gnu packages jemalloc)
+  #:use-module (guix build-system cmake)
   #:use-module (guix build-system meson)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages))
 
-(define-public fex
+(define-public fex-emu
   (package
-    (name "fex")
+    (name "fex-emu")
     (version "2410")
     (source (origin
               (method git-fetch)
               (uri (git-reference
-                    (url "https://github.com/FEX-Emu/FEX")
+                    (url "https://github.como/FEX-Emu/FEX")
                     (commit (string-append "FEX-" version))))
               (file-name (git-file-name name version))
               (sha256
                (base32 "1pi1lib9n0j3vn68hnqgjcq13qr3s0mnfvn4kbr5yirls806iyah"))))
-    (build-system meson-build-system)
-    (native-inputs (list llvm-18 clang-18))
+    (build-system cmake-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          ;; (add-after 'unpack 'delete-external
+          ;;   (lambda _
+          ;;     (delete-file-recursively "External")))
+          (add-before 'configure 'configure-cc
+            (lambda _
+              (setenv "CC" "clang"))))))
+    (native-inputs (list clang-18 llvm-18 ninja))
+    (inputs (list jemalloc xxhash))
     (home-page "https://github.com/FEX-Emu/FEX")
     (synopsis "A fast usermode x86 and x86-64 emulator for Arm64 Linux")
     (description "FEX allows you to run x86 and x86-64 binaries on an AArch64 host,

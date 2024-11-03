@@ -2,6 +2,8 @@
   #:use-module (gnu packages compression)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages linux)
+  #:use-module (gnu system image)
+  #:use-module (gnu system images asahi installer)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system)
   #:use-module (guix gexp)
@@ -54,10 +56,7 @@
   (bag
     (name name)
     (system system)
-    (host-inputs `(,@(if source
-                         `(("source" ,source))
-                         '())
-                   ,@inputs
+    (host-inputs `(,@inputs
                    ,@(standard-packages)
                    ,@`(("asahi-installer-icon" ,icon)
                        ("util-linux" ,util-linux)
@@ -98,7 +97,7 @@
             #$(with-build-variables inputs outputs
                 #~(installer-build
                    #:name #$name
-                   #:source #+source
+                   #:source #+(system-image (make-installer-image (string->symbol name) source))
                    #:system #$system
                    #:os-name #$os-name
                    #:os-description #$os-description

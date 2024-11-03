@@ -6,6 +6,7 @@
             installer-build))
 
 (define* (build #:key build-dir name icon os-name os-description source #:allow-other-keys)
+  (format #t "SOURCE: ~a~%" source)
   (build-package (installer-package
                   (artifact name)
                   (build-dir build-dir)
@@ -15,6 +16,7 @@
                   (os-name os-name))))
 
 (define* (install #:key build-dir name icon os-name os-description outputs source #:allow-other-keys)
+  (format #t "SOURCE: ~a~%" source)
   (install-package (installer-package
                     (artifact name)
                     (build-dir build-dir)

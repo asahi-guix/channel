@@ -52,8 +52,8 @@ jobs:
         run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-m1n1
       # - name: Build u-boot-apple-m1
       #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu u-boot-apple-m1
-      # - name: Build mesa-asahi-edge
-      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu mesa-asahi-edge
+      # - name: Build asahi-mesa
+      #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-mesa
       # - name: Build asahi-linux
       #   run: guix build -L modules -v 5 --target=aarch64-linux-gnu asahi-linux
       # - name: Build asahi-linux-edge

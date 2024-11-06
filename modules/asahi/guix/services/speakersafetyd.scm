@@ -11,23 +11,27 @@
   speakersafetyd-configuration
   make-speakersafetyd-configuration
   speakersafetyd-configuration?
+  (config-path speakersafetyd-configuration-config-path
+               (default "/usr/share/speakersafetyd"))
   (blackbox speakersafetyd-configuration-blackbox
             (default "/var/lib/speakersafetyd/blackbox"))
   (max-reduction speakersafetyd-configuration-max-reduction
                  (default 7))
   (package speakersafetyd-configuration-package
-           (default rust-speakersafetyd)))
+           (default rust-speakersafetyd-1)))
 
 (define (speakersafetyd-shepherd-service config)
   (let ((blackbox (speakersafetyd-configuration-blackbox config))
+        (config-path (speakersafetyd-configuration-config-path config))
         (max-reduction (speakersafetyd-configuration-max-reduction config))
         (package (speakersafetyd-configuration-package config)))
     (list (shepherd-service
-           (documentation "Asahi Speaker Saftey daemon")
+           (documentation "Speaker saftey daemon")
            (provision '(speakersafetyd))
            (requirement '(udev))
            (start #~(make-forkexec-constructor
                      (list #$(file-append package "/bin/speakersafetyd")
+                           "--config-path" #$(file-append package config-path)
                            "--blackbox-path" #$blackbox
                            "--max-reduction" (number->string #$max-reduction))))
            (stop #~(make-kill-destructor))))))
@@ -35,7 +39,7 @@
 (define speakersafetyd-service-type
   (service-type
    (name 'speakersafetyd)
-   (description "Asahi Speaker Saftey daemon")
+   (description "Speaker saftey daemon")
    (extensions
     (list (service-extension
            profile-service-type

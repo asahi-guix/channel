@@ -8,6 +8,7 @@
   #:use-module (gnu packages pkg-config)
   #:use-module (guix build-system cargo)
   #:use-module (guix download)
+  #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages))
 
@@ -465,7 +466,7 @@ plugins")
     (description "Easily add a `--verbose` flag to CLIs using Clap")
     (license (list license:expat license:asl2.0))))
 
-(define-public rust-speakersafetyd
+(define-public rust-speakersafetyd-1
   (package
     (name "rust-speakersafetyd")
     (version "1.0.1")
@@ -478,7 +479,8 @@ plugins")
         (base32 "1dvyj194niz5i4rldsqvjmz8j7df9w9qpvf9rwg3vsnzc2mjh0zg"))))
     (build-system cargo-build-system)
     (arguments
-     `(#:cargo-inputs (("rust-alsa" ,rust-asahi-alsa)
+     (list
+      #:cargo-inputs `(("rust-alsa" ,rust-alsa-0.8)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-clap" ,rust-clap-4)
                        ("rust-clap-verbosity-flag" ,rust-clap-verbosity-flag-2)
@@ -488,36 +490,30 @@ plugins")
                        ("rust-log" ,rust-log-0.4)
                        ("rust-signal-hook" ,rust-signal-hook-0.3)
                        ("rust-simple-logger" ,rust-simple-logger-1))
-       #:phases
-       (modify-phases %standard-phases
-         (add-after 'unpack 'fix-paths
-           (lambda* (#:key outputs #:allow-other-keys)
-             (substitute* "src/main.rs"
-               (("share/speakersafetyd") "share")
-               (("/usr/local") (assoc-ref outputs "out")))))
-         (add-after 'unpack 'remove-systemd-udev-rules
-           (lambda _
-             (substitute* "95-speakersafetyd.rules"
-               ((".*SYSTEMD_WANTS.*") ""))))
-         (add-after 'install 'install-conf
-           (lambda* (#:key outputs #:allow-other-keys)
-             (let ((target (string-append (assoc-ref outputs "out") "/share")))
-               (copy-recursively "conf" target))))
-         (add-after 'install 'install-udev-rules
-           (lambda* (#:key outputs #:allow-other-keys)
-             (let ((out (assoc-ref outputs "out")))
-               (mkdir-p (string-append out "/lib/udev/rules.d"))
-               (copy-file "95-speakersafetyd.rules"
-                          (string-append out
-                                         "/lib/udev/rules.d/"
-                                         "95-speakersafetyd.rules"))))))))
-    (inputs
-     (list asahi-alsa-lib))
-    (native-inputs
-     (list pkg-config))
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'fix-paths
+            (lambda _
+              (substitute* "src/main.rs"
+                (("/usr/local") #$output))))
+          (add-after 'unpack 'remove-systemd-udev-rules
+            (lambda _
+              (substitute* "95-speakersafetyd.rules"
+                ((".*SYSTEMD_WANTS.*") ""))))
+          (add-after 'install 'install-data
+            (lambda _
+              (setenv "BINDIR" (string-append #$output "/bin"))
+              (setenv "UNITDIR" (string-append #$output "/lib/systemd/system"))
+              (setenv "UDEVDIR" (string-append #$output "/lib/udev/rules.d"))
+              (setenv "TMPFILESDIR" (string-append #$output "/usr/lib/tmpfiles.d"))
+              (setenv "SHAREDIR" (string-append #$output "/usr/share"))
+              (setenv "VARDIR" (string-append #$output "/var"))
+              (invoke "make" "install-data"))))))
+    (inputs (list alsa-lib))
+    (native-inputs (list pkg-config))
     (home-page "https://github.com/AsahiLinux/speakersafetyd/")
-    (synopsis "Speaker protection daemon for embedded Linux systems")
-    (description "Speakersafetyd is a userspace daemon written in Rust that implements
-an analogue of the Texas Instruments Smart Amp speaker protection
+    (synopsis "Speaker protection daemon")
+    (description "Speakersafetyd is a userspace daemon written in Rust that
+implements an analogue of the Texas Instruments Smart Amp speaker protection
 model.")
     (license license:expat)))

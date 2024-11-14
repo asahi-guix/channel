@@ -20,10 +20,11 @@
       #~(lambda (bootloader efi-dir mount-point)
           (use-modules (asahi guix build bootloader m1n1))
           (setenv "PATH" (string-join
-                          (list (getenv "PATH")
-                                (string-append #$bash-minimal "/bin")
-                                (string-append #$coreutils "/bin")
-                                (string-append #$gzip "/bin"))
+                          (filter string?
+                                  (list (getenv "PATH")
+                                        (string-append #$bash-minimal "/bin")
+                                        (string-append #$coreutils "/bin")
+                                        (string-append #$gzip "/bin")))
                           ":"))
           (install-m1n1-u-boot-grub bootloader efi-dir mount-point)))))
 

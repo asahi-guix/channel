@@ -21,19 +21,21 @@
    (file-system "vfat")
    (file-system-options (list "-S" "4096"))
    (flags '(esp))
-   (initializer (with-extensions (list coreutils bash-minimal gzip)
-                  (with-imported-modules (source-module-closure
-                                          '((asahi guix build bootloader m1n1))
-                                          #:select? import-asahi-module?)
-                    #~(lambda* (root . args)
-                        (use-modules (asahi guix build bootloader m1n1))
-                        (setenv "PATH" (string-join
-                                        (list (getenv "PATH")
-                                              (string-append #$bash-minimal "/bin")
-                                              (string-append #$coreutils "/bin")
-                                              (string-append #$gzip "/bin"))
-                                        ":"))
-                        (apply m1n1-initialize-efi-partition root args)))))))
+   (initializer
+    (with-extensions (list coreutils bash-minimal gzip)
+      (with-imported-modules (source-module-closure
+                              '((asahi guix build bootloader m1n1))
+                              #:select? import-asahi-module?)
+        #~(lambda* (root . args)
+            (use-modules (asahi guix build bootloader m1n1))
+            (setenv "PATH" (string-join
+                            (filter string?
+                                    (list (getenv "PATH")
+                                          (string-append #$bash-minimal "/bin")
+                                          (string-append #$coreutils "/bin")
+                                          (string-append #$gzip "/bin")))
+                            ":"))
+            (apply m1n1-initialize-efi-partition root args)))))))
 
 (define asahi-root-partition
   (partition

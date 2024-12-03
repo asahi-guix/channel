@@ -586,3 +586,25 @@ plugins")
 implements an analogue of the Texas Instruments Smart Amp speaker protection
 model.")
     (license license:expat)))
+
+(define-public rust-asahi-wifisync-0.2
+  (package
+    (name "rust-asahi-wifisync")
+    (version "0.2.2")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "asahi-wifisync" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1l46x4g4p1s5qapi6450dfh5d29jcawpl3incdz2m6any0ilxddh"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.3)
+                       ("rust-clap" ,rust-clap-3)
+                       ("rust-rust-ini" ,rust-rust-ini-0.18))))
+    (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
+    (synopsis "Tool to sync Wifi passwords with MacOS on ARM Macs")
+    (description "This package provides a tool to sync Wifi passwords with MacOS on ARM
+Macs.")
+    (license license:expat)))

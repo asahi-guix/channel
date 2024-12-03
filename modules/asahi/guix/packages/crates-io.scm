@@ -17,6 +17,30 @@
     (inherit (replace-alsa-lib rust-alsa-0.8))
     (name "rust-asahi-alsa")))
 
+(define-public rust-gpt-3
+  (package
+    (name "rust-gpt")
+    (version "3.1.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "gpt" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0sddnv1lqs0yfjzzkyn6agwm4a1ij3xvrz8cdrsvk4wc3cryg0w2"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bitflags" ,rust-bitflags-2)
+                       ("rust-crc" ,rust-crc-3)
+                       ("rust-log" ,rust-log-0.4)
+                       ("rust-uuid" ,rust-uuid-1))))
+    (home-page "https://github.com/Quyzi/gpt")
+    (synopsis "Rust library to work with GPT partition tables.")
+    (description "This package provides a pure-Rust library to work with GPT partition
+tables.")
+    (license license:expat)))
+
 (define-public rust-apple-nvram-0.3
   (package
     (name "rust-apple-nvram")

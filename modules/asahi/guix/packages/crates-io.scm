@@ -40,6 +40,28 @@
 Macs.")
     (license license:expat)))
 
+(define-public rust-asahi-btsync-0.2
+  (package
+    (name "rust-asahi-btsync")
+    (version "0.2.2")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "asahi-btsync" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0762v4ajlsk0grpzk1gvylxpix0jipwcrasq59b3r2hsp8r7icgi"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.3)
+                       ("rust-clap" ,rust-clap-3)
+                       ("rust-rust-ini" ,rust-rust-ini-0.18))))
+    (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
+    (synopsis "Tool to sync Bluetooth pairing keys with MacOS on ARM Macs")
+    (description "This package provides a tool to sync Bluetooth pairing keys with MacOS
+on ARM Macs.")
+    (license license:expat)))
+
 (define-public rust-gpt-3
   (package
     (name "rust-gpt")

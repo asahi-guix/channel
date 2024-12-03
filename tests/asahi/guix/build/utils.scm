@@ -23,4 +23,16 @@
 (test-equal "escape whitespace in label"
   "EFI\\040-\\040ASAHI" (escape-label "EFI - ASAHI"))
 
+(test-equal "config-parse-line-y"
+  '("CONFIG_ARM64_16K_PAGES" . #t)
+  (config-parse-line "CONFIG_ARM64_16K_PAGES=y"))
+
+(test-equal "config-parse-line-n"
+  '("CONFIG_ARM64_16K_PAGES" . #f)
+  (config-parse-line "CONFIG_ARM64_16K_PAGES=n"))
+
+(test-equal "config-parse-line-m"
+  '("CONFIG_APPLE_MFI_FASTCHARGE" . m)
+  (config-parse-line "CONFIG_APPLE_MFI_FASTCHARGE=m"))
+
 (test-end suite)

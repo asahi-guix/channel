@@ -4,6 +4,7 @@
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
   #:export (capitalize
+            config-parse-line
             command-output
             escape-label
             null->false
@@ -23,6 +24,17 @@
          (substring word 1)))
       words)
      " ")))
+
+(define (config-parse-line line)
+  (let ((parts (string-split line #\=)))
+    (cond ((equal? 1 (length parts))
+           (cons (car parts) #f))
+          ((equal? 2 (length parts))
+           (let ((value (string-trim-both (cadr parts) #\')))
+             (cons (car parts)
+                   (cond ((string=? value "y") #t)
+                         ((string=? value "n") #f)
+                         (else (string->symbol value)))))))))
 
 (define (command-output cmd . args)
   "Execute CMD with ARGS and return its output without trailing newspace."

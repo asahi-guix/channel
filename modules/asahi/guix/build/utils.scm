@@ -4,6 +4,7 @@
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
   #:export (capitalize
+            config-format-line
             config-parse-line
             command-output
             escape-label
@@ -24,6 +25,16 @@
          (substring word 1)))
       words)
      " ")))
+
+(define (config-format-line config)
+  (let ((name (car config))
+        (value (cdr config)))
+    (cond ((eq? #t value)
+           (format #f "~a=y" name))
+          ((eq? #f value)
+           (format #f "~a" name))
+          (else
+           (format #f "~a=~a" name value)))))
 
 (define (config-parse-line line)
   (let ((parts (string-split line #\=)))

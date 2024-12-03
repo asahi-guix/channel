@@ -1,6 +1,7 @@
 (define-module (asahi guix packages linux)
   #:use-module ((gnu packages linux) #:prefix linux:)
   #:use-module ((guix licenses) #:prefix license:)
+  #:use-module (asahi guix build utils)
   #:use-module (asahi guix packages rust)
   #:use-module (gnu packages audio)
   #:use-module (gnu packages compression)
@@ -21,169 +22,168 @@
 
 ;; Based on https://github.com/AsahiLinux/docs/wiki/Kernel-config-notes-for-distros
 
+(define %config
+  '(("CONFIG_APPLE_MFI_FASTCHARGE" . m)
+    ("CONFIG_AQTION" . m)
+    ("CONFIG_ARM64_16K_PAGES" . #t)
+    ("CONFIG_BCACHE" . m)
+    ("CONFIG_BLK_DEV_DM" . #t)
+    ("CONFIG_BLK_DEV_MD" . #t)
+    ("CONFIG_BRCMFMAC" . m)
+    ("CONFIG_BRCMFMAC_PCIE" . #t)
+    ("CONFIG_BRCMFMAC_PROTO_BCDC" . #t)
+    ("CONFIG_BRCMFMAC_PROTO_MSGBUF" . #t)
+    ("CONFIG_BRCMFMAC_USB" . #t)
+    ("CONFIG_BT" . m)
+    ("CONFIG_BT_BNEP" . m)
+    ("CONFIG_BT_BREDR" . #t)
+    ("CONFIG_BT_HCIUART_BCM" . #t)
+    ("CONFIG_BT_HIDP" . m)
+    ("CONFIG_BT_LE" . #t)
+    ("CONFIG_BT_RFCOMM" . m)
+    ("CONFIG_CFG80211" . m)
+    ("CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL" . #t)
+    ("CONFIG_CRYPTO_SERPENT" . m)
+    ("CONFIG_CRYPTO_USER_API_AEAD" . #t)
+    ("CONFIG_CRYPTO_USER_API_HASH" . #t)
+    ("CONFIG_CRYPTO_USER_API_RNG" . #t)
+    ("CONFIG_CRYPTO_USER_API_SKCIPHER" . #t)
+    ("CONFIG_CRYPTO_WP512" . m)
+    ("CONFIG_DM_CACHE" . m)
+    ("CONFIG_DM_CRYPT" . m)
+    ("CONFIG_DM_CRYPT" . m)
+    ("CONFIG_DM_DEBUG" . #t)
+    ("CONFIG_DM_DELAY" . m)
+    ("CONFIG_DM_DUST" . m)
+    ("CONFIG_DM_FLAKEY" . m)
+    ("CONFIG_DM_INIT" . #t)
+    ("CONFIG_DM_INTEGRITY" . m)
+    ("CONFIG_DM_LOG_USERSPACE" . m)
+    ("CONFIG_DM_LOG_WRITES" . m)
+    ("CONFIG_DM_MIRROR" . #t)
+    ("CONFIG_DM_MULTIPATH" . m)
+    ("CONFIG_DM_MULTIPATH_QL" . m)
+    ("CONFIG_DM_MULTIPATH_ST" . m)
+    ("CONFIG_DM_RAID" . m)
+    ("CONFIG_DM_SNAPSHOT" . #t)
+    ("CONFIG_DM_SWITCH" . m)
+    ("CONFIG_DM_THIN_PROVISIONING" . m)
+    ("CONFIG_DM_UEVENT" . #t)
+    ("CONFIG_DM_VERITY" . m)
+    ("CONFIG_DM_VERITY_FEC" . #t)
+    ("CONFIG_DM_WRITECACHE" . m)
+    ("CONFIG_DM_ZERO" . #t)
+    ("CONFIG_DM_ZONED" . m)
+    ("CONFIG_DRM_ASAHI_DEBUG_ALLOCATOR" . #f)
+    ("CONFIG_DRM_CIRRUS_QEMU" . m)
+    ("CONFIG_DRM_FBDEV_EMULATION" . #t)
+    ("CONFIG_DRM_GEM_SHMEM_HELPER" . #t)
+    ("CONFIG_DRM_SCHED" . #t)
+    ("CONFIG_DRM_VGEM" . #f)
+    ("CONFIG_ENERGY_MODEL" . #t)
+    ("CONFIG_GCC_PLUGINS" . #f)
+    ("CONFIG_HIBERNATION" . #f)
+    ("CONFIG_HID_APPLE" . m)
+    ("CONFIG_HID_BATTERY_STRENGTH" . #t)
+    ("CONFIG_HID_MAGICMOUSE" . m)
+    ("CONFIG_INPUT_LEDS" . #t)
+    ("CONFIG_LEDS_PWM" . #t)
+    ("CONFIG_MD" . #t)
+    ("CONFIG_MD_CLUSTER" . m)
+    ("CONFIG_MMC_CQHCI" . m)
+    ("CONFIG_MMC_SDHCI" . m)
+    ("CONFIG_MMC_SDHCI_PCI" . m)
+    ("CONFIG_MOUSE_APPLETOUCH" . m)
+    ("CONFIG_NET_VENDOR_AQUANTIA" . #t)
+    ("CONFIG_NET_VENDOR_BROADCOM" . #t)
+    ("CONFIG_NLS_ISO8859_1" . m)
+    ("CONFIG_POWER_RESET_GPIO" . #t)
+    ("CONFIG_REGULATOR_FIXED_VOLTAGE" . #t)
+    ("CONFIG_SERIAL_SAMSUNG" . #t)
+    ("CONFIG_SERIAL_SAMSUNG_CONSOLE" . #t)
+    ("CONFIG_SND_SOC_CS42L83" . m)
+    ("CONFIG_SND_SOC_TAS2764" . m)
+    ("CONFIG_SND_SOC_TAS2770" . m)
+    ("CONFIG_SUSPEND" . #t)
+    ("CONFIG_TIGON3" . m)
+    ("CONFIG_TYPEC_TPS6598X" . m)
+    ("CONFIG_UCLAMP_TASK" . #t)
+    ("CONFIG_UCLAMP_TASK_GROUP" . #t)
+    ("CONFIG_USB_DWC3" . m)
+    ("CONFIG_USB_DWC3_DUAL_ROLE" . #t)
+    ("CONFIG_USB_HID" . m)
+    ("CONFIG_USB_STORAGE" . m)
+    ("CONFIG_USB_UAS" . m)
+    ("CONFIG_USB_XHCI_HCD" . m)
+    ("CONFIG_USB_XHCI_PCI_ASMEDIA" . #t)
+    ("CONFIG_USB_XHCI_PCI_RENESAS" . #t)
+    ("CONFIG_USB_XHCI_PLATFORM" . m)
+    ("CONFIG_WATCHDOG_HANDLE_BOOT_ENABLED" . #t)
+    ("CONFIG_WLAN_VENDOR_BROADCOM" . #t)))
 
-(define %configs
-  '("CONFIG_APPLE_MFI_FASTCHARGE=m"
-    "CONFIG_AQTION=m"
-    "CONFIG_ARM64_16K_PAGES=y"
-    "CONFIG_BCACHE=m"
-    "CONFIG_BLK_DEV_DM=y"
-    "CONFIG_BLK_DEV_MD=y"
-    "CONFIG_BRCMFMAC=m"
-    "CONFIG_BRCMFMAC_PCIE=y"
-    "CONFIG_BRCMFMAC_PROTO_BCDC=y"
-    "CONFIG_BRCMFMAC_PROTO_MSGBUF=y"
-    "CONFIG_BRCMFMAC_USB=y"
-    "CONFIG_BT=m"
-    "CONFIG_BT_BNEP=m"
-    "CONFIG_BT_BREDR=y"
-    "CONFIG_BT_HCIUART_BCM=y"
-    "CONFIG_BT_HIDP=m"
-    "CONFIG_BT_LE=y"
-    "CONFIG_BT_RFCOMM=m"
-    "CONFIG_CFG80211=m"
-    "CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL=y"
-    "CONFIG_CRYPTO_SERPENT=m"
-    "CONFIG_CRYPTO_USER_API_AEAD=y"
-    "CONFIG_CRYPTO_USER_API_HASH=y"
-    "CONFIG_CRYPTO_USER_API_RNG=y"
-    "CONFIG_CRYPTO_USER_API_SKCIPHER=y"
-    "CONFIG_CRYPTO_WP512=m"
-    "CONFIG_DM_CACHE=m"
-    "CONFIG_DM_CRYPT=m"
-    "CONFIG_DM_CRYPT=m"
-    "CONFIG_DM_DEBUG=y"
-    "CONFIG_DM_DELAY=m"
-    "CONFIG_DM_DUST=m"
-    "CONFIG_DM_FLAKEY=m"
-    "CONFIG_DM_INIT=y"
-    "CONFIG_DM_INTEGRITY=m"
-    "CONFIG_DM_LOG_USERSPACE=m"
-    "CONFIG_DM_LOG_WRITES=m"
-    "CONFIG_DM_MIRROR=y"
-    "CONFIG_DM_MULTIPATH=m"
-    "CONFIG_DM_MULTIPATH_QL=m"
-    "CONFIG_DM_MULTIPATH_ST=m"
-    "CONFIG_DM_RAID=m"
-    "CONFIG_DM_SNAPSHOT=y"
-    "CONFIG_DM_SWITCH=m"
-    "CONFIG_DM_THIN_PROVISIONING=m"
-    "CONFIG_DM_UEVENT=y"
-    "CONFIG_DM_VERITY=m"
-    "CONFIG_DM_VERITY_FEC=y"
-    "CONFIG_DM_WRITECACHE=m"
-    "CONFIG_DM_ZERO=y"
-    "CONFIG_DM_ZONED=m"
-    "CONFIG_DRM_ASAHI_DEBUG_ALLOCATOR"
-    "CONFIG_DRM_CIRRUS_QEMU=m"
-    "CONFIG_DRM_FBDEV_EMULATION=y"
-    "CONFIG_DRM_GEM_SHMEM_HELPER=y"
-    "CONFIG_DRM_SCHED=y"
-    "CONFIG_DRM_VGEM"
-    "CONFIG_ENERGY_MODEL=y"
-    "CONFIG_GCC_PLUGINS"
-    "CONFIG_HIBERNATION"
-    "CONFIG_HID_APPLE=m"
-    "CONFIG_HID_BATTERY_STRENGTH=y"
-    "CONFIG_HID_MAGICMOUSE=m"
-    "CONFIG_INPUT_LEDS=y"
-    "CONFIG_LEDS_PWM=y"
-    "CONFIG_MD=y"
-    "CONFIG_MD_CLUSTER=m"
-    "CONFIG_MMC_CQHCI=m"
-    "CONFIG_MMC_SDHCI=m"
-    "CONFIG_MMC_SDHCI_PCI=m"
-    "CONFIG_MOUSE_APPLETOUCH=m"
-    "CONFIG_NET_VENDOR_AQUANTIA=y"
-    "CONFIG_NET_VENDOR_BROADCOM=y"
-    "CONFIG_NLS_ISO8859_1=m"
-    "CONFIG_POWER_RESET_GPIO=y"
-    "CONFIG_REGULATOR_FIXED_VOLTAGE=y"
-    "CONFIG_SERIAL_SAMSUNG=y"
-    "CONFIG_SERIAL_SAMSUNG_CONSOLE=y"
-    "CONFIG_SND_SOC_CS42L83=m"
-    "CONFIG_SND_SOC_TAS2764=m"
-    "CONFIG_SND_SOC_TAS2770=m"
-    "CONFIG_SUSPEND=y"
-    "CONFIG_TIGON3=m"
-    "CONFIG_TYPEC_TPS6598X=m"
-    "CONFIG_UCLAMP_TASK=y"
-    "CONFIG_UCLAMP_TASK_GROUP=y"
-    "CONFIG_USB_DWC3=m"
-    "CONFIG_USB_DWC3_DUAL_ROLE=y"
-    "CONFIG_USB_HID=m"
-    "CONFIG_USB_STORAGE=m"
-    "CONFIG_USB_UAS=m"
-    "CONFIG_USB_XHCI_HCD=m"
-    "CONFIG_USB_XHCI_PCI_ASMEDIA=y"
-    "CONFIG_USB_XHCI_PCI_RENESAS=y"
-    "CONFIG_USB_XHCI_PLATFORM=m"
-    "CONFIG_WATCHDOG_HANDLE_BOOT_ENABLED=y"
-    "CONFIG_WLAN_VENDOR_BROADCOM=y"))
+(define %base-config
+  (append '(("CONFIG_APPLE_ADMAC" . #t)
+            ("CONFIG_APPLE_AIC" . #t)
+            ("CONFIG_APPLE_DART" . m)
+            ("CONFIG_APPLE_DOCKCHANNEL" . m)
+            ("CONFIG_APPLE_M1_CPU_PMU" . #t)
+            ("CONFIG_APPLE_MAILBOX" . #t)
+            ("CONFIG_APPLE_PLATFORMS" . #t)
+            ("CONFIG_APPLE_PMGR_MISC" . #t)
+            ("CONFIG_APPLE_PMGR_PWRSTATE" . #t)
+            ("CONFIG_APPLE_RTKIT" . m)
+            ("CONFIG_APPLE_RTKIT_HELPER" . m)
+            ("CONFIG_APPLE_SART" . #t)
+            ("CONFIG_APPLE_SIO" . m)
+            ("CONFIG_APPLE_SMC" . m)
+            ("CONFIG_APPLE_SMC_RTKIT" . m)
+            ("CONFIG_APPLE_WATCHDOG" . #t)
+            ("CONFIG_ARCH_APPLE" . #t)
+            ("CONFIG_ARM64_MEMORY_MODEL_CONTROL" . #t)
+            ("CONFIG_ARM_APPLE_CPUIDLE" . #t)
+            ("CONFIG_ARM_APPLE_SOC_CPUFREQ" . #t)
+            ("CONFIG_BT_HCIBCM4377" . m)
+            ("CONFIG_CHARGER_MACSMC" . #t)
+            ("CONFIG_COMMON_CLK_APPLE_NCO" . #t)
+            ("CONFIG_DRM_ADP" . m)
+            ("CONFIG_DRM_APPLE" . m)
+            ("CONFIG_DRM_APPLE_AUDIO" . #t)
+            ("CONFIG_GPIO_MACSMC" . #t)
+            ("CONFIG_HID_DOCKCHANNEL" . m)
+            ("CONFIG_I2C_APPLE" . m)
+            ("CONFIG_INPUT_MACSMC_HID" . #t)
+            ("CONFIG_MFD_APPLE_SPMI_PMU" . m)
+            ("CONFIG_MUX_APPLE_DPXBAR" . m)
+            ("CONFIG_NVMEM_APPLE_EFUSES" . m)
+            ("CONFIG_NVMEM_SPMI_MFD" . m)
+            ("CONFIG_NVME_APPLE" . m)
+            ("CONFIG_PCIE_APPLE" . m)
+            ("CONFIG_PHY_APPLE_ATC" . m)
+            ("CONFIG_PHY_APPLE_DPTX" . m)
+            ("CONFIG_PINCTRL_APPLE_GPIO" . m)
+            ("CONFIG_POWER_RESET_MACSMC" . #t)
+            ("CONFIG_PWM_APPLE" . #t)
+            ("CONFIG_RTC_DRV_MACSMC" . m)
+            ("CONFIG_SENSORS_MACSMC" . m)
+            ("CONFIG_SND_SOC_APPLE_MACAUDIO" . m)
+            ("CONFIG_SND_SOC_APPLE_MCA" . m)
+            ("CONFIG_SND_SOC_CS42L84" . m)
+            ("CONFIG_SPI_APPLE" . m)
+            ("CONFIG_SPI_HID_APPLE_OF" . m)
+            ("CONFIG_SPMI_APPLE" . m)
+            ("CONFIG_TOUCHSCREEN_APPLE_Z2" . m)
+            ("CONFIG_VIDEO_APPLE_ISP" . m))
+          %config))
 
-(define %base-configs
-  (cons* "CONFIG_APPLE_ADMAC=y"
-         "CONFIG_APPLE_AIC=y"
-         "CONFIG_APPLE_DART=m"
-         "CONFIG_APPLE_DOCKCHANNEL=m"
-         "CONFIG_APPLE_M1_CPU_PMU=y"
-         "CONFIG_APPLE_MAILBOX=y"
-         "CONFIG_APPLE_PLATFORMS=y"
-         "CONFIG_APPLE_PMGR_MISC=y"
-         "CONFIG_APPLE_PMGR_PWRSTATE=y"
-         "CONFIG_APPLE_RTKIT=m"
-         "CONFIG_APPLE_RTKIT_HELPER=m"
-         "CONFIG_APPLE_SART=y"
-         "CONFIG_APPLE_SIO=m"
-         "CONFIG_APPLE_SMC=m"
-         "CONFIG_APPLE_SMC_RTKIT=m"
-         "CONFIG_APPLE_WATCHDOG=y"
-         "CONFIG_ARCH_APPLE=y"
-         "CONFIG_ARM64_MEMORY_MODEL_CONTROL=y"
-         "CONFIG_ARM_APPLE_CPUIDLE=y"
-         "CONFIG_ARM_APPLE_SOC_CPUFREQ=y"
-         "CONFIG_BT_HCIBCM4377=m"
-         "CONFIG_CHARGER_MACSMC=y"
-         "CONFIG_COMMON_CLK_APPLE_NCO=y"
-         "CONFIG_DRM_ADP=m"
-         "CONFIG_DRM_APPLE=m"
-         "CONFIG_DRM_APPLE_AUDIO=y"
-         "CONFIG_GPIO_MACSMC=y"
-         "CONFIG_HID_DOCKCHANNEL=m"
-         "CONFIG_I2C_APPLE=m"
-         "CONFIG_INPUT_MACSMC_HID=y"
-         "CONFIG_MFD_APPLE_SPMI_PMU=m"
-         "CONFIG_MUX_APPLE_DPXBAR=m"
-         "CONFIG_NVMEM_APPLE_EFUSES=m"
-         "CONFIG_NVMEM_SPMI_MFD=m"
-         "CONFIG_NVME_APPLE=m"
-         "CONFIG_PCIE_APPLE=m"
-         "CONFIG_PHY_APPLE_ATC=m"
-         "CONFIG_PHY_APPLE_DPTX=m"
-         "CONFIG_PINCTRL_APPLE_GPIO=m"
-         "CONFIG_POWER_RESET_MACSMC=y"
-         "CONFIG_PWM_APPLE=y"
-         "CONFIG_RTC_DRV_MACSMC=m"
-         "CONFIG_SENSORS_MACSMC=m"
-         "CONFIG_SND_SOC_APPLE_MACAUDIO=m"
-         "CONFIG_SND_SOC_APPLE_MCA=m"
-         "CONFIG_SND_SOC_CS42L84=m"
-         "CONFIG_SPI_APPLE=m"
-         "CONFIG_SPI_HID_APPLE_OF=m"
-         "CONFIG_SPMI_APPLE=m"
-         "CONFIG_TOUCHSCREEN_APPLE_Z2=m"
-         "CONFIG_VIDEO_APPLE_ISP=m"
-         %configs))
-
-(define %edge-configs
-  (cons* "CONFIG_DRM=y"
-         "CONFIG_DRM_ACCEL=y"
-         "CONFIG_DRM_ASAHI=m"
-         "CONFIG_RUST=y"
-         "CONFIG_RUST_BUILD_ASSERT_ALLOW"
-         "CONFIG_RUST_DEBUG_ASSERTIONS"
-         "CONFIG_RUST_OVERFLOW_CHECKS=y"
-         %base-configs))
+(define %edge-config
+  (append '(("CONFIG_DRM" . #t)
+            ("CONFIG_DRM_ACCEL" . #t)
+            ("CONFIG_DRM_ASAHI" . m)
+            ("CONFIG_RUST" . #t)
+            ("CONFIG_RUST_BUILD_ASSERT_ALLOW" . #f)
+            ("CONFIG_RUST_DEBUG_ASSERTIONS" . #f)
+            ("CONFIG_RUST_OVERFLOW_CHECKS" . #t))
+          %base-config))
 
 (define linux-srcarch
   (@@ (gnu packages linux) linux-srcarch))
@@ -206,7 +206,7 @@
 (define* (make-asahi-linux name
                            #:key
                            defconfig
-                           (configs %base-configs)
+                           (configs (map config-format-line %base-config))
                            (extra-version #f)
                            (linux linux-libre-arm64-generic)
                            (source asahi-linux-source)
@@ -278,7 +278,8 @@
   (make-asahi-linux "asahi-linux"))
 
 (define-public asahi-linux-edge
-  (let ((base (make-asahi-linux "asahi-linux-edge" #:configs %edge-configs)))
+  (let* ((configs (map config-format-line %edge-config))
+         (base (make-asahi-linux "asahi-linux-edge" #:configs configs)))
     (package
       (inherit base)
       (native-inputs

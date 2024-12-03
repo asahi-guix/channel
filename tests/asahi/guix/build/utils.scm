@@ -20,8 +20,17 @@
 (test-error "command-output error"
   (command-output "x" "Hello" "world"))
 
-(test-equal "escape whitespace in label"
-  "EFI\\040-\\040ASAHI" (escape-label "EFI - ASAHI"))
+(test-equal "config-format-line-y"
+  "CONFIG_ARM64_16K_PAGES=y"
+  (config-format-line '("CONFIG_ARM64_16K_PAGES" . #t)))
+
+(test-equal "config-format-line-n"
+  "CONFIG_ARM64_16K_PAGES"
+  (config-format-line '("CONFIG_ARM64_16K_PAGES" . #f)))
+
+(test-equal "config-format-line-m"
+  "CONFIG_APPLE_MFI_FASTCHARGE=m"
+  (config-format-line '("CONFIG_APPLE_MFI_FASTCHARGE" . m)))
 
 (test-equal "config-parse-line-y"
   '("CONFIG_ARM64_16K_PAGES" . #t)
@@ -34,5 +43,8 @@
 (test-equal "config-parse-line-m"
   '("CONFIG_APPLE_MFI_FASTCHARGE" . m)
   (config-parse-line "CONFIG_APPLE_MFI_FASTCHARGE=m"))
+
+(test-equal "escape whitespace in label"
+  "EFI\\040-\\040ASAHI" (escape-label "EFI - ASAHI"))
 
 (test-end suite)

@@ -17,6 +17,29 @@
     (inherit (replace-alsa-lib rust-alsa-0.8))
     (name "rust-asahi-alsa")))
 
+(define-public rust-asahi-bless-0.4
+  (package
+    (name "rust-asahi-bless")
+    (version "0.4.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "asahi-bless" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1lf6iq6imb2x79avh40r6inmqm893sv79mmbdz096k77v1ajxv9r"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.3)
+                       ("rust-clap" ,rust-clap-4)
+                       ("rust-gpt" ,rust-gpt-3)
+                       ("rust-uuid" ,rust-uuid-1))))
+    (home-page "https://github.com/WhatAmISupposedToPutHere/asahi-nvram")
+    (synopsis "Tool to select active boot partition on ARM Macs")
+    (description "This package provides a tool to select active boot partition on ARM
+Macs.")
+    (license license:expat)))
+
 (define-public rust-gpt-3
   (package
     (name "rust-gpt")

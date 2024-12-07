@@ -9,7 +9,7 @@
 (define-public asahi-audio
   (package
     (name "asahi-audio")
-    (version "2.3")
+    (version "2.5")
     (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -17,7 +17,7 @@
                     (commit (string-append "v" version))))
               (file-name (git-file-name name version))
               (sha256
-               (base32 "1sp3wxbp4xg9a1n9gp69k0zyzd59vzvhk2iyygnbms7vdrhkr6vd"))))
+               (base32 "1s5bq4i89m80ssxn9lm1avyj9x8hhvrk80hbwzdhs49zy3d1zqdv"))))
     (build-system gnu-build-system)
     (arguments
      `(#:make-flags

@@ -17,10 +17,10 @@
   #:use-module (guix utils))
 
 (define-public asahi-mesa
-  (let ((commit "6d00b02b727f89a324e7e3dcb34e6c74ef0848b3"))
+  (let ((commit "6cc6f6e66a248a293fe6657b5e8df065e375bca1"))
     (package/inherit mesa
       (name "asahi-mesa")
-      (version (git-version "20240727" "0" commit))
+      (version (git-version "20241204" "0" commit))
       (source
        (origin
          (method git-fetch)
@@ -29,16 +29,16 @@
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1ii6h5sjf2wyy2xqhymdswi37l0r7wqs904p9p50h9vhwy4ncy2x"))))
+          (base32 "06yhrwggl5hfrnhf83c4llf7xhby8mx4aad5qxg2630gzz7yif83"))))
       (arguments
        (substitute-keyword-arguments (package-arguments mesa)
          ((#:configure-flags flags)
           `(list "-Db_lto=false"
                  "-Db_ndebug=true"
                  "-Dbuild-tests=true"
-                 "-Ddri3=enabled"
+                 ;; "-Ddri3=enabled"
                  "-Degl=enabled"
-                 "-Dgallium-drivers=asahi,kmsro,svga,swrast,virgl,zink"
+                 "-Dgallium-drivers=asahi,svga,swrast,virgl,zink"
                  "-Dgallium-extra-hud=true"
                  "-Dgallium-opencl=disabled"
                  "-Dgallium-rusticl=false"
@@ -58,7 +58,7 @@
                  "-Dshared-glapi=enabled"
                  "-Dvalgrind=disabled"
                  "-Dvideo-codecs=all"
-                 "-Dvulkan-drivers=swrast"
+                 "-Dvulkan-drivers=asahi,swrast"
                  "-Dvulkan-layers=device-select,overlay"
                  "-Dzstd=enabled"))))
       (inputs

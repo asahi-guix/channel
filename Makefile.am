@@ -72,7 +72,6 @@ SOURCES = modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/packages/installer.scm \
 	modules/asahi/guix/packages/linux.scm \
-	modules/asahi/guix/packages/llvm.scm \
 	modules/asahi/guix/packages/misc.scm \
 	modules/asahi/guix/packages/music.scm \
 	modules/asahi/guix/packages/pulseaudio.scm \

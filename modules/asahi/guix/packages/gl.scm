@@ -1,6 +1,5 @@
 (define-module (asahi guix packages gl)
   #:use-module ((guix licenses) #:prefix license:)
-  #:use-module (asahi guix packages llvm)
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages linux)

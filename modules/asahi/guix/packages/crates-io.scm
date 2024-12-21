@@ -608,3 +608,298 @@ model.")
     (description "This package provides a tool to sync Wifi passwords with MacOS on ARM
 Macs.")
     (license license:expat)))
+
+(define-public rust-udev-0.9
+  (package
+    (name "rust-udev")
+    (version "0.9.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "udev" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "10dxy4vd16mkq0xi24d3nwgiv007qhrmry493j9nj5szp6bw3mg3"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-io-lifetimes" ,rust-io-lifetimes-1)
+                       ("rust-libc" ,rust-libc-0.2)
+                       ("rust-libudev-sys" ,rust-libudev-sys-0.1)
+                       ("rust-mio" ,rust-mio-0.7)
+                       ("rust-mio" ,rust-mio-0.8)
+                       ("rust-mio" ,rust-mio-1)
+                       ("rust-mio" ,rust-mio-0.6)
+                       ("rust-pkg-config" ,rust-pkg-config-0.3))))
+    (home-page "https://github.com/Smithay/udev-rs")
+    (synopsis "libudev bindings for Rust")
+    (description "This package provides libudev bindings for Rust.")
+    (license license:expat)))
+
+(define-public rust-tokio-stream-0.1
+  (package
+    (name "rust-tokio-stream")
+    (version "0.1.17")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "tokio-stream" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0ix0770hfp4x5rh5bl7vsnr3d4iz4ms43i522xw70xaap9xqv9gc"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-futures-core" ,rust-futures-core-0.3)
+                       ("rust-pin-project-lite" ,rust-pin-project-lite-0.2)
+                       ("rust-tokio" ,rust-tokio-1)
+                       ("rust-tokio-util" ,rust-tokio-util-0.7))))
+    (home-page "https://tokio.rs")
+    (synopsis "Utilities to work with `Stream` and `tokio`.")
+    (description
+     "This package provides Utilities to work with `Stream` and `tokio`.")
+    (license license:expat)))
+
+(define-public rust-procfs-core-0.17
+  (package
+    (name "rust-procfs-core")
+    (version "0.17.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "procfs-core" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1v0jdbyc1rq1x22m0wn7n4iq4h86gdls38wqfg06zc29hcnz1793"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-backtrace" ,rust-backtrace-0.3)
+                       ("rust-bitflags" ,rust-bitflags-2)
+                       ("rust-chrono" ,rust-chrono-0.4)
+                       ("rust-hex" ,rust-hex-0.4)
+                       ("rust-serde" ,rust-serde-1))))
+    (home-page "https://github.com/eminence/procfs")
+    (synopsis
+     "Data structures and parsing for the linux procfs pseudo-filesystem")
+    (description
+     "This package provides Data structures and parsing for the linux procfs pseudo-filesystem.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-procfs-0.17
+  (package
+    (name "rust-procfs")
+    (version "0.17.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "procfs" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "17swyjqinpb745f07dpdi7c8q37hxvhx9xmmsi2dhxaj2kc74nyc"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-backtrace" ,rust-backtrace-0.3)
+                       ("rust-bitflags" ,rust-bitflags-2)
+                       ("rust-chrono" ,rust-chrono-0.4)
+                       ("rust-flate2" ,rust-flate2-1)
+                       ("rust-hex" ,rust-hex-0.4)
+                       ("rust-procfs-core" ,rust-procfs-core-0.17)
+                       ("rust-rustix" ,rust-rustix-0.38)
+                       ("rust-serde" ,rust-serde-1))))
+    (home-page "https://github.com/eminence/procfs")
+    (synopsis "Interface to the linux procfs pseudo-filesystem")
+    (description
+     "This package provides Interface to the linux procfs pseudo-filesystem.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-krun-sys-1
+  (package
+    (name "rust-krun-sys")
+    (version "1.9.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "krun-sys" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "13z226ynks7psa2z3pk58l5znay4861v0k0qfnzcvwd6l1bvg99d"))))
+    (build-system cargo-build-system)
+    (arguments
+     (list #:skip-build? #t
+           #:cargo-inputs `(("rust-bindgen" ,rust-bindgen-0.69))
+           ;; #:phases
+           ;; #~(modify-phases %standard-phases
+           ;;     (replace 'install
+           ;;       (lambda _
+           ;;         (setenv "DESTDIR" #$output)
+           ;;         (invoke "pwd")
+           ;;         (invoke "find")
+           ;;         (invoke "make" "install"))))
+           ))
+    (home-page "https://github.com/containers/libkrun")
+    (synopsis "Rust bindings for libkrun")
+    (description "This package provides Rust bindings for libkrun.")
+    (license license:asl2.0)))
+
+(define-public rust-input-linux-sys-0.9
+  (package
+    (name "rust-input-linux-sys")
+    (version "0.9.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "input-linux-sys" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0957hf6sqlp9kw5vqxm80pklk9q745zhprpmdrbhmbqficjb54bv"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-libc" ,rust-libc-0.2)
+                       ("rust-nix" ,rust-nix-0.29))))
+    (home-page "https://github.com/arcnmx/input-linux-sys-rs")
+    (synopsis "Bindings for <linux/{u,}input.h>")
+    (description "This package provides Bindings for <linux/{u,}input.h>.")
+    (license license:expat)))
+
+(define-public rust-input-linux-0.7
+  (package
+    (name "rust-input-linux")
+    (version "0.7.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "input-linux" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1q2227n0pyqffhgi4bn4h90y91rz4cfll8v9ra15bfc83j1c9s5p"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bytes" ,rust-bytes-1)
+                       ("rust-input-linux-sys" ,rust-input-linux-sys-0.9)
+                       ("rust-nix" ,rust-nix-0.29)
+                       ("rust-serde" ,rust-serde-1)
+                       ("rust-tokio-util" ,rust-tokio-util-0.6)
+                       ("rust-tokio-util" ,rust-tokio-util-0.7))))
+    (home-page "https://github.com/arcnmx/input-linux-rs")
+    (synopsis "evdev and uinput")
+    (description "This package provides evdev and uinput.")
+    (license license:expat)))
+
+(define-public rust-env-logger-0.11
+  (package
+    (name "rust-env-logger")
+    (version "0.11.6")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "env_logger" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1q30cqb2dfs3qrs0s30qdmqwi7n2gz4pniwd8a9gvhygwgcf7bnw"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-anstream" ,rust-anstream-0.6)
+                       ("rust-anstyle" ,rust-anstyle-1)
+                       ("rust-env-filter" ,rust-env-filter-0.1)
+                       ("rust-humantime" ,rust-humantime-2)
+                       ("rust-log" ,rust-log-0.4))))
+    (home-page "https://github.com/rust-cli/env_logger")
+    (synopsis
+     "logging implementation for `log` which is configured via an environment
+variable.")
+    (description
+     "This package provides a logging implementation for `log` which is configured via
+an environment variable.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-bpaf-derive-0.5
+  (package
+    (name "rust-bpaf-derive")
+    (version "0.5.13")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "bpaf_derive" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "08l7llwp1g6fvrx1j9wyvgs7fii5jcg0jqbpq27pz9mbwv3xk5fg"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-proc-macro2" ,rust-proc-macro2-1)
+                       ("rust-quote" ,rust-quote-1)
+                       ("rust-syn" ,rust-syn-2))))
+    (home-page "https://github.com/pacak/bpaf")
+    (synopsis "Derive macros for bpaf Command Line Argument Parser")
+    (description
+     "This package provides Derive macros for bpaf Command Line Argument Parser.")
+    (license (list license:expat license:asl2.0))))
+
+(define-public rust-bpaf-0.9
+  (package
+    (name "rust-bpaf")
+    (version "0.9.15")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "bpaf" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "1ykp9k3a53rggixmr91j9w37zlsj120gps4nvhnzmhkdhrs53zah"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:skip-build? #t
+       #:cargo-inputs (("rust-bpaf-derive" ,rust-bpaf-derive-0.5)
+                       ("rust-owo-colors" ,rust-owo-colors-3)
+                       ("rust-supports-color" ,rust-supports-color-2))))
+    (home-page "https://github.com/pacak/bpaf")
+    (synopsis "simple Command Line Argument Parser with parser combinators")
+    (description
+     "This package provides a simple Command Line Argument Parser with parser
+combinators.")
+    (license (list license:expat license:asl2.0))))
+
+;; wrapper.h:1:10: fatal error: 'libkrun.h' file not found
+(define-public rust-muvm-0.2
+  (package
+    (name "rust-muvm")
+    (version "0.2.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (crate-uri "muvm" version))
+       (file-name (string-append name "-" version ".tar.gz"))
+       (sha256
+        (base32 "0b6i8s8yzk29lyrbs29y1xni72vn3w18j54k2jm738qzj13y6jhz"))))
+    (build-system cargo-build-system)
+    (arguments
+     `(#:cargo-inputs (("rust-anyhow" ,rust-anyhow-1)
+                       ("rust-bpaf" ,rust-bpaf-0.9)
+                       ("rust-byteorder" ,rust-byteorder-1)
+                       ("rust-env-logger" ,rust-env-logger-0.11)
+                       ("rust-input-linux" ,rust-input-linux-0.7)
+                       ("rust-input-linux-sys" ,rust-input-linux-sys-0.9)
+                       ("rust-krun-sys" ,rust-krun-sys-1)
+                       ("rust-log" ,rust-log-0.4)
+                       ("rust-nix" ,rust-nix-0.29)
+                       ("rust-procfs" ,rust-procfs-0.17)
+                       ("rust-rustix" ,rust-rustix-0.38)
+                       ("rust-serde" ,rust-serde-1)
+                       ("rust-serde-json" ,rust-serde-json-1)
+                       ("rust-tempfile" ,rust-tempfile-3)
+                       ("rust-tokio" ,rust-tokio-1)
+                       ("rust-tokio-stream" ,rust-tokio-stream-0.1)
+                       ("rust-udev" ,rust-udev-0.9)
+                       ("rust-uuid" ,rust-uuid-1))))
+    (native-inputs (list clang llvm pkg-config))
+    (inputs (list eudev))
+    (home-page "https://github.com/AsahiLinux/muvm")
+    (synopsis "Run programs from your system in a microVM")
+    (description "This package provides a way to run programs from your system in a
+@code{microVM}.")
+    (license license:expat)))

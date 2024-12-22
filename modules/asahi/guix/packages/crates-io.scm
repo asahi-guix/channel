@@ -20,14 +20,14 @@
 (define-public rust-asahi-bless-0.4
   (package
     (name "rust-asahi-bless")
-    (version "0.4.1")
+    (version "0.4.0")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "asahi-bless" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1lf6iq6imb2x79avh40r6inmqm893sv79mmbdz096k77v1ajxv9r"))))
+        (base32 "0bfxi0pd9z6rszvma8vfjyzhgbbawl3djyfpb4g0diwxnb6r8as6"))))
     (build-system cargo-build-system)
     (arguments
      `(#:cargo-inputs (("rust-apple-nvram" ,rust-apple-nvram-0.3)

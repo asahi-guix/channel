@@ -15,15 +15,6 @@
   #:use-module (srfi srfi-1)
   #:export (asahi-sway-os))
 
-(define %asahi-desktop-variables
-  '(("CLUTTER_BACKEND" . "wayland") ; GTK
-    ("QT_QPA_PLATFORM" . "wayland") ; Qt
-    ("MOZ_ENABLE_WAYLAND" . "1") ; IceCat, et.al.
-    ;; These are normally provided by login managers(?).
-    ("XDG_SESSION_TYPE" . "wayland")
-    ("XDG_SESSION_DESKTOP" . "sway")
-    ("XDG_CURRENT_DESKTOP" . "sway")))
-
 (define %asahi-sway-home-service
   (service guix-home-service-type
            `(("guest" ,(home-environment

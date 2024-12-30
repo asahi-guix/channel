@@ -1,5 +1,10 @@
 (define-module (asahi guix ci)
+  #:use-module (asahi guix images base)
+  #:use-module (asahi guix images edge)
+  #:use-module (asahi guix images gnome)
   #:use-module (asahi guix images installer)
+  #:use-module (asahi guix images plasma)
+  #:use-module (asahi guix images sway)
   #:use-module (asahi guix manifests)
   #:use-module (asahi guix packages)
   #:use-module (asahi guix systems base)
@@ -26,7 +31,12 @@
   #:export (cuirass-jobs))
 
 (define (asahi-images)
-  (list asahi-installer-os-image))
+  (list asahi-base-os-image
+        asahi-edge-os-image
+        asahi-gnome-os-image
+        asahi-installer-os-image
+        asahi-plasma-os-image
+        asahi-sway-os-image))
 
 (define (asahi-manifests)
   (list %asahi-packages-manifest

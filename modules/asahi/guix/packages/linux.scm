@@ -3,6 +3,7 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (gnu packages audio)
   #:use-module (gnu packages compression)
+  #:use-module (gnu packages cpio)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages python)
@@ -17,8 +18,8 @@
   #:use-module (guix utils)
   #:use-module (srfi srfi-1))
 
-(define %linux-version "6.12.1")
-(define %linux-revision "8")
+(define %linux-version "6.12.4")
+(define %linux-revision "1")
 
 (define config->string
   (@@ (gnu packages linux) config->string))
@@ -36,7 +37,7 @@
 (define asahi-linux-source
   (make-asahi-linux-source
    (string-append "asahi-" %linux-version "-" %linux-revision)
-   "036n7i82anb3g3611lbsz4h5lmh2l9sbbh0b2dwygsrrqx2rwhxp"
+   "0h018yj414n9js701mcsl25nhnp9h0il83f90jfd4y1lccjnv4nh"
    (list)))
 
 (define* (make-asahi-linux name
@@ -81,6 +82,9 @@
                   (let ((source (false-if-exception
                                  (search-input-directory inputs "lib/rustlib/src/rust/library"))))
                     (when source (setenv "RUST_LIB_SRC" source)))))))))
+      (native-inputs
+       (modify-inputs (package-native-inputs base)
+         (prepend cpio)))
       (home-page "https://asahilinux.org")
       (synopsis "Linux on Apple Silicon")
       (description "Asahi Linux is a project and community with the goal of porting Linux

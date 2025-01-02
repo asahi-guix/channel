@@ -69,19 +69,23 @@
                             #:user #$user)))
                   (zero? (cdr (waitpid pid)))))))))
 
+(define (asahi-stats-server-env config)
+  "Return the environment variables for the Asahi Installer Stats server."
+  (list (format #f "ASAHI_STATS_DB=~a" (asahi-stats-configuration-user config))
+        (format #f "ASAHI_STATS_PORT=~a" (asahi-stats-configuration-port config))
+        (format #f "ASAHI_STATS_USER=~a" (asahi-stats-configuration-user config))))
+
 (define (asahi-stats-server-service config)
   "Return the service that runs the Asahi Installer Stats server for CONFIG."
-  (let ((package (asahi-stats-configuration-package config))
-        (env `(("ASAHI_STATS_DB" . (asahi-stats-configuration-user config))
-               ("ASAHI_STATS_PORT" . (asahi-stats-configuration-port config))
-               ("ASAHI_STATS_USER" . (asahi-stats-configuration-user config)))))
+  (let ((environment-variables (asahi-stats-server-env config))
+        (package (asahi-stats-configuration-package config)))
     (shepherd-service
      (documentation "Asahi Installer Stats server")
      (provision '(asahi-stats))
      (requirement '(postgres postgres-roles user-processes))
      (start #~(make-forkexec-constructor
                (list #$(file-append package "/bin/app.py"))
-               #:environment-variables #$env
+               #:environment-variables (list #$@environment-variables)
                #:group #$(asahi-stats-configuration-group config)
                #:log-file #$(asahi-stats-configuration-log-file config)
                #:user #$(asahi-stats-configuration-user config)))

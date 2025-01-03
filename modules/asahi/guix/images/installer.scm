@@ -1,10 +1,9 @@
 (define-module (asahi guix images installer)
-  #:use-module (asahi guix systems base)
+  #:use-module (asahi guix systems install)
   #:use-module (gnu system images asahi installer)
   #:export (asahi-installer-os-image))
 
 (define asahi-installer-os-image
-  ;; TODO: Use installation os
-  (make-installer-image 'asahi-installer-image asahi-base-os))
+  (make-installer-image 'asahi-installer-image asahi-installation-os))
 
 asahi-installer-os-image

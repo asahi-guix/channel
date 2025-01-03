@@ -65,9 +65,8 @@
   "Return the list of jobs for the entries in MANIFESTS, a list of file
 names, for each one of SYSTEMS."
 
-  (define (manifest-entry-job-name entry)
-    (string-append (manifest-entry-name entry) "-"
-                   (manifest-entry-version entry)))
+  (define (manifest-entry-job-name entry system)
+    (string-append (manifest-entry-name entry) "." system))
 
   (define (manifest-entry->job entry system)
     (let* ((obj (manifest-entry-item entry))
@@ -82,7 +81,7 @@ names, for each one of SYSTEMS."
            (timeout (or (and (package? obj)
                              (assoc-ref (package-properties obj) 'timeout))
                         (* 5 3600))))
-      (derivation->job (manifest-entry-job-name entry) drv
+      (derivation->job (manifest-entry-job-name entry system) drv
                        #:max-silent-time max-silent-time
                        #:timeout timeout)))
 

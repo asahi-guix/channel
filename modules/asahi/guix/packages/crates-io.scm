@@ -14,7 +14,7 @@
 
 (define-public rust-asahi-alsa
   (package
-    (inherit (replace-alsa-lib rust-alsa-0.8))
+    (inherit (replace-alsa-lib rust-alsa-0.9))
     (name "rust-asahi-alsa")))
 
 (define-public rust-asahi-bless-0.4
@@ -549,7 +549,7 @@ plugins")
     (build-system cargo-build-system)
     (arguments
      (list
-      #:cargo-inputs `(("rust-alsa" ,rust-alsa-0.8)
+      #:cargo-inputs `(("rust-alsa" ,rust-alsa-0.9)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-clap" ,rust-clap-4)
                        ("rust-clap-verbosity-flag" ,rust-clap-verbosity-flag-2)

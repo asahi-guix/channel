@@ -538,18 +538,19 @@ plugins")
 
 (define-public rust-speakersafetyd-1
   (package
-    (name "rust-speakersafetyd")
-    (version "1.0.1")
+    (name "speakersafetyd")
+    (version "1.0.2")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "speakersafetyd" version))
        (file-name (string-append name "-" version ".tar.gz"))
        (sha256
-        (base32 "1dvyj194niz5i4rldsqvjmz8j7df9w9qpvf9rwg3vsnzc2mjh0zg"))))
+        (base32 "104xgyqhsg2rxa3ndkizrpndibmcbr25h63phcjswadbm8i790bz"))))
     (build-system cargo-build-system)
     (arguments
      (list
+      #:install-source? #f
       #:cargo-inputs `(("rust-alsa" ,rust-alsa-0.9)
                        ("rust-chrono" ,rust-chrono-0.4)
                        ("rust-clap" ,rust-clap-4)
@@ -559,12 +560,13 @@ plugins")
                        ("rust-libc" ,rust-libc-0.2)
                        ("rust-log" ,rust-log-0.4)
                        ("rust-signal-hook" ,rust-signal-hook-0.3)
-                       ("rust-simple-logger" ,rust-simple-logger-1))
+                       ("rust-simple-logger" ,rust-simple-logger-4))
       #:phases
       #~(modify-phases %standard-phases
           (add-after 'unpack 'fix-paths
             (lambda _
               (substitute* "src/main.rs"
+                (("share/speakersafetyd") "usr/share/speakersafetyd")
                 (("/usr/local") #$output))))
           (add-after 'unpack 'remove-systemd-udev-rules
             (lambda _

@@ -19,14 +19,14 @@
 
 ;; Images
 
-(define %asahi-installer-image-entry
+(define %guix-installer-image-entry
   (manifest-entry
-    (name "asahi-installer-os-image")
+    (name "guix-installer-image")
     (version %asahi-version)
     (item asahi-installer-os-image)))
 
 (define %asahi-images-manifest
-  (manifest (list %asahi-installer-image-entry)))
+  (manifest (list %guix-installer-image-entry)))
 
 ;; Systems
 

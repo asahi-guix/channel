@@ -1,5 +1,6 @@
 (define-module (asahi guix manifests)
   #:use-module (asahi guix config)
+  #:use-module (asahi guix images base)
   #:use-module (asahi guix images installer)
   #:use-module (asahi guix packages)
   #:use-module (asahi guix systems base)
@@ -19,6 +20,12 @@
 
 ;; Images
 
+(define %asahi-installer-base-image-entry
+  (manifest-entry
+    (name "asahi-installer-base-image")
+    (version %asahi-version)
+    (item asahi-base-os-image)))
+
 (define %guix-installer-image-entry
   (manifest-entry
     (name "guix-installer-image")
@@ -26,7 +33,8 @@
     (item asahi-installer-os-image)))
 
 (define %asahi-images-manifest
-  (manifest (list %guix-installer-image-entry)))
+  (manifest (list %asahi-installer-base-os-image-entry
+                  %guix-installer-image-entry)))
 
 ;; Systems
 

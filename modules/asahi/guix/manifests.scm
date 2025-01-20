@@ -33,7 +33,7 @@
     (item asahi-installer-os-image)))
 
 (define %asahi-images-manifest
-  (manifest (list %asahi-installer-base-os-image-entry
+  (manifest (list %asahi-installer-base-image-entry
                   %guix-installer-image-entry)))
 
 ;; Systems

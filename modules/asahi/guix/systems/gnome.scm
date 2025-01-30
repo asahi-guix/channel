@@ -1,6 +1,6 @@
 (define-module (asahi guix systems gnome)
   #:use-module (asahi guix systems desktop)
-  #:use-module (asahi guix systems edge)
+  #:use-module (asahi guix systems base)
   #:use-module (gnu packages gnome)
   #:use-module (gnu services desktop)
   #:use-module (gnu services)
@@ -14,7 +14,7 @@
 
 (define asahi-gnome-os
   (operating-system
-    (inherit asahi-edge-os)
+    (inherit asahi-base-os)
     (services (cons* (service gnome-desktop-service-type
                               (gnome-desktop-configuration
                                (shell %asahi-gnome-shell)))

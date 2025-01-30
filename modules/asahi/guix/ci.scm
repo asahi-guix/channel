@@ -3,7 +3,6 @@
   #:use-module (asahi guix manifests)
   #:use-module (asahi guix packages)
   #:use-module (asahi guix systems base)
-  #:use-module (asahi guix systems edge)
   #:use-module (asahi guix systems gnome)
   #:use-module (asahi guix systems plasma)
   #:use-module (asahi guix systems sway)

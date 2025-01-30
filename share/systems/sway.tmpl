@@ -1,9 +1,8 @@
 ;; -*- mode: scheme; -*-
 
-;; Template for a Guix operating system using the Asahi Linux edge kernel.
+;; Template for a Guix operating system using the Asahi Linux kernel.
 
-(use-modules (asahi guix systems sway)
-             (gnu))
+(use-modules (asahi guix systems sway) (gnu))
 
 (operating-system
   (inherit asahi-sway-os)

@@ -18,42 +18,35 @@
   #:use-module (guix utils)
   #:use-module (srfi srfi-1))
 
-(define %linux-version "6.12.4")
-(define %linux-revision "1")
-
 (define config->string
   (@@ (gnu packages linux) config->string))
 
-(define (make-asahi-linux-source commit hash patches)
-  (origin
-    (method git-fetch)
-    (uri (git-reference
-          (url "https://github.com/AsahiLinux/linux.git")
-          (commit commit)))
-    (file-name (git-file-name "linux-source" commit))
-    (patches patches)
-    (sha256 (base32 hash))))
+(define* (make-asahi-linux-source version revision hash)
+  (let ((commit (string-append "asahi-" version "-" revision)))
+    (origin
+      (method git-fetch)
+      (uri (git-reference
+            (url "https://github.com/AsahiLinux/linux.git")
+            (commit commit)))
+      (file-name (git-file-name "linux-source" commit))
+      (sha256 (base32 hash)))))
 
-(define asahi-linux-source
-  (make-asahi-linux-source
-   (string-append "asahi-" %linux-version "-" %linux-revision)
-   "0h018yj414n9js701mcsl25nhnp9h0il83f90jfd4y1lccjnv4nh"
-   (list)))
-
-(define* (make-asahi-linux name
-                           #:key
-                           (defconfig (local-file "defconfig.main"))
-                           (extra-options '())
-                           (extra-version #f)
-                           (linux linux-libre-arm64-generic)
-                           (source asahi-linux-source)
-                           (version (string-append %linux-version "-asahi")))
+(define* (make-asahi-linux
+          name
+          #:key
+          (defconfig (local-file "defconfig"))
+          (extra-options '())
+          (extra-version #f)
+          (hash "0h018yj414n9js701mcsl25nhnp9h0il83f90jfd4y1lccjnv4nh")
+          (linux linux-libre-arm64-generic)
+          (revision "1")
+          (version "6.12.4"))
   (let ((base (customize-linux
                #:configs (config->string (or extra-options '()))
                #:defconfig defconfig
-               #:linux (package/inherit linux (version version))
+               #:linux (package/inherit linux (version (string-append version "-" revision)))
                #:name name
-               #:source source
+               #:source (make-asahi-linux-source version revision hash)
                #:extra-version extra-version)))
     (package
       (inherit base)
@@ -84,7 +77,13 @@
                     (when source (setenv "RUST_LIB_SRC" source)))))))))
       (native-inputs
        (modify-inputs (package-native-inputs base)
-         (prepend cpio)))
+         (prepend cpio
+                  python
+                  rust
+                  `(,rust "rust-src")
+                  `(,rust "tools")
+                  rust-bindgen-cli
+                  zstd)))
       (home-page "https://asahilinux.org")
       (synopsis "Linux on Apple Silicon")
       (description "Asahi Linux is a project and community with the goal of porting Linux
@@ -93,20 +92,6 @@ Air, and MacBook Pro."))))
 
 (define-public asahi-linux
   (make-asahi-linux "asahi-linux"))
-
-(define-public asahi-linux-edge
-  (let ((base (make-asahi-linux
-               "asahi-linux-edge"
-               #:defconfig (local-file "defconfig.edge"))))
-    (package/inherit base
-      (native-inputs
-       (modify-inputs (package-native-inputs base)
-         (prepend python
-                  rust
-                  `(,rust "rust-src")
-                  `(,rust "tools")
-                  rust-bindgen-cli
-                  zstd))))))
 
 (define-public asahi-alsa-ucm-conf
   (package

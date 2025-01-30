@@ -45,15 +45,15 @@
    (partitions (list efi-partition root-partition))
    (supported-fw '("12.3" "12.3.1" "13.5"))))
 
-(define edge-os
+(define sway-os
   (installer-os
    (boot-object "m1n1.bin")
-   (default-os-name "Asahi Guix Edge")
+   (default-os-name "Asahi Guix Sway")
    (extras '())
-   (icon "/gnu/store/iwzvbzdvby9mr4xm9znw0c1ll5m1gbz5-asahi-installer-edge-0.0.1/share/asahi-installer/os/asahi-edge-image.icns")
-   (name "Asahi Guix Edge v1.4.0-25.e85f52e")
+   (icon "/gnu/store/iwzvbzdvby9mr4xm9znw0c1ll5m1gbz5-asahi-installer-sway-0.0.1/share/asahi-installer/os/asahi-sway-image.icns")
+   (name "Asahi Guix Sway v1.4.0-25.e85f52e")
    (next-object "m1n1/boot.bin")
-   (package "/gnu/store/iwzvbzdvby9mr4xm9znw0c1ll5m1gbz5-asahi-installer-edge-0.0.1/share/asahi-installer/os/asahi-edge-image.zip")
+   (package "/gnu/store/iwzvbzdvby9mr4xm9znw0c1ll5m1gbz5-asahi-installer-sway-0.0.1/share/asahi-installer/os/asahi-sway-image.zip")
    (partitions (list efi-partition root-partition))
    (supported-fw '("12.3" "12.3.1" "13.5"))))
 
@@ -67,14 +67,14 @@
 (test-equal "merge installer data"
   (installer-data
    (os-list
-    (list base-os edge-os)))
+    (list base-os sway-os)))
   (merge-installer-data
    (installer-data
     (os-list
      (list base-os)))
    (installer-data
     (os-list
-     (list edge-os)))))
+     (list sway-os)))))
 
 (test-equal "write and read installer data"
   test-installer-data

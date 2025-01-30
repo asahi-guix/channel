@@ -4,7 +4,6 @@
   #:use-module (asahi guix images installer)
   #:use-module (asahi guix packages)
   #:use-module (asahi guix systems base)
-  #:use-module (asahi guix systems edge)
   #:use-module (asahi guix systems gnome)
   #:use-module (asahi guix systems install)
   #:use-module (asahi guix systems plasma)
@@ -44,12 +43,6 @@
     (version %asahi-version)
     (item asahi-base-os)))
 
-(define %asahi-edge-entry
-  (manifest-entry
-    (name "asahi-edge-os")
-    (version %asahi-version)
-    (item asahi-edge-os)))
-
 (define %asahi-gnome-os-entry
   (manifest-entry
     (name "asahi-gnome-os")
@@ -76,7 +69,6 @@
 
 (define %asahi-systems-manifest
   (manifest (list %asahi-base-entry
-                  %asahi-edge-entry
                   %asahi-gnome-os-entry
                   ;; asahi-installer-os-entry
                   %asahi-plasma-os-entry

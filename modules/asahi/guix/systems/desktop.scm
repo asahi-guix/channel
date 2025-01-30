@@ -9,7 +9,7 @@
   #:use-module (asahi guix services firmware)
   #:use-module (asahi guix services sound)
   #:use-module (asahi guix services speakersafetyd)
-  #:use-module (asahi guix systems edge)
+  #:use-module (asahi guix systems base)
   #:use-module (asahi guix transformations)
   #:use-module (gnu artwork)
   #:use-module (gnu home services desktop)
@@ -68,7 +68,7 @@
                       (cons* emacs
                              kitty
                              librewolf
-                             (operating-system-packages asahi-edge-os))))))
+                             (operating-system-packages asahi-base-os))))))
 
 (define %asahi-desktop-xorg-touchpads "
   Section \"InputClass\"

@@ -1,6 +1,6 @@
 (define-module (asahi guix systems sway)
+  #:use-module (asahi guix systems base)
   #:use-module (asahi guix systems desktop)
-  #:use-module (asahi guix systems edge)
   #:use-module (asahi guix transformations)
   #:use-module (gnu home)
   #:use-module (gnu packages emacs)
@@ -28,7 +28,7 @@
 
 (define asahi-sway-os
   (operating-system
-    (inherit asahi-edge-os)
+    (inherit asahi-base-os)
     (services (modify-services (cons* %asahi-sway-home-service
                                       %asahi-sddm-service
                                       %asahi-desktop-services)))

@@ -119,8 +119,7 @@ system record, configured with the filesystem UUID of your EFI system
 partition. In this example, the filesystem UUID is =86E8-4498=.
 
 #+begin_src scheme
-  (use-modules (asahi guix systems base)
-               (gnu))
+  (use-modules (asahi guix systems base) (gnu))
 
   (operating-system
     (inherit asahi-base-os)
@@ -295,7 +294,6 @@ Overview of packages provided by Asahi Guix and other distributions.
 | [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/firmware.scm#L11][asahi-firmware]]      | -                   | -                  | -                   |
 | [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/firmware.scm#L54][asahi-fwextract]]     | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/asahi-fwextract][asahi-fwextract]]     | -                  | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/asahi-fwextract][asahi-fwextract]]     |
 | [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/linux.scm#L86][asahi-linux]]         | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/linux-asahi][linux-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/kernel][@asahi/kernel]]      | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/linux-asahi][linux-asahi]]         |
-| [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/linux.scm#L89][asahi-linux-edge]]    | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/linux-asahi][linux-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/kernel-edge][@asahi/kernel-edge]] | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/linux-asahi][linux-asahi]]         |
 | [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/bootloader.scm#L24][asahi-m1n1]]          | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/m1n1][m1n1]]                | [[https://src.fedoraproject.org/rpms/m1n1][m1n1]]               | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/m1n1][m1n1]]                |
 | [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/gl.scm#L17][asahi-mesa]]          | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/mesa-asahi-edge][mesa-asahi-edge]]     | [[https://copr.fedorainfracloud.org/coprs/g/asahi/mesa][@asahi/mesa]]        | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/mesa-asahi-edge][mesa-asahi-edge]]     |
 | [[https://github.com/asahi-guix/channel/blob/main/modules/asahi/guix/packages/gl.scm#L71][asahi-mesa-headers]]  | -                   | -                  | -                   |

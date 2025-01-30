@@ -1,6 +1,6 @@
 (define-module (asahi guix systems plasma)
   #:use-module (asahi guix systems desktop)
-  #:use-module (asahi guix systems edge)
+  #:use-module (asahi guix systems base)
   #:use-module (asahi guix transformations)
   #:use-module (gnu packages kde-plasma)
   #:use-module (gnu services desktop)
@@ -10,7 +10,7 @@
 
 (define asahi-plasma-os
   (operating-system
-    (inherit asahi-edge-os)
+    (inherit asahi-base-os)
     (services (cons* (service plasma-desktop-service-type
                               (plasma-desktop-configuration
                                (plasma-package (replace-asahi plasma))))

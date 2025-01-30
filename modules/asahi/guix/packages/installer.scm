@@ -3,7 +3,6 @@
   #:use-module (asahi guix build-system installer)
   #:use-module (asahi guix config)
   #:use-module (asahi guix systems base)
-  #:use-module (asahi guix systems edge)
   #:use-module (asahi guix systems gnome)
   #:use-module (asahi guix systems plasma)
   #:use-module (asahi guix systems sway)
@@ -109,17 +108,6 @@
 ;;     (description "This package provides the Asahi installer package for the Asahi Guix
 ;; operating system with the bare minimum.")
 ;;     (license license:expat)))
-
-;; (define-public asahi-installer-os-edge
-;;   (package
-;;     (inherit asahi-installer-os-base)
-;;     (name "asahi-installer-os-edge")
-;;     (source asahi-edge-os)
-;;     (arguments (list #:os-name "Asahi Guix Edge"
-;;                      #:os-description "Asahi Guix with accelerated graphics"))
-;;     (synopsis "Asahi Guix Edge installer package")
-;;     (description "This package provides the Asahi installer package for the Asahi Guix
-;; operating system with accelerated graphics.")))
 
 ;; (define-public asahi-installer-os-gnome
 ;;   (package

@@ -35,8 +35,7 @@ SUFFIXES = .scm .go
 
 NOCOMP_SOURCES = modules/asahi/guix/files/authorized-keys/substitutes.asahi-guix.org.pub \
 	modules/asahi/guix/files/bootlogo.svg \
-	modules/asahi/guix/packages/defconfig.main \
-	modules/asahi/guix/packages/defconfig.edge \
+	modules/asahi/guix/packages/defconfig \
 	tests/asahi/guix/installer/alx.sh
 
 SOURCES = modules/asahi/guix/build/block-devices.scm \
@@ -50,7 +49,6 @@ SOURCES = modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/home/config.scm \
 	modules/asahi/guix/home/services/sound.scm \
 	modules/asahi/guix/images/base.scm \
-	modules/asahi/guix/images/edge.scm \
 	modules/asahi/guix/images/gnome.scm \
 	modules/asahi/guix/images/installer.scm \
 	modules/asahi/guix/images/plasma.scm \
@@ -85,7 +83,6 @@ SOURCES = modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/services/udev.scm \
 	modules/asahi/guix/systems/base.scm \
 	modules/asahi/guix/systems/desktop.scm \
-	modules/asahi/guix/systems/edge.scm \
 	modules/asahi/guix/systems/gnome.scm \
 	modules/asahi/guix/systems/install.scm \
 	modules/asahi/guix/systems/plasma.scm \
@@ -131,7 +128,6 @@ EXTRA_DIST += NOTES.org \
 	      share/systems/plasma.tmpl \
 	      share/systems/sway.tmpl \
               share/systems/base.tmpl \
-              share/systems/edge.tmpl \
               .github/workflows/aarch64-linux-gnu.yml \
               .github/workflows/x86_64-linux-gnu.yml \
               .github/FUNDING.yml \

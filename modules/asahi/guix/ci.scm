@@ -28,7 +28,8 @@
   (list asahi-installer-os-image))
 
 (define (asahi-manifests)
-  (list %asahi-packages-manifest
+  (list %asahi-images-manifest
+        %asahi-packages-manifest
         %asahi-systems-manifest))
 
 (define (arguments->channels arguments)
@@ -120,5 +121,5 @@ names, for each one of SYSTEMS."
 
   (parameterize ((current-guix-package package))
     (append ;; (image-jobs store (asahi-images) systems)
-            ;; (package-jobs store (asahi-packages) systems)
-            (manifests->jobs store (asahi-manifests) systems))))
+     ;; (package-jobs store (asahi-packages) systems)
+     (manifests->jobs store (asahi-manifests) systems))))

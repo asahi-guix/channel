@@ -28,7 +28,7 @@
   (list asahi-installer-os-image))
 
 (define (asahi-manifests)
-  (list %asahi-images-manifest
+  (list ;; %asahi-images-manifest
         %asahi-packages-manifest
         %asahi-systems-manifest))
 

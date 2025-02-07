@@ -35,7 +35,7 @@
     (native-inputs
      (list autoconf
            automake
-           gettext
+           gnu-gettext
            guile-ares-rs
            guile-gcrypt
            guile-git

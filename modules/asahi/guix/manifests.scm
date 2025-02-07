@@ -9,6 +9,7 @@
   #:use-module (asahi guix systems plasma)
   #:use-module (asahi guix systems sway)
   #:use-module (gnu system)
+  #:use-module (gnu system image)
   #:use-module (guix gexp)
   #:use-module (guix packages)
   #:use-module (guix profiles)
@@ -23,13 +24,13 @@
   (manifest-entry
     (name "asahi-installer-base-image")
     (version %asahi-version)
-    (item asahi-base-os-image)))
+    (item (system-image asahi-base-os-image))))
 
 (define %guix-installer-image-entry
   (manifest-entry
     (name "guix-installer-image")
     (version %asahi-version)
-    (item asahi-installer-os-image)))
+    (item (system-image asahi-installer-os-image))))
 
 (define %asahi-images-manifest
   (manifest (list %asahi-installer-base-image-entry

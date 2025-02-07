@@ -96,7 +96,9 @@
                  (append %asahi-substitute-keys
                          (guix-configuration-authorized-keys config)))
                 (channels asahi-channels)
-                (guix (guix-for-channels asahi-channels))
+                ;; TODO: This fails when building an image on cuirass:
+                ;; git-error> code: -3 message: could not find repository at
+                ;; (guix (guix-for-channels asahi-channels))
                 (substitute-urls
                  (append %asahi-substitute-urls
                          (guix-configuration-substitute-urls config)))))))

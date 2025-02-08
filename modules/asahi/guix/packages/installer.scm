@@ -133,14 +133,14 @@ operating system with the bare minimum.")
 ;; operating system with accelerated graphics and the KDE Plasma desktop
 ;; environment.")))
 
-;; (define-public asahi-installer-os-sway
-;;   (package
-;;     (inherit asahi-installer-os-base)
-;;     (name "asahi-installer-os-sway")
-;;     (source asahi-sway-os)
-;;     (arguments (list #:os-name "Asahi Guix Sway"
-;;                      #:os-description "Asahi Guix with the Sway window manager"))
-;;     (synopsis "Asahi Guix Sway installer package")
-;;     (description "This package provides the Asahi installer package for the Asahi Guix
-;; operating system with accelerated graphics and the Sway window
-;; manager.")))
+(define-public asahi-installer-os-sway
+  (package
+    (inherit asahi-installer-os-base)
+    (name "asahi-installer-os-sway")
+    (source asahi-sway-os)
+    (arguments (list #:os-name "Asahi Guix Sway"
+                     #:os-description "Asahi Guix with the Sway window manager"))
+    (synopsis "Asahi Guix Sway installer package")
+    (description "This package provides the Asahi installer package for the Asahi Guix
+operating system with accelerated graphics and the Sway window
+manager.")))

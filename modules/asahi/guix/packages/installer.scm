@@ -94,20 +94,20 @@
     (description "This package provides the Asahi Guix installer script.")
     (license license:expat)))
 
-;; (define-public asahi-installer-os-base
-;;   (package
-;;     (name "asahi-installer-os-base")
-;;     (version %asahi-version)
-;;     (source asahi-base-os)
-;;     (build-system installer-build-system)
-;;     (home-page "https://github.com/asahi-guix/channel")
-;;     (native-search-paths (list $ASAHI_INSTALLER_OS_PATH))
-;;     (arguments (list #:os-name "Asahi Guix Base"
-;;                      #:os-description "Asahi Guix with the bare minimum"))
-;;     (synopsis "Asahi Guix Base installer package")
-;;     (description "This package provides the Asahi installer package for the Asahi Guix
-;; operating system with the bare minimum.")
-;;     (license license:expat)))
+(define-public asahi-installer-os-base
+  (package
+    (name "asahi-installer-os-base")
+    (version %asahi-version)
+    (source asahi-base-os)
+    (build-system installer-build-system)
+    (home-page "https://github.com/asahi-guix/channel")
+    (native-search-paths (list $ASAHI_INSTALLER_OS_PATH))
+    (arguments (list #:os-name "Asahi Guix Base"
+                     #:os-description "Asahi Guix with the bare minimum"))
+    (synopsis "Asahi Guix Base installer package")
+    (description "This package provides the Asahi installer package for the Asahi Guix
+operating system with the bare minimum.")
+    (license license:expat)))
 
 ;; (define-public asahi-installer-os-gnome
 ;;   (package

@@ -1,4 +1,5 @@
 (define-module (asahi guix home services sound)
+  #:use-module ((gnu packages audio) #:prefix audio:)
   #:use-module (asahi guix packages audio)
   #:use-module (asahi guix packages crates-io)
   #:use-module (asahi guix packages linux)
@@ -27,7 +28,7 @@
    (file-like asahi-audio)
    "The Asahi Linux Audio package to use.")
   (bankstown
-   (file-like rust-bankstown)
+   (file-like audio:bankstown-lv2)
    "The Bass enhancer package to use.")
   (lsp-plugins
    (file-like lsp-plugins)

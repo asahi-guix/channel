@@ -254,19 +254,19 @@ again.
 
 ** Firmware
 
-The firmware required to boot GNU/Linux on Apple silicon is proprietary
-and cannot be packaged with Asahi Guix. Instead the =asahi-firmware=
-Guix package assumes for now that the firmware is available in the
-=/boot/efi/vendorfw/firmware.cpio= archive at build time.
+The firmware required to boot GNU/Linux on Apple silicon is
+proprietary and cannot be packaged with Asahi Guix. Instead, the
+=asahi-firmware-service-type= assumes that the firmware is available
+in the =/boot/efi/vendorfw/firmware.cpio= archive at boot time.
 
 When installing Asahi Fedora Remix or an UEFI stand-alone system with
-the /Asahi GNU/Linux installer/, the Apple silicon firmware will be saved
-in the =asahi/all_firmware.tar.gz= archive on the EFI system
-partition.
+the /Asahi GNU/Linux installer/, the Apple silicon firmware will be
+saved in the =/boot/efi/asahi/all_firmware.tar.gz= archive on the EFI
+system partition.
 
 The [[https://github.com/AsahiLinux/asahi-scripts/blob/main/asahi-fwextract][asahi-fwextract]] script reads the firmware from the
-=asahi/all_firmware.tar.gz= archive and writes it to the =vendorfw=
-directory of the EFI system partition as a ~CPIO~ and ~TAR~
+=/boot/efi/asahi/all_firmware.tar.gz= archive and writes it to the
+=vendorfw= directory of the EFI system partition as a ~CPIO~ and ~TAR~
 archive. The EFI system partition should be mounted on =/boot/efi= to
 make these firmware files available.
 
@@ -291,7 +291,6 @@ Overview of packages provided by Asahi Guix and other distributions.
 |---------------------+---------------------+--------------------+---------------------|
 | [[https://codeberg.org/asahi-guix/channel/blob/main/modules/asahi/guix/packages/linux.scm#L105][asahi-alsa-ucm-conf]] | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/alsa-ucm-conf-asahi][alsa-ucm-conf-asahi]] | [[https://src.fedoraproject.org/rpms/alsa-ucm-asahi][alsa-ucm-asahi]]     | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/alsa-ucm-conf-asahi][alsa-ucm-conf-asahi]] |
 | [[https://codeberg.org/asahi-guix/channel/blob/main/modules/asahi/guix/packages/audio.scm#L9][asahi-audio]]         | [[https://github.com/AsahiLinux/asahi-audio][asahi-audio]]         | [[https://src.fedoraproject.org/rpms/asahi-audio][asahi-audio]]        | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/asahi-audio][asahi-audio]]         |
-| [[https://codeberg.org/asahi-guix/channel/blob/main/modules/asahi/guix/packages/firmware.scm#L11][asahi-firmware]]      | -                   | -                  | -                   |
 | [[https://codeberg.org/asahi-guix/channel/blob/main/modules/asahi/guix/packages/firmware.scm#L54][asahi-fwextract]]     | [[https://github.com/AsahiLinux/PKGBUILDs/tree/main/asahi-fwextract][asahi-fwextract]]     | -                  | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/asahi-fwextract][asahi-fwextract]]     |
 | [[https://codeberg.org/asahi-guix/channel/blob/main/modules/asahi/guix/packages/linux.scm#L86][asahi-linux]]         | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/linux-asahi][linux-asahi]]         | [[https://copr.fedorainfracloud.org/coprs/g/asahi/kernel][@asahi/kernel]]      | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/linux-asahi][linux-asahi]]         |
 | [[https://codeberg.org/asahi-guix/channel/blob/main/modules/asahi/guix/packages/bootloader.scm#L24][asahi-m1n1]]          | [[https://github.com/AsahiLinux/PKGBUILDs/blob/main/m1n1][m1n1]]                | [[https://src.fedoraproject.org/rpms/m1n1][m1n1]]               | [[https://github.com/tpwrules/nixos-apple-silicon/blob/main/apple-silicon-support/packages/m1n1][m1n1]]                |

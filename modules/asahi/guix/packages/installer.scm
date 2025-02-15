@@ -100,7 +100,7 @@
 ;;     (version %asahi-version)
 ;;     (source asahi-base-os)
 ;;     (build-system installer-build-system)
-;;     (home-page "https://github.com/asahi-guix/channel")
+;;     (home-page "https://codeberg.org/asahi-guix/channel")
 ;;     (native-search-paths (list $ASAHI_INSTALLER_OS_PATH))
 ;;     (arguments (list #:os-name "Asahi Guix Base"
 ;;                      #:os-description "Asahi Guix with the bare minimum"))

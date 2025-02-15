@@ -50,7 +50,7 @@
     (inputs (list guile-next util-linux))
     (synopsis "Asahi Guix")
     (description "Asahi Linux on GNU Guix")
-    (home-page "https://github.com/asahi-guix/channel")
+    (home-page "https://codeberg.org/asahi-guix/channel")
     (license license:gpl3+)))
 
 guile-asahi-guix

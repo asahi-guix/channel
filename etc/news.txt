@@ -1,0 +1,7 @@
+;; -*- mode: scheme; -*-
+(channel-news
+ (version 0)
+ (entry (commit "a05b435e19b0ecf4bf105a301738b2747d6eabdb")
+        (title (en "Asahi Guix moves to Codeberg"))
+        (body (en "The Asahi Guix channel moved to Codeberg, please update your channel
+introduction to use https://codeberg.org/asahi-guix/channel."))))

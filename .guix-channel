@@ -2,4 +2,5 @@
 (channel
  (version 0)
  (directory "modules")
- (url "https://github.com/asahi-guix/channel"))
+ (url "https://github.com/asahi-guix/channel")
+ (news-file "etc/news.txt"))

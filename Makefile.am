@@ -79,7 +79,6 @@ SOURCES = modules/asahi/guix/build/block-devices.scm \
 	modules/asahi/guix/services/console-font.scm \
 	modules/asahi/guix/services/firmware.scm \
 	modules/asahi/guix/services/sound.scm \
-	modules/asahi/guix/services/speakersafetyd.scm \
 	modules/asahi/guix/services/udev.scm \
 	modules/asahi/guix/systems/base.scm \
 	modules/asahi/guix/systems/desktop.scm \

@@ -13,11 +13,6 @@
   #:use-module (guix git-download)
   #:use-module (guix packages))
 
-(define-public rust-asahi-alsa
-  (package
-    (inherit (replace-alsa-lib rust-alsa-0.9))
-    (name "rust-asahi-alsa")))
-
 (define-public rust-asahi-bless-0.4
   (package
     (name "rust-asahi-bless")
@@ -513,81 +508,6 @@ plugins")
      (list (search-path-specification
             (variable "LV2_PATH")
             (files '("lib/lv2")))))
-    (license license:expat)))
-
-(define-public rust-clap-verbosity-flag-2
-  (package
-    (name "rust-clap-verbosity-flag")
-    (version "2.2.2")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (crate-uri "clap-verbosity-flag" version))
-       (file-name (string-append name "-" version ".tar.gz"))
-       (sha256
-        (base32 "1vb4amgfp20mkfglhx2m4iwxibc74apf9srcbvvjyrh7327176g0"))))
-    (build-system cargo-build-system)
-    (arguments
-     `(#:skip-build? #t
-       #:cargo-inputs (("rust-clap" ,rust-clap-4)
-                       ("rust-log" ,rust-log-0.4))))
-    (home-page "https://github.com/clap-rs/clap-verbosity-flag")
-    (synopsis "Easily add a `--verbose` flag to CLIs using Clap")
-    (description "Easily add a `--verbose` flag to CLIs using Clap")
-    (license (list license:expat license:asl2.0))))
-
-(define-public rust-speakersafetyd-1
-  (package
-    (name "speakersafetyd")
-    (version "1.0.2")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (crate-uri "speakersafetyd" version))
-       (file-name (string-append name "-" version ".tar.gz"))
-       (sha256
-        (base32 "104xgyqhsg2rxa3ndkizrpndibmcbr25h63phcjswadbm8i790bz"))))
-    (build-system cargo-build-system)
-    (arguments
-     (list
-      #:install-source? #f
-      #:cargo-inputs `(("rust-alsa" ,rust-alsa-0.9)
-                       ("rust-chrono" ,rust-chrono-0.4)
-                       ("rust-clap" ,rust-clap-4)
-                       ("rust-clap-verbosity-flag" ,rust-clap-verbosity-flag-2)
-                       ("rust-configparser" ,rust-configparser-3)
-                       ("rust-json" ,rust-json-0.12)
-                       ("rust-libc" ,rust-libc-0.2)
-                       ("rust-log" ,rust-log-0.4)
-                       ("rust-signal-hook" ,rust-signal-hook-0.3)
-                       ("rust-simple-logger" ,rust-simple-logger-4))
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'unpack 'fix-paths
-            (lambda _
-              (substitute* "src/main.rs"
-                (("share/speakersafetyd") "usr/share/speakersafetyd")
-                (("/usr/local") #$output))))
-          (add-after 'unpack 'remove-systemd-udev-rules
-            (lambda _
-              (substitute* "95-speakersafetyd.rules"
-                ((".*SYSTEMD_WANTS.*") ""))))
-          (add-after 'install 'install-data
-            (lambda _
-              (setenv "BINDIR" (string-append #$output "/bin"))
-              (setenv "UNITDIR" (string-append #$output "/lib/systemd/system"))
-              (setenv "UDEVDIR" (string-append #$output "/lib/udev/rules.d"))
-              (setenv "TMPFILESDIR" (string-append #$output "/usr/lib/tmpfiles.d"))
-              (setenv "SHAREDIR" (string-append #$output "/usr/share"))
-              (setenv "VARDIR" (string-append #$output "/var"))
-              (invoke "make" "install-data"))))))
-    (inputs (list alsa-lib))
-    (native-inputs (list pkg-config))
-    (home-page "https://github.com/AsahiLinux/speakersafetyd/")
-    (synopsis "Speaker protection daemon")
-    (description "Speakersafetyd is a userspace daemon written in Rust that
-implements an analogue of the Texas Instruments Smart Amp speaker protection
-model.")
     (license license:expat)))
 
 (define-public rust-asahi-wifisync-0.2
